@@ -1,0 +1,3522 @@
+﻿<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>инициатива · прототип</title>
+  <link href="https://fonts.googleapis.com/css2?family=Lato:wght@400;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <style>
+/* ─── inter, lowercase, -4% letter-spacing everywhere ─── */
+
+:root {
+  /* surface — light */
+  --bg:            #f3f5f8;
+  --bg-2:          #e9edf3;
+  --surface:       #ffffff;
+  --surface-2:     #f5f7fb;
+  --surface-3:     #eef1f6;
+  --border:        #dde3ec;
+  --border-strong: #c5cdd9;
+  --divider:       #ebeef4;
+
+  /* text */
+  --text-1: #0c1626;
+  --text-2: #4b5667;
+  --text-3: #8a94a3;
+  --text-4: #b3bbc7;
+
+  /* primary */
+  --primary:       #0a59d6;
+  --primary-hover: #084bb8;
+  --primary-press: #073e98;
+  --primary-soft:  #e6edfb;
+  --primary-soft-2:#cfdcf6;
+  --primary-ink:   #0a2b66;
+
+  /* status — semi-transparent fills per brand guide */
+  --st-pend-bg:     rgba(234, 179,   8, 0.15);
+  --st-pend-fg:     #ca8a04;
+  --st-pend-br:     rgba(234, 179,   8, 0.30);
+
+  --st-accept-bg:   rgba( 34, 197,  94, 0.12);
+  --st-accept-fg:   #16a34a;
+  --st-accept-br:   rgba( 34, 197,  94, 0.25);
+
+  --st-work-bg:     rgba( 10,  89, 214, 0.10);
+  --st-work-fg:     #0a59d6;
+  --st-work-br:     rgba( 10,  89, 214, 0.25);
+
+  --st-deny-bg:     rgba(239,  68,  68, 0.12);
+  --st-deny-fg:     #dc2626;
+  --st-deny-br:     rgba(239,  68,  68, 0.25);
+
+  /* radii — strict */
+  --r-6:  6px;
+  --r-8:  8px;
+  --r-12: 12px;
+  --r-16: 16px;
+
+  --ring: 0 0 0 3px rgba(10, 89, 214, 0.18);
+  /* compat aliases */
+  --status-pend:        #ca8a04;
+  --status-accept:      #16a34a;
+  --status-work:        #0a59d6;
+  --status-deny:        #dc2626;
+  --status-accept-soft: rgba(34, 197, 94, 0.12);
+  --r-md: 12px;
+}
+
+*, *::before, *::after {
+  box-sizing: border-box;
+  letter-spacing: -0.04em;
+  text-transform: none;
+}
+html, body {
+  margin: 0;
+  padding: 0;
+  background: var(--bg);
+  color: var(--text-1);
+  font-family: 'Lato', system-ui, -apple-system, sans-serif;
+  font-weight: 400;
+  text-transform: lowercase;
+  -webkit-font-smoothing: antialiased;
+  font-size: 16px;
+  line-height: 1.5;
+}
+button, input, select, textarea {
+  font: inherit;
+  letter-spacing: -0.04em;
+  text-transform: lowercase;
+  color: inherit;
+}
+
+/* type scale: 12 / 14 / 16 / 20 / 24 */
+.text-xs   { font-size: 12px; line-height: 1.4; }
+.text-sm   { font-size: 14px; line-height: 1.4; }
+.text-base { font-size: 16px; line-height: 1.5; }
+.text-lg   { font-size: 20px; line-height: 1.3; }
+.text-xl   { font-size: 24px; line-height: 1.2; }
+
+/* ─── stage / multi-phone canvas ─── */
+.stage {
+  min-height: 100vh;
+  display: grid;
+  grid-template-columns: 260px 1fr;
+}
+
+.stage-rail {
+  background: var(--surface);
+  border-right: 1px solid var(--border);
+  padding: 20px 16px;
+  position: sticky;
+  top: 0;
+  height: 100vh;
+  overflow-y: auto;
+}
+
+.stage-rail .brand {
+  font-weight: 700;
+  font-size: 20px;
+  margin-bottom: 4px;
+}
+.stage-rail .brand b { color: var(--primary); font-weight: 700; }
+.stage-rail .brand-sub {
+  font-size: 12px;
+  color: var(--text-3);
+  font-family: 'JetBrains Mono', monospace;
+  margin-bottom: 24px;
+}
+
+.rail-group { margin-bottom: 16px; }
+.rail-group .head {
+  font-size: 12px;
+  font-family: 'JetBrains Mono', monospace;
+  color: var(--text-3);
+  margin-bottom: 8px;
+  padding: 0 8px;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+.rail-group .pri {
+  font-size: 12px;
+  background: var(--text-3);
+  color: var(--surface);
+  padding: 1px 6px;
+  border-radius: var(--r-6);
+  font-weight: 700;
+}
+.rail-group.p0 .pri { background: var(--st-deny-fg); }
+.rail-group.p1 .pri { background: var(--primary); }
+.rail-group.p2 .pri { background: var(--st-accept-fg); }
+
+.rail-item {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 8px 12px;
+  border-radius: var(--r-8);
+  cursor: pointer;
+  font-size: 14px;
+  color: var(--text-2);
+  border: 1px solid transparent;
+  user-select: none;
+}
+.rail-item:hover { background: var(--surface-2); color: var(--text-1); }
+.rail-item.active {
+  background: var(--primary-soft);
+  color: var(--primary);
+  font-weight: 700;
+  border-color: var(--primary-soft-2);
+}
+.rail-item .ix {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 12px;
+  color: var(--text-4);
+  width: 18px;
+}
+.rail-item.active .ix { color: var(--primary); }
+
+/* main */
+.stage-main {
+  padding: 32px 32px 60px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 24px;
+}
+
+.stage-header {
+  width: 100%;
+  max-width: 980px;
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  gap: 24px;
+  padding-bottom: 16px;
+  border-bottom: 1px solid var(--border);
+}
+.stage-header .title {
+  font-size: 24px;
+  font-weight: 700;
+  line-height: 1.2;
+}
+.stage-header .url {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 12px;
+  color: var(--text-3);
+  background: var(--surface);
+  padding: 4px 8px;
+  border: 1px solid var(--border);
+  border-radius: var(--r-6);
+  margin-top: 8px;
+  display: inline-block;
+}
+.stage-header .note {
+  max-width: 460px;
+  font-size: 14px;
+  color: var(--text-2);
+  text-align: right;
+  line-height: 1.4;
+}
+
+/* ─── phone frame ─── */
+.phone-wrap {
+  display: flex;
+  justify-content: center;
+  gap: 28px;
+  flex-wrap: wrap;
+  padding-top: 8px;
+}
+.phone {
+  width: 390px;
+  height: 844px;
+  background: #1a1f29;
+  border-radius: 50px;
+  padding: 12px;
+  flex-shrink: 0;
+  position: relative;
+  border: 1px solid #2a2f3a;
+}
+.phone::after {
+  content: '';
+  position: absolute;
+  top: 20px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 120px;
+  height: 32px;
+  background: #1a1f29;
+  border-radius: 0 0 18px 18px;
+  z-index: 10;
+  pointer-events: none;
+}
+.phone .screen {
+  width: 100%;
+  height: 100%;
+  background: var(--bg);
+  border-radius: 38px;
+  overflow: hidden;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+}
+
+/* status bar */
+.statusbar {
+  height: 44px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 14px 28px 0;
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--text-1);
+  flex-shrink: 0;
+  text-transform: none;
+  font-feature-settings: 'tnum';
+}
+.statusbar .right {
+  display: flex; align-items: center; gap: 4px;
+}
+
+/* app body */
+.app-body {
+  flex: 1;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  display: flex;
+  flex-direction: column;
+  position: relative;
+}
+.app-body::-webkit-scrollbar { width: 0; }
+
+/* app bar */
+.appbar {
+  position: sticky;
+  top: 0;
+  z-index: 5;
+  background: var(--bg);
+  padding: 12px 16px 12px;
+  border-bottom: 1px solid var(--divider);
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+.appbar .back-btn {
+  width: 36px; height: 36px;
+  display: grid; place-items: center;
+  border-radius: var(--r-8);
+  border: none;
+  background: transparent;
+  color: var(--text-1);
+  cursor: pointer;
+}
+.appbar .back-btn:hover { background: var(--surface-2); }
+.appbar .title {
+  font-size: 16px;
+  font-weight: 700;
+  flex: 1;
+  min-width: 0;
+}
+.appbar .subtitle { font-size: 12px; color: var(--text-3); }
+.appbar .icon-btn {
+  width: 36px; height: 36px;
+  display: grid; place-items: center;
+  border-radius: var(--r-8);
+  border: none;
+  background: transparent;
+  cursor: pointer;
+  color: var(--text-1);
+  position: relative;
+}
+.appbar .icon-btn:hover { background: var(--surface-2); }
+.appbar .icon-btn .badge {
+  position: absolute;
+  top: 6px; right: 6px;
+  width: 8px; height: 8px;
+  background: var(--st-deny-fg);
+  border-radius: 50%;
+  border: 2px solid var(--bg);
+}
+
+.city-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 14px;
+  color: var(--text-2);
+  background: transparent;
+  border: none;
+  padding: 4px 0;
+  cursor: pointer;
+  font-weight: 400;
+}
+.city-chip svg { color: var(--primary); }
+.city-chip b { color: var(--text-1); font-weight: 700; }
+
+/* padding */
+.content      { padding: 14px 16px; }
+.content-pad  { padding: 0 16px; }
+
+/* headings */
+.h1 { font-size: 24px; font-weight: 700; line-height: 1.2; }
+.h2 { font-size: 20px; font-weight: 700; line-height: 1.3; }
+.h3 { font-size: 16px; font-weight: 700; line-height: 1.4; }
+.lead { font-size: 14px; color: var(--text-2); line-height: 1.4; }
+.eyebrow {
+  font-size: 12px;
+  font-family: 'JetBrains Mono', monospace;
+  color: var(--text-3);
+  font-weight: 400;
+}
+.muted { color: var(--text-3); }
+.dim   { color: var(--text-2); }
+.mono  { font-family: 'JetBrains Mono', monospace; }
+
+/* ─── buttons ─── */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  height: 44px;
+  padding: 0 20px;
+  border-radius: var(--r-8);
+  background: var(--primary);
+  color: #fff;
+  font-size: 15px;
+  font-weight: 700;
+  border: 1px solid var(--primary);
+  cursor: pointer;
+  transition: background .15s, transform .08s;
+  width: 100%;
+  font-family: inherit;
+}
+.btn:hover { background: var(--primary-hover); border-color: var(--primary-hover); }
+.btn:active { background: var(--primary-press); transform: scale(0.97); }
+.btn.secondary {
+  background: var(--surface);
+  color: var(--text-1);
+  border-color: var(--border-strong);
+}
+.btn.secondary:hover { background: var(--surface-2); }
+.btn.ghost {
+  background: transparent;
+  color: var(--primary);
+  border-color: transparent;
+}
+.btn.ghost:hover { background: var(--primary-soft); }
+.btn.danger {
+  background: var(--st-deny-fg);
+  border-color: var(--st-deny-fg);
+}
+.btn.danger:hover { background: #b91c1c; border-color: #b91c1c; }
+.btn.sm  { height: 34px; font-size: 13px; padding: 0 14px; }
+.btn.lg  { height: 52px; font-size: 16px; }
+.btn.icon { width: 44px; padding: 0; }
+.btn:disabled {
+  background: var(--surface-3);
+  color: var(--text-4);
+  cursor: not-allowed;
+  border-color: var(--border);
+}
+
+/* ─── inputs ─── */
+.field { display: flex; flex-direction: column; gap: 6px; }
+.field .label {
+  font-size: 12px;
+  color: var(--text-2);
+  font-weight: 700;
+}
+.field .hint {
+  font-size: 12px;
+  color: var(--text-3);
+  display: flex;
+  justify-content: space-between;
+}
+.field .error { color: var(--st-deny-fg); font-size: 12px; }
+
+.input, .textarea, .select {
+  background: var(--surface);
+  border: 1px solid var(--border-strong);
+  border-radius: var(--r-8);
+  padding: 12px 14px;
+  font-size: 15px;
+  color: var(--text-1);
+  width: 100%;
+  outline: none;
+  transition: border .12s, box-shadow .12s;
+  font-family: inherit;
+  font-weight: 400;
+}
+.input::placeholder, .textarea::placeholder { color: var(--text-4); }
+.input:focus, .textarea:focus, .select:focus {
+  border-color: var(--primary);
+  box-shadow: var(--ring);
+}
+.textarea { min-height: 100px; resize: none; line-height: 1.4; }
+
+.input-search { position: relative; }
+.input-search .input { padding-left: 44px; }
+.input-search .ic {
+  position: absolute;
+  top: 50%; left: 14px;
+  transform: translateY(-50%);
+  color: var(--text-3);
+  pointer-events: none;
+}
+
+/* checkbox */
+.check {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  cursor: pointer;
+  font-size: 14px;
+  color: var(--text-2);
+  line-height: 1.4;
+}
+.check .box {
+  width: 22px;
+  height: 22px;
+  border: 1px solid var(--border-strong);
+  border-radius: var(--r-6);
+  background: var(--surface);
+  flex-shrink: 0;
+  display: grid;
+  place-items: center;
+  margin-top: 1px;
+  color: #fff;
+  transition: background .12s, border .12s;
+}
+.check.on .box { background: var(--primary); border-color: var(--primary); }
+
+/* radio chip group */
+.chip-group {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+/* ─── chip (unified, 6px radius — no pill) ─── */
+.chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  height: 30px;
+  padding: 0 10px;
+  border-radius: var(--r-6);
+  background: var(--surface);
+  border: 1px solid var(--border-strong);
+  font-size: 13px;
+  font-weight: 400;
+  color: var(--text-2);
+  cursor: pointer;
+  white-space: nowrap;
+  transition: background .12s, color .12s, border .12s;
+  font-family: inherit;
+}
+.chip:hover { background: var(--surface-2); color: var(--text-1); }
+.chip.active {
+  background: var(--text-1);
+  border-color: var(--text-1);
+  color: var(--surface);
+  font-weight: 700;
+}
+.chip.primary {
+  background: var(--primary);
+  border-color: var(--primary);
+  color: #fff;
+  font-weight: 700;
+}
+.chip.sm { height: 26px; padding: 0 8px; font-size: 12px; }
+.chip .count {
+  background: var(--surface-3);
+  padding: 1px 6px;
+  border-radius: var(--r-6);
+  font-size: 12px;
+  color: var(--text-3);
+  font-weight: 400;
+}
+.chip.active .count { background: rgba(255,255,255,.16); color: rgba(255,255,255,.9); }
+.chip.primary .count { background: rgba(255,255,255,.16); color: rgba(255,255,255,.9); }
+
+/* ─── status badge (per guide: 6px, no dot, single-line, translucent, borderless) ─── */
+.status-badge {
+  display: inline-flex;
+  align-items: center;
+  height: 22px;
+  padding: 0 10px;
+  border-radius: var(--r-6);
+  font-size: 12px;
+  font-weight: 700;
+  white-space: nowrap;
+  border: none;
+  background: var(--surface-2);
+  color: var(--text-2);
+}
+.status-badge.pend   { background: rgba(234, 179,   8, 0.15); color: #ca8a04; }
+.status-badge.accept { background: rgba( 34, 197,  94, 0.15); color: #16a34a; }
+.status-badge.work   { background: rgba( 79, 127, 255, 0.15); color: #4f7fff; }
+.status-badge.deny   { background: rgba(239,  68,  68, 0.15); color: #dc2626; }
+.status-badge.done   { background: rgba( 34, 197,  94, 0.15); color: #16a34a; }
+
+/* category tag */
+.cat-tag {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  height: 22px;
+  padding: 0 10px;
+  font-size: 12px;
+  color: var(--text-2);
+  background: var(--surface-3);
+  border-radius: var(--r-6);
+  font-weight: 400;
+  white-space: nowrap;
+  border: 1px solid transparent;
+}
+.cat-tag.outline { background: transparent; border-color: var(--border-strong); }
+
+/* ─── card (unified — 12px radius, 16px padding, borderless) ─── */
+.card {
+  background: var(--surface);
+  border-radius: var(--r-12);
+  border: none;
+  padding: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  cursor: pointer;
+  transition: background .12s, transform .08s;
+}
+.card:active { transform: scale(0.97); }
+.card:hover  { background: var(--surface-2); }
+.card.flat { cursor: default; }
+.card.flat:active { transform: none; }
+.card-row { display: flex; align-items: center; justify-content: space-between; gap: 8px; }
+.card .meta { font-size: 12px; color: var(--text-3); }
+.card .title {
+  font-size: 16px;
+  font-weight: 700;
+  line-height: 1.3;
+  color: var(--text-1);
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+.card .excerpt {
+  font-size: 14px;
+  color: var(--text-2);
+  line-height: 1.4;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+.card .stats {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  font-size: 12px;
+  color: var(--text-2);
+  font-weight: 400;
+}
+.card .stats span { display: inline-flex; align-items: center; gap: 4px; }
+
+/* ─── bottom nav ─── */
+.bnav {
+  flex-shrink: 0;
+  height: 78px;
+  background: var(--surface);
+  border-top: 1px solid var(--border);
+  display: flex;
+  align-items: stretch;
+  padding: 0 8px env(safe-area-inset-bottom, 12px);
+  gap: 0;
+  position: relative;
+  z-index: 4;
+}
+.bnav-item {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
+  background: transparent;
+  border: none;
+  color: var(--text-3);
+  font-size: 12px;
+  font-weight: 400;
+  cursor: pointer;
+  font-family: inherit;
+  padding: 8px 0;
+  border-radius: var(--r-8);
+}
+.bnav-item svg { width: 24px; height: 24px; }
+.bnav-item.active { color: var(--primary); font-weight: 700; }
+
+/* fab inside bnav — circular, 52×52, lifted -6px, svg centred */
+.bnav-item.fab {
+  position: relative;
+  flex: 0 0 64px;
+  gap: 0;
+}
+.bnav-item.fab .fab-bg {
+  width: 52px;
+  height: 52px;
+  flex-shrink: 0;
+  border-radius: 50%;
+  background: var(--primary);
+  color: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transform: translateY(-6px);
+  transition: background .12s, transform .08s;
+  border: none;
+  padding: 0;
+}
+.bnav-item.fab .fab-bg:hover { background: var(--primary-hover); }
+.bnav-item.fab:active .fab-bg { transform: translateY(-6px) scale(0.97); }
+.bnav-item.fab .fab-label {
+  margin-top: -2px;
+  color: var(--primary);
+  font-size: 12px;
+  font-weight: 700;
+}
+
+/* ─── timeline ─── */
+/* timeline panel — borderless flat surface */
+.timeline {
+  background: var(--surface);
+  border-radius: var(--r-12);
+  padding: 16px;
+}
+.timeline .head {
+  display: flex; justify-content: space-between; align-items: center;
+  margin-bottom: 14px;
+}
+.timeline .head .label { font-size: 14px; font-weight: 700; color: var(--text-1); }
+
+.tl-h {
+  display: flex; align-items: flex-start;
+  gap: 0;
+}
+.tl-h .step {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  text-align: center;
+}
+.tl-h .step .dot {
+  width: 28px; height: 28px;
+  border-radius: 50%;
+  background: var(--surface-3);
+  border: 1px solid var(--border-strong);
+  display: grid; place-items: center;
+  color: var(--text-3);
+  font-size: 12px;
+  transition: background .15s;
+}
+.tl-h .step.done .dot { background: var(--st-accept-fg); border-color: var(--st-accept-fg); color: #fff; }
+.tl-h .step.now .dot  { background: var(--primary); border-color: var(--primary); color: #fff; }
+.tl-h .step.deny .dot { background: var(--st-deny-fg); border-color: var(--st-deny-fg); color: #fff; }
+.tl-h .bar {
+  height: 1px;
+  background: var(--border-strong);
+  flex: 0 0 auto;
+  width: 24px;
+  margin-top: 14px;
+}
+.tl-h .bar.done { background: var(--st-accept-fg); }
+.tl-h .step .lbl {
+  font-size: 12px;
+  color: var(--text-2);
+  font-weight: 400;
+  line-height: 1.2;
+  margin-top: 4px;
+  max-width: 80px;
+}
+.tl-h .step.done .lbl, .tl-h .step.now .lbl { color: var(--text-1); font-weight: 700; }
+.tl-h .step .date {
+  font-size: 12px;
+  color: var(--text-3);
+  font-family: 'JetBrains Mono', monospace;
+}
+
+/* ─── empty state ─── */
+.empty {
+  text-align: center;
+  padding: 56px 24px;
+  color: var(--text-2);
+  display: flex; flex-direction: column; align-items: center; gap: 10px;
+}
+.empty .icn {
+  width: 56px; height: 56px;
+  border-radius: var(--r-12);
+  background: var(--surface);
+  border: 1px solid var(--border);
+  display: grid; place-items: center;
+  color: var(--text-3);
+}
+.empty .ti { font-size: 16px; font-weight: 700; color: var(--text-1); }
+.empty .desc { font-size: 14px; color: var(--text-3); max-width: 240px; line-height: 1.4; }
+
+/* ─── image placeholder (no decorative gradient, flat) ─── */
+.ph-img {
+  background: var(--surface-2);
+  border: 1px solid var(--border);
+  border-radius: var(--r-8);
+  display: grid;
+  place-items: center;
+  color: var(--text-4);
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 12px;
+  text-align: center;
+  padding: 8px;
+}
+
+/* ─── utility ─── */
+.divider { height: 1px; background: var(--divider); margin: 8px 0; }
+.divider.lg { margin: 16px 0; }
+.row { display: flex; gap: 8px; }
+.col { display: flex; flex-direction: column; gap: 8px; }
+.between { justify-content: space-between; }
+.center { align-items: center; justify-content: center; }
+.middle { align-items: center; }
+.grow { flex: 1; }
+.gap-2 { gap: 4px; } .gap-4 { gap: 8px; } .gap-6 { gap: 12px; } .gap-8 { gap: 16px; }
+
+/* ─── sheet ─── */
+.sheet-backdrop {
+  position: absolute; inset: 0; background: rgba(12, 22, 38, 0.4); z-index: 20;
+  display: flex; align-items: flex-end;
+  animation: fade 150ms ease;
+}
+@keyframes fade { from { opacity: 0; } to { opacity: 1; } }
+.sheet {
+  background: var(--surface);
+  border-top-left-radius: var(--r-16);
+  border-top-right-radius: var(--r-16);
+  padding: 12px 16px 24px;
+  width: 100%;
+  max-height: 80%;
+  display: flex; flex-direction: column;
+  border-top: 1px solid var(--border);
+}
+.sheet .handle {
+  width: 40px; height: 4px; background: var(--border-strong);
+  border-radius: 2px; margin: 0 auto 12px;
+}
+.sheet .head { display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; }
+.sheet .head .ti { font-size: 20px; font-weight: 700; }
+
+/* progress (form) */
+.progress {
+  display: flex;
+  gap: 4px;
+  margin-bottom: 16px;
+}
+.progress .seg {
+  flex: 1;
+  height: 4px;
+  background: var(--surface-3);
+  border-radius: 2px;
+  transition: background .14s;
+}
+.progress .seg.on { background: var(--primary); }
+.progress .seg.done { background: var(--st-accept-fg); }
+
+/* avatar */
+.avatar {
+  width: 40px; height: 40px;
+  border-radius: 50%;
+  background: var(--primary-soft);
+  color: var(--primary-ink);
+  display: grid; place-items: center;
+  font-weight: 700;
+  font-size: 16px;
+  flex-shrink: 0;
+}
+.avatar.lg { width: 64px; height: 64px; font-size: 24px; }
+.avatar.sm { width: 28px; height: 28px; font-size: 12px; }
+
+/* segmented control */
+.segmented {
+  display: flex;
+  background: var(--surface-3);
+  border-radius: var(--r-8);
+  padding: 3px;
+  gap: 0;
+}
+.segmented button {
+  flex: 1;
+  background: transparent;
+  border: none;
+  padding: 8px 10px;
+  font-size: 13px;
+  border-radius: var(--r-6);
+  color: var(--text-2);
+  cursor: pointer;
+  font-family: inherit;
+  font-weight: 400;
+  transition: background .12s, color .12s;
+}
+.segmented button.active {
+  background: var(--surface);
+  color: var(--text-1);
+  font-weight: 700;
+  border: 1px solid var(--border);
+}
+
+/* tabbar */
+.tabbar {
+  display: flex;
+  border-bottom: 1px solid var(--border);
+  gap: 0;
+  background: var(--bg);
+}
+.tabbar button {
+  flex: 1;
+  background: transparent;
+  border: none;
+  padding: 12px 8px;
+  font-size: 14px;
+  font-weight: 400;
+  color: var(--text-3);
+  cursor: pointer;
+  font-family: inherit;
+  border-bottom: 2px solid transparent;
+  margin-bottom: -1px;
+}
+.tabbar button.active {
+  color: var(--primary);
+  border-bottom-color: var(--primary);
+  font-weight: 700;
+}
+
+/* list rows */
+.list-row {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 12px 16px;
+  background: var(--surface);
+  border-bottom: 1px solid var(--divider);
+  cursor: pointer;
+}
+.list-row:hover { background: var(--surface-2); }
+.list-row .body { flex: 1; min-width: 0; }
+.list-row .body .ti { font-size: 14px; font-weight: 400; }
+.list-row .body .sub { font-size: 12px; color: var(--text-3); }
+.list-row .chev { color: var(--text-4); }
+
+/* horizontal scroll row */
+.h-scroll {
+  display: flex;
+  gap: 6px;
+  overflow-x: auto;
+  padding: 0 16px;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+.h-scroll::-webkit-scrollbar { display: none; }
+
+/* simple fade-in for entry */
+.app-body > * { animation: fade 150ms ease; }
+
+  </style>
+<style>
+html, body { height: 100%; overflow-x: hidden; }
+body { overscroll-behavior-y: none; }
+.app-body { flex: 1; min-height: 0; }
+.statusbar { display: none; }
+</style>
+</head>
+<body>
+  <div id="root"></div>
+  <script src="https://unpkg.com/react@18/umd/react.development.js" crossorigin></script>
+  <script src="https://unpkg.com/react-dom@18/umd/react-dom.development.js" crossorigin></script>
+  <script src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js"></script>
+
+  <script type="text/babel">
+/* global React */
+// Inline SVG icons — lucide-style strokes.
+// All icons take size + color via currentColor.
+
+const Icon = ({ name, size = 20, stroke = 2, ...rest }) => {
+  const P = (d) => <path d={d} />;
+  const C = (cx, cy, r) => <circle cx={cx} cy={cy} r={r} />;
+  const L = (x1, y1, x2, y2) => <line x1={x1} y1={y1} x2={x2} y2={y2} />;
+  const R = (x, y, w, h, rr = 0) => <rect x={x} y={y} width={w} height={h} rx={rr} />;
+
+  const paths = {
+    feed: <>{P("M3 7h18M3 12h18M3 17h12")}</>,
+    list: <>{L(8, 6, 21, 6)}{L(8, 12, 21, 12)}{L(8, 18, 21, 18)}{C(4, 6, 1)}{C(4, 12, 1)}{C(4, 18, 1)}</>,
+    map: <>{P("M9 4 3 6v14l6-2 6 2 6-2V4l-6 2-6-2Z")}{L(9, 4, 9, 18)}{L(15, 6, 15, 20)}</>,
+    pin: <>{P("M12 22s-7-7.5-7-12a7 7 0 0 1 14 0c0 4.5-7 12-7 12Z")}{C(12, 10, 2.5)}</>,
+    plus: <>{L(12, 5, 12, 19)}{L(5, 12, 19, 12)}</>,
+    user: <>{C(12, 8, 4)}{P("M4 21a8 8 0 0 1 16 0")}</>,
+    bell: <>{P("M6 8a6 6 0 1 1 12 0c0 7 3 9 3 9H3s3-2 3-9")}{P("M10 21a2 2 0 0 0 4 0")}</>,
+    chevron: <>{P("m9 6 6 6-6 6")}</>,
+    chevronL: <>{P("m15 6-6 6 6 6")}</>,
+    chevronD: <>{P("m6 9 6 6 6-6")}</>,
+    close: <>{L(18, 6, 6, 18)}{L(6, 6, 18, 18)}</>,
+    search: <>{C(11, 11, 7)}{L(21, 21, 16.5, 16.5)}</>,
+    heart: <>{P("M19.5 13.6 12 21l-7.5-7.4a5 5 0 0 1 7-7.1l.5.5.5-.5a5 5 0 0 1 7 7.1Z")}</>,
+    heartFill: <path d="M19.5 13.6 12 21l-7.5-7.4a5 5 0 0 1 7-7.1l.5.5.5-.5a5 5 0 0 1 7 7.1Z" fill="currentColor" />,
+    chat: <>{P("M21 12a8 8 0 0 1-11.5 7.2L4 21l1.8-5.5A8 8 0 1 1 21 12Z")}</>,
+    share: <>{C(18, 5, 3)}{C(6, 12, 3)}{C(18, 19, 3)}{L(8.6, 10.5, 15.4, 6.5)}{L(8.6, 13.5, 15.4, 17.5)}</>,
+    check: <>{P("m5 13 5 5L20 6")}</>,
+    arrowRight: <>{L(5, 12, 19, 12)}{P("m13 6 6 6-6 6")}</>,
+    arrowLeft: <>{L(19, 12, 5, 12)}{P("m11 6-6 6 6 6")}</>,
+    upload: <>{P("M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4")}{P("m7 9 5-5 5 5")}{L(12, 4, 12, 16)}</>,
+    paper: <>{P("M14 3H6a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V9z")}{P("M14 3v6h6")}</>,
+    target: <>{C(12, 12, 9)}{C(12, 12, 5)}{C(12, 12, 1)}</>,
+    layers: <>{P("m12 3 9 5-9 5-9-5 9-5Z")}{P("m3 13 9 5 9-5")}{P("m3 18 9 5 9-5")}</>,
+    settings: <>{C(12, 12, 3)}{P("M19.4 15a1.7 1.7 0 0 0 .3 1.8l.1.1a2 2 0 1 1-2.8 2.8l-.1-.1a1.7 1.7 0 0 0-1.8-.3 1.7 1.7 0 0 0-1 1.5V21a2 2 0 1 1-4 0v-.1a1.7 1.7 0 0 0-1-1.5 1.7 1.7 0 0 0-1.8.3l-.1.1a2 2 0 1 1-2.8-2.8l.1-.1a1.7 1.7 0 0 0 .3-1.8 1.7 1.7 0 0 0-1.5-1H3a2 2 0 1 1 0-4h.1a1.7 1.7 0 0 0 1.5-1 1.7 1.7 0 0 0-.3-1.8l-.1-.1a2 2 0 1 1 2.8-2.8l.1.1a1.7 1.7 0 0 0 1.8.3h.1a1.7 1.7 0 0 0 1-1.5V3a2 2 0 1 1 4 0v.1a1.7 1.7 0 0 0 1 1.5 1.7 1.7 0 0 0 1.8-.3l.1-.1a2 2 0 1 1 2.8 2.8l-.1.1a1.7 1.7 0 0 0-.3 1.8v.1a1.7 1.7 0 0 0 1.5 1H21a2 2 0 1 1 0 4h-.1a1.7 1.7 0 0 0-1.5 1Z")}</>,
+    edit: <>{P("M12 20h9")}{P("M16.5 3.5a2.1 2.1 0 1 1 3 3L7 19l-4 1 1-4Z")}</>,
+    eye: <>{P("M2 12s4-7 10-7 10 7 10 7-4 7-10 7-10-7-10-7Z")}{C(12, 12, 3)}</>,
+    flag: <>{P("M4 22V4")}{P("M4 5h13l-2 4 2 4H4")}</>,
+    clock: <>{C(12, 12, 9)}{P("M12 7v5l3 2")}</>,
+    sparkle: <>{P("M12 3v6m0 6v6m9-9h-6m-6 0H3")}</>,
+    filter: <>{P("M3 5h18l-7 9v6l-4-2v-4Z")}</>,
+    sort: <>{P("M3 6h13M3 12h9M3 18h5")}{P("m17 12 4 4 4-4")}</>,
+    info: <>{C(12, 12, 9)}{L(12, 12, 12, 16)}{L(12, 8, 12.01, 8)}</>,
+    image: <>{R(3, 3, 18, 18, 3)}{C(8.5, 8.5, 1.5)}{P("m21 15-5-5L5 21")}</>,
+    moderator: <>{P("M12 3 4 6v6c0 5 4 9 8 9s8-4 8-9V6Z")}{P("m9 12 2 2 4-4")}</>,
+    chart: <>{L(3, 3, 3, 21)}{L(3, 21, 21, 21)}{P("M7 16l4-4 4 3 5-6")}</>,
+    chartDonut: <>{C(12, 12, 9)}{C(12, 12, 4)}</>,
+    heatmap: <>{R(3, 3, 18, 18, 2)}{R(7, 7, 4, 4)}{R(13, 7, 4, 4)}{R(7, 13, 4, 4)}{R(13, 13, 4, 4)}</>,
+    radio: <>{C(12, 12, 9)}{C(12, 12, 4)}</>,
+    radioOn: <>{C(12, 12, 9)}<circle cx={12} cy={12} r={4} fill="currentColor" /></>,
+    dragHandle: <>{C(9, 6, 1)}{C(15, 6, 1)}{C(9, 12, 1)}{C(15, 12, 1)}{C(9, 18, 1)}{C(15, 18, 1)}</>,
+    history: <>{P("M3 12a9 9 0 1 0 3-6.7L3 8")}{P("M3 3v5h5")}{P("M12 8v4l3 2")}</>,
+    document: <>{P("M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z")}{P("M14 2v6h6")}{L(9, 13, 15, 13)}{L(9, 17, 13, 17)}</>,
+    home: <>{P("m3 11 9-8 9 8v9a2 2 0 0 1-2 2h-4v-7h-6v7H5a2 2 0 0 1-2-2Z")}</>,
+    bookmark: <>{P("M19 21V5a2 2 0 0 0-2-2H7a2 2 0 0 0-2 2v16l7-4z")}</>,
+    trash: <>{P("M3 6h18")}{P("M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6")}{P("M8 6V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2")}</>,
+    minus: <>{L(5, 12, 19, 12)}</>,
+    layers2: <>{R(3, 3, 8, 8, 2)}{R(13, 3, 8, 8, 2)}{R(3, 13, 8, 8, 2)}{R(13, 13, 8, 8, 2)}</>,
+    arrowUpRight: <>{L(7, 17, 17, 7)}{P("M7 7h10v10")}</>,
+    star: <>{P("m12 2 3 7h7l-6 5 2 8-6-4-6 4 2-8-6-5h7z")}</>,
+    download: <>{P("M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4")}{P("m7 10 5 5 5-5")}{L(12, 15, 12, 3)}</>,
+    locate: <>{C(12, 12, 4)}{L(12, 2, 12, 5)}{L(12, 19, 12, 22)}{L(2, 12, 5, 12)}{L(19, 12, 22, 12)}</>,
+    handshake: <>{P("m9 11 4 4 4-4")}{P("M3 7h6l3 3 3-3h6")}{P("M3 7v6l6 6h6l6-6V7")}</>,
+  };
+  return (
+    <svg
+      width={size} height={size} viewBox="0 0 24 24"
+      fill="none" stroke="currentColor"
+      strokeWidth={stroke}
+      strokeLinecap="round" strokeLinejoin="round"
+      {...rest}
+    >
+      {paths[name] || null}
+    </svg>
+  );
+};
+
+window.Icon = Icon;
+
+  </script>
+
+  <script type="text/babel">
+/* global */
+// Mock data for the prototype.
+
+const CITIES = [
+  { name: 'москва', region: 'москва', pop: 13 },
+  { name: 'санкт-петербург', region: 'санкт-петербург', pop: 5.5 },
+  { name: 'казань', region: 'татарстан', pop: 1.3 },
+  { name: 'екатеринбург', region: 'свердловская обл.', pop: 1.5 },
+  { name: 'новосибирск', region: 'новосибирская обл.', pop: 1.6 },
+  { name: 'нижний новгород', region: 'нижегородская обл.', pop: 1.2 },
+  { name: 'челябинск', region: 'челябинская обл.', pop: 1.2 },
+  { name: 'самара', region: 'самарская обл.', pop: 1.1 },
+  { name: 'омск', region: 'омская обл.', pop: 1.1 },
+  { name: 'ростов-на-дону', region: 'ростовская обл.', pop: 1.1 },
+  { name: 'уфа', region: 'башкортостан', pop: 1.1 },
+  { name: 'красноярск', region: 'красноярский край', pop: 1.1 },
+  { name: 'пермь', region: 'пермский край', pop: 1.0 },
+  { name: 'воронеж', region: 'воронежская обл.', pop: 1.0 },
+  { name: 'волгоград', region: 'волгоградская обл.', pop: 1.0 },
+  { name: 'краснодар', region: 'краснодарский край', pop: 0.97 },
+  { name: 'саратов', region: 'саратовская обл.', pop: 0.84 },
+  { name: 'тюмень', region: 'тюменская обл.', pop: 0.83 },
+  { name: 'тольятти', region: 'самарская обл.', pop: 0.69 },
+  { name: 'ижевск', region: 'удмуртия', pop: 0.65 },
+];
+
+const CATEGORIES = [
+  { id: 'beauty',   name: 'благоустройство' },
+  { id: 'zhkh',     name: 'жкх' },
+  { id: 'transport',name: 'транспорт' },
+  { id: 'eco',      name: 'экология' },
+  { id: 'safety',   name: 'безопасность' },
+  { id: 'edu',      name: 'образование' },
+  { id: 'other',    name: 'прочее' },
+];
+
+const DISTRICTS = ['центральный', 'советский', 'вахитовский', 'приволжский', 'кировский', 'московский', 'ново-савиновский'];
+
+const STATUS = {
+  pending:  { id: 'pending',  label: 'на рассмотрении', cls: 'pend' },
+  accepted: { id: 'accepted', label: 'принята',         cls: 'accept' },
+  in_work:  { id: 'in_work',  label: 'в работе',        cls: 'work' },
+  done:     { id: 'done',     label: 'исполнена',       cls: 'accept' },
+  denied:   { id: 'denied',   label: 'отклонена',       cls: 'deny' },
+};
+
+const DEFAULT_TIMELINE = (init) => [
+  { id: 'submitted', label: 'подана',    date: init.created_at, state: 'done',    desc: 'инициатива опубликована' },
+  { id: 'accepted',  label: 'принята',   date: null,            state: 'pending', desc: '' },
+  { id: 'in_work',   label: 'в работе',  date: null,            state: 'pending', desc: '' },
+  { id: 'done',      label: 'исполнена', date: null,            state: 'pending', desc: '' },
+];
+
+const INITIATIVES = [
+  {
+    id: 'init-001',
+    title: 'отремонтировать тротуар на ленина 42',
+    category: 'beauty',
+    district: 'центральный',
+    description: 'тротуар разбит на протяжении 80 метров, пешеходы вынуждены ходить по проезжей части. особенно опасно для родителей с колясками и пожилых людей. рядом школа №19 — дети ежедневно проходят по этому участку.',
+    status: 'in_work',
+    votes: 143,
+    voted: false,
+    comments_count: 12,
+    created_at: '2026-01-12',
+    author: 'анонимно',
+    location: { lat: 55.796, lon: 49.106 },
+    photos: 3,
+    timeline: [
+      { id: 'submitted', label: 'подана', date: '2026-01-12', state: 'done', desc: 'инициатива опубликована, анонимно, район центральный' },
+      { id: 'accepted',  label: 'принята к рассмотрению', date: '2026-01-15', state: 'done', desc: 'передана в отдел благоустройства администрации', official: 'передана в отдел благоустройства. ответственный — иванов п.с.' },
+      { id: 'in_work',   label: 'в работе', date: '2026-01-21', state: 'now', desc: 'произведён выезд на объект, составляется смета работ', official: 'выезд состоялся, смета будет готова до 5 февраля. подрядчик определён по 44-фз.' },
+      { id: 'done',      label: 'исполнена', date: null, state: 'pending', desc: '' },
+    ],
+    comments: [
+      { id: 'c1', author: 'ольга м.', date: '13 янв', text: 'давно жду! на коляске невозможно пройти.', avatar: 'о' },
+      { id: 'c2', author: 'модератор', date: '15 янв', text: 'обращение принято, инициативу направили в профильный отдел. ответ в течение 14 дней.', avatar: 'м', official: true },
+      { id: 'c3', author: 'дмитрий в.', date: '16 янв', text: 'предлагаю заодно сделать пандус у школы.', avatar: 'д' },
+    ],
+  },
+  {
+    id: 'init-002',
+    title: 'дворовое освещение, ул. татарстан 18',
+    category: 'zhkh',
+    district: 'советский',
+    description: 'три фонаря во дворе не работают уже два месяца. вечером темно и небезопасно. рядом детская площадка.',
+    status: 'pending',
+    votes: 87,
+    comments_count: 5,
+    created_at: '2026-04-09',
+    author: 'марина к.',
+    photos: 1,
+  },
+  {
+    id: 'init-003',
+    title: 'установить навес на остановке №34',
+    category: 'transport',
+    district: 'приволжский',
+    description: 'оживлённая остановка без навеса от дождя и снега. ожидание зимой особенно тяжело для пожилых.',
+    status: 'accepted',
+    votes: 211,
+    comments_count: 18,
+    created_at: '2026-04-03',
+    author: 'анонимно',
+    photos: 2,
+  },
+  {
+    id: 'init-004',
+    title: 'остановить вырубку деревьев в парке горького',
+    category: 'eco',
+    district: 'вахитовский',
+    description: 'под видом санитарной чистки вырубают здоровые липы. требуем независимую экспертизу деревьев.',
+    status: 'denied',
+    votes: 388,
+    comments_count: 47,
+    created_at: '2026-03-28',
+    author: 'анна с.',
+    photos: 3,
+  },
+  {
+    id: 'init-005',
+    title: 'ямы у школы №19 на проезжей части',
+    category: 'safety',
+    district: 'кировский',
+    description: 'крупные ямы прямо у пешеходного перехода. дети идут в школу — опасно.',
+    status: 'pending',
+    votes: 64,
+    comments_count: 8,
+    created_at: '2026-03-25',
+    author: 'родительский комитет',
+    photos: 2,
+  },
+  {
+    id: 'init-006',
+    title: 'детская площадка двор №12, ул. меридианная',
+    category: 'beauty',
+    district: 'ново-савиновский',
+    description: 'площадка разрушена, оборудование опасно. нужен полный ремонт.',
+    status: 'done',
+    votes: 178,
+    comments_count: 22,
+    created_at: '2025-12-04',
+    author: 'анонимно',
+    photos: 2,
+  },
+  {
+    id: 'init-007',
+    title: 'светофор на пересечении баумана / лобачевского',
+    category: 'transport',
+    district: 'вахитовский',
+    description: 'неурегулированный переход, поток машин большой, часты дтп. нужен светофор.',
+    status: 'in_work',
+    votes: 256,
+    comments_count: 31,
+    created_at: '2026-02-18',
+    author: 'анонимно',
+    photos: 1,
+  },
+  {
+    id: 'init-008',
+    title: 'мусорные баки переполнены — победы 8/1',
+    category: 'zhkh',
+    district: 'московский',
+    description: 'вывоз раз в неделю, баков не хватает. неприятный запах, антисанитария.',
+    status: 'pending',
+    votes: 42,
+    comments_count: 3,
+    created_at: '2026-04-11',
+    author: 'роман т.',
+    photos: 1,
+  },
+];
+
+const DASHBOARD = {
+  totals: { all: 342, accepted: 215, avg_days: 14, citizens: 1247 },
+  byCategory: [
+    { id: 'beauty',    n: 124, pct: 36 },
+    { id: 'zhkh',      n: 89,  pct: 26 },
+    { id: 'transport', n: 56,  pct: 16 },
+    { id: 'eco',       n: 34,  pct: 10 },
+    { id: 'safety',    n: 23,  pct: 7  },
+    { id: 'edu',       n: 11,  pct: 3  },
+    { id: 'other',     n: 5,   pct: 2  },
+  ],
+  byStatus: [
+    { id: 'pending', n: 64, pct: 19, color: '#ca8a04' },
+    { id: 'accepted',n: 92, pct: 27, color: '#16a34a' },
+    { id: 'in_work', n: 71, pct: 21, color: '#0a59d6' },
+    { id: 'done',    n: 86, pct: 25, color: '#3aa66f' },
+    { id: 'denied',  n: 29, pct: 8,  color: '#dc2626' },
+  ],
+  byMonth: [
+    { m: 'окт', n: 28 }, { m: 'ноя', n: 34 }, { m: 'дек', n: 41 },
+    { m: 'янв', n: 39 }, { m: 'фев', n: 52 }, { m: 'мар', n: 64 },
+    { m: 'апр', n: 84 },
+  ],
+  byDistrict: [
+    { name: 'центральный',    n: 92, pct: 27 },
+    { name: 'советский',      n: 78, pct: 23 },
+    { name: 'вахитовский',    n: 64, pct: 19 },
+    { name: 'приволжский',    n: 51, pct: 15 },
+    { name: 'кировский',      n: 33, pct: 10 },
+    { name: 'ново-савиновский', n: 24, pct: 7 },
+  ],
+};
+
+const NOTIFICATIONS = [
+  { id: 'n1', kind: 'status', title: 'статус «в работе»', sub: 'тротуар на ленина 42', when: '2 часа назад', initId: 'init-001', unread: true },
+  { id: 'n2', kind: 'official', title: 'официальный ответ модератора', sub: 'дет. площадка двор №12', when: 'вчера', initId: 'init-006', unread: true },
+  { id: 'n3', kind: 'comment', title: 'новый комментарий', sub: '«предлагаю заодно сделать пандус…»', when: '3 дня назад', initId: 'init-001', unread: false },
+  { id: 'n4', kind: 'status', title: 'статус «исполнена»', sub: 'дет. площадка двор №12', when: '12 апр', initId: 'init-006', unread: false },
+];
+
+window.MOCK = {
+  CITIES, CATEGORIES, DISTRICTS, STATUS, INITIATIVES, DASHBOARD, NOTIFICATIONS, DEFAULT_TIMELINE,
+};
+
+  </script>
+
+  <script type="text/babel">
+/* global React, Icon, MOCK */
+const { useState, useEffect, useMemo, useRef } = React;
+
+/* ─── status bar (top of phone) ─── */
+function StatusBar() {
+  return (
+    <div className="statusbar">
+      <span>9:41</span>
+      <span className="right">
+        <svg width="18" height="11" viewBox="0 0 18 11"><path d="M0 9h2v2H0V9Zm0-3h2v2H0V6Zm4 3h2v2H4V9Zm0-6h2v8H4V3Zm4 6h2v2H8V9Zm0-8h2v10H8V1Zm4 8h2v2h-2V9Zm0-7h2v9h-2V2Zm4 7h2v2h-2V9Zm0-9h2v11h-2V0Z" fill="currentColor"/></svg>
+        <svg width="16" height="11" viewBox="0 0 16 11"><path d="M8 2.5c1.4 0 2.7.5 3.7 1.4l1-1A6.7 6.7 0 0 0 8 1.1c-1.8 0-3.4.7-4.7 1.8l1 1c1-.9 2.3-1.4 3.7-1.4ZM3 6l1 1a4.7 4.7 0 0 1 8 0l1-1A6.7 6.7 0 0 0 3 6Zm3 3 2 2 2-2a2.7 2.7 0 0 0-4 0Z" fill="currentColor"/></svg>
+        <svg width="24" height="11" viewBox="0 0 24 11"><rect x=".5" y=".5" width="20" height="10" rx="2.5" fill="none" stroke="currentColor"/><rect x="2" y="2" width="14" height="7" rx="1" fill="currentColor"/><rect x="21" y="3.5" width="1.5" height="4" rx=".5" fill="currentColor"/></svg>
+      </span>
+    </div>
+  );
+}
+
+/* ─── app-bar (top of in-app screen) ─── */
+function AppBar({ title, subtitle, onBack, right, center, sticky = true }) {
+  return (
+    <div className="appbar" style={!sticky ? { position: 'static' } : null}>
+      {onBack && (
+        <button className="back-btn" onClick={onBack} aria-label="назад">
+          <Icon name="chevronL" size={22} />
+        </button>
+      )}
+      <div className="grow" style={{ minWidth: 0 }}>
+        {center ? center : (
+          <>
+            <div className="title">{title}</div>
+            {subtitle && <div className="subtitle">{subtitle}</div>}
+          </>
+        )}
+      </div>
+      {right && <div className="row gap-2">{right}</div>}
+    </div>
+  );
+}
+
+/* ─── status badge ─── */
+function StatusBadge({ status }) {
+  const s = MOCK.STATUS[status];
+  if (!s) return null;
+  return <span className={`status-badge ${s.cls}`}>{s.label}</span>;
+}
+
+/* ─── category tag ─── */
+function CategoryTag({ id }) {
+  const c = MOCK.CATEGORIES.find(c => c.id === id);
+  if (!c) return null;
+  return <span className="cat-tag">{c.name}</span>;
+}
+
+/* ─── horizontal scroll row of chips ─── */
+function ChipsRow({ children, padded = true }) {
+  return (
+    <div className="h-scroll" style={padded ? null : { padding: 0 }}>
+      {children}
+    </div>
+  );
+}
+
+/* ─── bottom nav (4 items + fab) ─── */
+function BottomNav({ active, onNav }) {
+  const items = [
+    { k: 'feed',    l: 'лента',   icon: 'list' },
+    { k: 'map',     l: 'карта',   icon: 'map' },
+    { k: 'submit',  l: 'подать',  fab: true },
+    { k: 'profile', l: 'профиль', icon: 'user' },
+  ];
+  return (
+    <div className="bnav">
+      {items.map(it => it.fab ? (
+        <button key={it.k} className="bnav-item fab" onClick={() => onNav(it.k)}>
+          <span className="fab-bg" aria-label="подать">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+              <line x1="12" y1="5" x2="12" y2="19" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round"/>
+              <line x1="5" y1="12" x2="19" y2="12" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round"/>
+            </svg>
+          </span>
+          <span className="fab-label">{it.l}</span>
+        </button>
+      ) : (
+        <button
+          key={it.k}
+          className={`bnav-item${active === it.k ? ' active' : ''}`}
+          onClick={() => onNav(it.k)}
+        >
+          <Icon name={it.icon} size={22} stroke={2}/>
+          <span>{it.l}</span>
+        </button>
+      ))}
+    </div>
+  );
+}
+
+/* ─── initiative card ─── */
+function InitiativeCard({ init, onOpen, compact, voted, onVote }) {
+  const fmtDate = (s) => {
+    const months = ['янв','фев','мар','апр','май','июн','июл','авг','сен','окт','ноя','дек'];
+    const [y,m,d] = s.split('-');
+    return `${parseInt(d,10)} ${months[parseInt(m,10)-1]}`;
+  };
+  return (
+    <div className="card" onClick={() => onOpen?.(init.id)}>
+      <div className="card-row">
+        <div className="row gap-4 middle" style={{ flexWrap: 'wrap' }}>
+          <CategoryTag id={init.category}/>
+          <span className="muted" style={{ fontSize: 12 }}>{init.district}</span>
+        </div>
+        <StatusBadge status={init.status}/>
+      </div>
+      <div className="title">{init.title}</div>
+      {!compact && <div className="excerpt">{init.description}</div>}
+      <div className="card-row" style={{ marginTop: 2 }}>
+        <div className="stats">
+          <span>
+            <Icon name={voted ? 'heartFill' : 'heart'} size={15} stroke={2}/>
+            {init.votes + (voted ? 1 : 0)}
+          </span>
+          <span><Icon name="chat" size={14} stroke={2}/> {init.comments_count}</span>
+        </div>
+        <span className="muted" style={{ fontSize: 12 }}>{fmtDate(init.created_at)}</span>
+      </div>
+    </div>
+  );
+}
+
+/* ─── reusable mini map (svg, fake) ─── */
+function MiniMap({ pins = 12, accent = 3, height = 200, big = false }) {
+  return (
+    <div className="ph-img" style={{ height, position: 'relative', padding: 0, overflow: 'hidden', borderRadius: 'var(--r-md)' }}>
+      {/* roads */}
+      <svg viewBox="0 0 200 100" style={{ position: 'absolute', inset: 0, width: '100%', height: '100%' }} preserveAspectRatio="none">
+        <rect width="200" height="100" fill="#e7ecf3"/>
+        {/* river */}
+        <path d="M0 60 Q 40 50 80 65 T 200 55 L 200 75 Q 160 80 100 78 T 0 80 Z" fill="#cfdcf6" opacity="0.6"/>
+        {/* roads */}
+        <g stroke="#fff" strokeWidth="3" fill="none">
+          <line x1="0" y1="30" x2="200" y2="35"/>
+          <line x1="0" y1="50" x2="200" y2="48"/>
+          <line x1="60" y1="0" x2="60" y2="100"/>
+          <line x1="140" y1="0" x2="140" y2="100"/>
+          <line x1="20" y1="20" x2="180" y2="90"/>
+        </g>
+        {/* blocks */}
+        <g fill="#dde3ec">
+          <rect x="10" y="5" width="35" height="18" rx="2"/>
+          <rect x="75" y="5" width="50" height="18" rx="2"/>
+          <rect x="155" y="38" width="30" height="8" rx="1"/>
+        </g>
+      </svg>
+      {/* pins */}
+      {Array.from({ length: pins }).map((_, i) => {
+        const x = ((i * 31 + 13) % 88) + 6;
+        const y = ((i * 23 + 17) % 70) + 12;
+        const colors = ['#b6620a', '#0a59d6', '#156d3a', '#b32424'];
+        const c = colors[i % 4];
+        const isAccent = i === accent;
+        return (
+          <div key={i} style={{
+            position: 'absolute',
+            left: `${x}%`, top: `${y}%`,
+            transform: 'translate(-50%, -100%)',
+            zIndex: isAccent ? 2 : 1,
+          }}>
+            <svg width={big || isAccent ? 26 : 18} height={big || isAccent ? 26 : 18} viewBox="0 0 24 24" fill={c} stroke="#fff" strokeWidth="2">
+              <path d="M12 22s-7-7.5-7-12a7 7 0 0 1 14 0c0 4.5-7 12-7 12Z"/>
+              <circle cx="12" cy="10" r="2.5" fill="#fff"/>
+            </svg>
+          </div>
+        );
+      })}
+      {!big && <span className="mono" style={{ position: 'absolute', bottom: 6, right: 8, fontSize: 9, color: 'var(--text-3)' }}>osm · 1:5к</span>}
+    </div>
+  );
+}
+
+/* ─── timeline (horizontal) ─── */
+function TimelineH({ steps }) {
+  const items = steps.flatMap((s, i) => {
+    const stepEl = (
+      <div key={s.id} className={`step ${s.state}`}>
+        <div className="dot">
+          {s.state === 'done' && <Icon name="check" size={14} stroke={3}/>}
+          {s.state === 'now' && '●'}
+          {s.state === 'pending' && '○'}
+          {s.state === 'deny' && '×'}
+        </div>
+        <div className="lbl">{s.label}</div>
+        <div className="date">{s.date ? formatShortDate(s.date) : '—'}</div>
+      </div>
+    );
+    if (i === steps.length - 1) return [stepEl];
+    const barDone = s.state === 'done';
+    return [stepEl, <div key={`bar-${i}`} className={`bar${barDone ? ' done' : ''}`}/>];
+  });
+  return <div className="tl-h">{items}</div>;
+}
+
+function formatShortDate(s) {
+  const months = ['янв','фев','мар','апр','май','июн','июл','авг','сен','окт','ноя','дек'];
+  const [y,m,d] = s.split('-');
+  return `${parseInt(d,10)} ${months[parseInt(m,10)-1]}`;
+}
+
+/* ─── progress (form steps) ─── */
+function StepProgress({ total, active }) {
+  return (
+    <div className="progress">
+      {Array.from({ length: total }).map((_, i) => (
+        <div
+          key={i}
+          className={`seg ${i < active ? 'done' : i === active ? 'on' : ''}`}
+        />
+      ))}
+    </div>
+  );
+}
+
+/* ─── segmented control ─── */
+function Segmented({ value, onChange, options }) {
+  return (
+    <div className="segmented">
+      {options.map(o => (
+        <button
+          key={o.value}
+          className={value === o.value ? 'active' : ''}
+          onClick={() => onChange(o.value)}
+        >{o.label}</button>
+      ))}
+    </div>
+  );
+}
+
+/* ─── tabbar ─── */
+function TabBar({ value, onChange, options }) {
+  return (
+    <div className="tabbar">
+      {options.map(o => (
+        <button
+          key={o.value}
+          className={value === o.value ? 'active' : ''}
+          onClick={() => onChange(o.value)}
+        >{o.label}</button>
+      ))}
+    </div>
+  );
+}
+
+/* ─── checkbox-like control ─── */
+function Check({ value, onChange, children }) {
+  return (
+    <div className={`check${value ? ' on' : ''}`} onClick={() => onChange?.(!value)}>
+      <div className="box">{value && <Icon name="check" size={14} stroke={3}/>}</div>
+      <div>{children}</div>
+    </div>
+  );
+}
+
+/* ─── small confirm sheet ─── */
+function Sheet({ title, onClose, children, big }) {
+  return (
+    <div className="sheet-backdrop" onClick={onClose}>
+      <div className="sheet" onClick={e => e.stopPropagation()} style={big ? { maxHeight: '92%' } : null}>
+        <div className="handle"/>
+        {title && (
+          <div className="head">
+            <div className="ti">{title}</div>
+            <button className="back-btn" onClick={onClose}><Icon name="close" size={20}/></button>
+          </div>
+        )}
+        {children}
+      </div>
+    </div>
+  );
+}
+
+Object.assign(window, {
+  StatusBar, AppBar, StatusBadge, CategoryTag,
+  ChipsRow, BottomNav, InitiativeCard,
+  MiniMap, TimelineH, StepProgress, Segmented, TabBar, Check, Sheet,
+  formatShortDate,
+});
+
+  </script>
+
+  <script type="text/babel">
+/* global React, Icon, MOCK, AppBar */
+const { useState: useStateOB, useMemo: useMemoOB } = React;
+
+/* ─── onboarding: выбор города ─── */
+function ScreenOnboard({ onPick, hasCity }) {
+  const [query, setQuery] = useStateOB('');
+  const results = useMemoOB(() => {
+    if (!query.trim()) return MOCK.CITIES.slice(0, 8);
+    return MOCK.CITIES.filter(c => c.name.startsWith(query.toLowerCase()));
+  }, [query]);
+
+  const popular = ['москва', 'санкт-петербург', 'казань', 'екатеринбург', 'новосибирск', 'нижний новгород'];
+
+  return (
+    <div className="app-body" style={{ background: 'var(--bg)' }}>
+      {hasCity && (
+        <AppBar
+          title="сменить город"
+          onBack={() => onPick(null)}
+        />
+      )}
+      <div className="content" style={{ padding: hasCity ? '16px 20px 24px' : '40px 20px 24px' }}>
+        {!hasCity && (
+          <div style={{ marginBottom: 28 }}>
+            <h1 style={{
+              fontSize: 28,
+              fontWeight: 500,
+              color: 'var(--text-1)',
+              lineHeight: 1.2,
+              margin: 0,
+            }}>
+              добро пожаловать<br/>в <span style={{ color: 'var(--primary)' }}>инициативу</span>
+            </h1>
+            <div style={{
+              fontSize: 14,
+              fontWeight: 400,
+              color: 'var(--text-2)',
+              marginTop: 8,
+              lineHeight: 1.4,
+            }}>
+              выберите ваш город, чтобы увидеть инициативы рядом
+            </div>
+          </div>
+        )}
+        <div className="input-search" style={{ marginBottom: 18 }}>
+          <span className="ic"><Icon name="search" size={18}/></span>
+          <input
+            className="input"
+            placeholder="например: казань"
+            value={query}
+            onChange={e => setQuery(e.target.value)}
+            autoFocus={!hasCity}
+          />
+        </div>
+
+        {!query && (
+          <>
+            <div className="eyebrow" style={{ marginBottom: 8 }}>популярные</div>
+            <div className="chip-group" style={{ marginBottom: 22 }}>
+              {popular.map(c => (
+                <button key={c} className="chip" onClick={() => onPick(c)}>{c}</button>
+              ))}
+            </div>
+          </>
+        )}
+
+        <div className="eyebrow" style={{ marginBottom: 8 }}>все города · {results.length}</div>
+        <div style={{ background: 'var(--surface)', borderRadius: 12, overflow: 'hidden' }}>
+          {results.map((c, i) => (
+            <div
+              key={c.name}
+              className="list-row"
+              onClick={() => onPick(c.name)}
+              style={{ borderBottom: i === results.length - 1 ? 'none' : '1px solid var(--divider)' }}
+            >
+              <div className="avatar sm" style={{ background: 'var(--surface-2)', color: 'var(--text-3)' }}>
+                <Icon name="pin" size={14}/>
+              </div>
+              <div className="body">
+                <div className="ti">{c.name}</div>
+                <div className="sub">{c.region} · {c.pop} млн</div>
+              </div>
+              <Icon name="chevron" size={16} className="chev"/>
+            </div>
+          ))}
+          {results.length === 0 && (
+            <div className="empty" style={{ padding: '40px 16px' }}>
+              <div className="icn"><Icon name="search" size={22}/></div>
+              <div className="ti">город не найден</div>
+              <div className="desc">попробуйте другой запрос или выберите из популярных</div>
+            </div>
+          )}
+        </div>
+
+        {!hasCity && (
+          <div style={{ marginTop: 18, display: 'flex', alignItems: 'center', gap: 10, color: 'var(--text-3)', fontSize: 12 }}>
+            <Icon name="info" size={14}/>
+            <span>без регистрации, выбор сохранится локально</span>
+          </div>
+        )}
+      </div>
+    </div>
+  );
+}
+
+window.ScreenOnboard = ScreenOnboard;
+
+  </script>
+
+  <script type="text/babel">
+/* global React, Icon, MOCK, AppBar, ChipsRow, InitiativeCard, Sheet */
+const { useState: useStateFD, useMemo: useMemoFD } = React;
+
+function ScreenFeed({ city, onOpenInitiative, onChangeCity, onOpenNotifications }) {
+  const [status, setStatus] = useStateFD('all');
+  const [cat, setCat] = useStateFD('all');
+  const [sort, setSort] = useStateFD('new');
+  const [voted, setVoted] = useStateFD({});
+  const [filtersOpen, setFiltersOpen] = useStateFD(false);
+
+  const statuses = [
+    { id: 'all', label: 'все' },
+    { id: 'pending', label: 'на рассмотрении' },
+    { id: 'accepted', label: 'принято' },
+    { id: 'in_work', label: 'в работе' },
+    { id: 'done', label: 'исполнено' },
+    { id: 'denied', label: 'отклонено' },
+  ];
+
+  const filtered = useMemoFD(() => {
+    let xs = MOCK.INITIATIVES.slice();
+    if (status !== 'all') xs = xs.filter(x => x.status === status);
+    if (cat !== 'all') xs = xs.filter(x => x.category === cat);
+    if (sort === 'popular') xs.sort((a, b) => b.votes - a.votes);
+    else if (sort === 'new') xs.sort((a, b) => b.created_at.localeCompare(a.created_at));
+    return xs;
+  }, [status, cat, sort]);
+
+  return (
+    <div className="app-body">
+      {/* AppBar */}
+      <div className="appbar" style={{ paddingTop: 8 }}>
+        <button className="city-chip" onClick={onChangeCity}>
+          <Icon name="pin" size={16}/>
+          <span>город: <b>{city}</b></span>
+          <Icon name="chevronD" size={14}/>
+        </button>
+        <div className="grow"/>
+        <button className="icon-btn" onClick={() => setFiltersOpen(true)} aria-label="фильтры">
+          <Icon name="filter" size={20}/>
+        </button>
+        <button className="icon-btn" onClick={onOpenNotifications} aria-label="уведомления">
+          <Icon name="bell" size={20}/>
+          <span className="badge"/>
+        </button>
+      </div>
+
+      {/* Hero */}
+      <div className="content-pad" style={{ paddingTop: 12, paddingBottom: 12 }}>
+        <div className="h1">инициативы города</div>
+        <div className="lead" style={{ marginTop: 4 }}>
+          {filtered.length} {plural(filtered.length, ['инициатива', 'инициативы', 'инициатив'])} · обновлено только что
+        </div>
+      </div>
+
+      {/* Status chips */}
+      <ChipsRow>
+        {statuses.map(s => (
+          <button
+            key={s.id}
+            className={`chip${status === s.id ? ' active' : ''}`}
+            onClick={() => setStatus(s.id)}
+          >
+            {s.label}
+            {s.id !== 'all' && (
+              <span className="count">{MOCK.INITIATIVES.filter(x => x.status === s.id).length}</span>
+            )}
+          </button>
+        ))}
+      </ChipsRow>
+
+      {/* Category + sort */}
+      <div className="content-pad" style={{ paddingTop: 12, paddingBottom: 4, display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+        <ChipsRow padded={false}>
+          <button
+            className={`chip sm${cat === 'all' ? ' active' : ''}`}
+            onClick={() => setCat('all')}
+          >все категории</button>
+          {MOCK.CATEGORIES.slice(0, 4).map(c => (
+            <button
+              key={c.id}
+              className={`chip sm${cat === c.id ? ' active' : ''}`}
+              onClick={() => setCat(c.id)}
+            >{c.name}</button>
+          ))}
+        </ChipsRow>
+      </div>
+      <div className="content-pad" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', paddingBottom: 8 }}>
+        <span className="eyebrow">сортировка</span>
+        <button className="row gap-2 middle" style={{ background: 'none', border: 'none', color: 'var(--primary)', fontSize: 14, fontWeight: 500, cursor: 'pointer' }}
+          onClick={() => setSort(sort === 'new' ? 'popular' : 'new')}>
+          <Icon name="sort" size={14}/>
+          <span>{sort === 'new' ? 'новые' : 'популярные'}</span>
+        </button>
+      </div>
+
+      {/* List */}
+      <div className="col gap-4" style={{ padding: '0 16px 16px' }}>
+        {filtered.length === 0 ? (
+          <div className="empty">
+            <div className="icn"><Icon name="document" size={22}/></div>
+            <div className="ti">пока ничего нет</div>
+            <div className="desc">по выбранным фильтрам инициатив не найдено. попробуйте сбросить фильтры или подайте первую.</div>
+          </div>
+        ) : filtered.map(init => (
+          <InitiativeCard
+            key={init.id}
+            init={init}
+            onOpen={onOpenInitiative}
+            voted={!!voted[init.id]}
+          />
+        ))}
+      </div>
+
+      {filtersOpen && (
+        <Sheet title="фильтры" onClose={() => setFiltersOpen(false)} big>
+          <div className="col gap-8" style={{ overflowY: 'auto' }}>
+            <div>
+              <div className="eyebrow" style={{ marginBottom: 8 }}>категория</div>
+              <div className="chip-group">
+                <button
+                  className={`chip${cat === 'all' ? ' active' : ''}`}
+                  onClick={() => setCat('all')}
+                >все</button>
+                {MOCK.CATEGORIES.map(c => (
+                  <button
+                    key={c.id}
+                    className={`chip${cat === c.id ? ' active' : ''}`}
+                    onClick={() => setCat(c.id)}
+                  >{c.name}</button>
+                ))}
+              </div>
+            </div>
+            <div>
+              <div className="eyebrow" style={{ marginBottom: 8 }}>сортировка</div>
+              <div className="chip-group">
+                {[
+                  { id: 'new', l: 'новые сверху' },
+                  { id: 'popular', l: 'популярные' },
+                  { id: 'urgent', l: 'срок истекает' },
+                ].map(s => (
+                  <button
+                    key={s.id}
+                    className={`chip${sort === s.id ? ' active' : ''}`}
+                    onClick={() => setSort(s.id)}
+                  >{s.l}</button>
+                ))}
+              </div>
+            </div>
+            <button className="btn" onClick={() => setFiltersOpen(false)}>применить</button>
+            <button className="btn ghost" onClick={() => { setStatus('all'); setCat('all'); setSort('new'); }}>сбросить</button>
+          </div>
+        </Sheet>
+      )}
+    </div>
+  );
+}
+
+function plural(n, forms) {
+  const mod10 = n % 10, mod100 = n % 100;
+  if (mod10 === 1 && mod100 !== 11) return forms[0];
+  if (mod10 >= 2 && mod10 <= 4 && (mod100 < 10 || mod100 >= 20)) return forms[1];
+  return forms[2];
+}
+
+window.ScreenFeed = ScreenFeed;
+window.plural = plural;
+
+  </script>
+
+  <script type="text/babel">
+/* global React, Icon, MOCK, AppBar, StatusBadge, CategoryTag, MiniMap, TimelineH, formatShortDate */
+const { useState: useStateID } = React;
+
+function ScreenInitiative({ initId, onBack, onOpenInitiative }) {
+  const init = MOCK.INITIATIVES.find(x => x.id === initId) || MOCK.INITIATIVES[0];
+  const timeline = init.timeline || MOCK.DEFAULT_TIMELINE(init);
+  const [voted, setVoted] = useStateID(false);
+  const [downvoted, setDownvoted] = useStateID(false);
+  const [comment, setComment] = useStateID('');
+  const [comments, setComments] = useStateID(init.comments || []);
+  const [expandedStep, setExpandedStep] = useStateID(null);
+
+  const handleVote = () => {
+    if (downvoted) setDownvoted(false);
+    setVoted(v => !v);
+  };
+  const handleDownvote = () => {
+    if (voted) setVoted(false);
+    setDownvoted(v => !v);
+  };
+  const handleSend = () => {
+    if (!comment.trim()) return;
+    setComments([...comments, {
+      id: `c-${Date.now()}`,
+      author: 'вы',
+      date: 'только что',
+      text: comment.trim(),
+      avatar: 'в',
+      mine: true,
+    }]);
+    setComment('');
+  };
+
+  const similar = MOCK.INITIATIVES
+    .filter(x => x.id !== init.id && (x.category === init.category || x.district === init.district))
+    .slice(0, 3);
+
+  return (
+    <div className="app-body">
+      <AppBar
+        onBack={onBack}
+        title={`инициатива #${init.id.replace('init-', '')}`}
+        right={
+          <>
+            <button className="icon-btn"><Icon name="share" size={18}/></button>
+            <button className="icon-btn"><Icon name="bookmark" size={18}/></button>
+          </>
+        }
+      />
+
+      <div className="content-pad" style={{ paddingTop: 14, paddingBottom: 14 }}>
+        <div className="row gap-4 middle" style={{ marginBottom: 10, flexWrap: 'wrap' }}>
+          <CategoryTag id={init.category}/>
+          <span className="cat-tag" style={{ background: 'transparent', border: '1px solid var(--border-strong)' }}>
+            <Icon name="pin" size={12}/> {init.district}
+          </span>
+          <StatusBadge status={init.status}/>
+        </div>
+        <div className="h1">{init.title}</div>
+        <div className="row gap-4 middle" style={{ marginTop: 10, fontSize: 12, color: 'var(--text-3)' }}>
+          <div className="avatar sm" style={{ background: 'var(--surface-2)' }}>{init.author[0]}</div>
+          <span>{init.author}</span>
+          <span style={{ color: 'var(--text-4)' }}>·</span>
+          <span>{formatLong(init.created_at)}</span>
+        </div>
+      </div>
+
+      {/* Timeline panel */}
+      <div style={{ padding: '0 16px 14px' }}>
+        <div className="timeline">
+          <div className="head">
+            <div className="label">статус инициативы</div>
+            <span className="eyebrow">{timeline.filter(s => s.state === 'done').length}/{timeline.length}</span>
+          </div>
+          <TimelineH steps={timeline}/>
+          <div style={{ marginTop: 14, paddingTop: 12, borderTop: '1px solid var(--divider)' }}>
+            {timeline.map(s => (
+              <button
+                key={s.id}
+                onClick={() => setExpandedStep(expandedStep === s.id ? null : s.id)}
+                disabled={!s.desc}
+                style={{
+                  width: '100%', textAlign: 'left',
+                  background: 'transparent', border: 'none', cursor: s.desc ? 'pointer' : 'default',
+                  padding: '8px 0', borderBottom: '1px solid var(--divider)',
+                  fontFamily: 'inherit', letterSpacing: 'inherit',
+                  display: 'flex', flexDirection: 'column', gap: 4,
+                }}
+              >
+                <div className="row middle between">
+                  <span style={{ fontSize: 14, fontWeight: 500, color: s.state === 'pending' ? 'var(--text-3)' : 'var(--text-1)' }}>
+                    {s.label}
+                  </span>
+                  <span style={{ fontSize: 11, color: 'var(--text-3)', fontFamily: 'JetBrains Mono, monospace' }}>
+                    {s.date ? formatShortDate(s.date) : 'ожидается'}
+                  </span>
+                </div>
+                {expandedStep === s.id && s.official && (
+                  <div style={{
+                    marginTop: 4,
+                    background: 'var(--primary-soft)',
+                    border: '1px solid var(--primary-soft-2)',
+                    padding: 10, borderRadius: 8,
+                    fontSize: 12, color: 'var(--primary-ink)', lineHeight: 1.4,
+                  }}>
+                    <span className="eyebrow" style={{ color: 'var(--primary)', display: 'block', marginBottom: 2 }}>официальный ответ</span>
+                    {s.official}
+                  </div>
+                )}
+              </button>
+            ))}
+          </div>
+        </div>
+      </div>
+
+      {/* Description */}
+      <div className="content-pad" style={{ paddingBottom: 14 }}>
+        <div className="eyebrow" style={{ marginBottom: 8 }}>описание</div>
+        <p style={{ fontSize: 14, color: 'var(--text-1)', lineHeight: 1.55, margin: 0 }}>
+          {init.description}
+        </p>
+      </div>
+
+      {/* Photos */}
+      {init.photos > 0 && (
+        <div style={{ padding: '0 16px 14px' }}>
+          <div className="eyebrow" style={{ marginBottom: 8 }}>фотографии · {init.photos}</div>
+          <div className="row gap-4" style={{ overflow: 'hidden' }}>
+            {Array.from({ length: init.photos }).map((_, i) => (
+              <div key={i} className="ph-img" style={{ flex: 1, height: 110 }}>
+                фото {i + 1}
+              </div>
+            ))}
+          </div>
+        </div>
+      )}
+
+      {/* Map */}
+      <div style={{ padding: '0 16px 14px' }}>
+        <div className="row between middle" style={{ marginBottom: 8 }}>
+          <span className="eyebrow">на карте</span>
+          <button style={{ background: 'none', border: 'none', color: 'var(--primary)', fontSize: 14, fontWeight: 500, cursor: 'pointer' }}>построить маршрут →</button>
+        </div>
+        <MiniMap pins={3} accent={1} height={140}/>
+      </div>
+
+      {/* Vote */}
+      <div style={{ padding: '14px 16px', background: 'var(--surface)', borderTop: '1px solid var(--border)', borderBottom: '1px solid var(--border)' }}>
+        <div className="row gap-4">
+          <button className={`btn${voted ? '' : ''}`} onClick={handleVote} style={{ flex: 2 }}>
+            <Icon name={voted ? 'heartFill' : 'heart'} size={18} stroke={2.2}/>
+            <span>{voted ? 'вы поддержали' : 'поддержать'} · {init.votes + (voted ? 1 : 0)}</span>
+          </button>
+          <button className={`btn secondary${downvoted ? '' : ''}`} onClick={handleDownvote} style={{ flex: 1 }}>
+            против {downvoted ? '✓' : ''}
+          </button>
+        </div>
+        <div className="row gap-4 middle" style={{ marginTop: 10, fontSize: 12, color: 'var(--text-2)' }}>
+          <Icon name="user" size={14}/>
+          <span>уже поддержано <b>27 жителями</b> вашего района</span>
+        </div>
+      </div>
+
+      {/* Comments */}
+      <div className="content-pad" style={{ paddingTop: 16, paddingBottom: 14 }}>
+        <div className="row between middle" style={{ marginBottom: 10 }}>
+          <div className="h3">обсуждение</div>
+          <span className="muted" style={{ fontSize: 12 }}>{comments.length} {plural(comments.length, ['комментарий','комментария','комментариев'])}</span>
+        </div>
+        <div className="col gap-6">
+          {comments.map(c => (
+            <div key={c.id} className="row gap-4" style={{ alignItems: 'flex-start' }}>
+              <div className={`avatar sm${c.official ? '' : ''}`} style={c.official ? { background: 'var(--primary)', color: '#fff' } : null}>
+                {c.avatar}
+              </div>
+              <div className="grow">
+                <div className="row gap-4 middle">
+                  <span style={{ fontSize: 14, fontWeight: 500 }}>{c.author}</span>
+                  {c.official && <span className="status-badge work">официальный ответ</span>}
+                  <span style={{ fontSize: 12, color: 'var(--text-3)' }}>· {c.date}</span>
+                </div>
+                <div style={{
+                  marginTop: 4,
+                  background: c.official ? 'var(--primary-soft)' : 'var(--surface)',
+                  border: c.official ? '1px solid var(--primary-soft-2)' : '1px solid var(--border)',
+                  padding: '8px 10px', borderRadius: 10,
+                  fontSize: 13, color: c.official ? 'var(--primary-ink)' : 'var(--text-1)',
+                  lineHeight: 1.4,
+                }}>{c.text}</div>
+              </div>
+            </div>
+          ))}
+        </div>
+        <div className="row gap-4" style={{ marginTop: 14, alignItems: 'flex-end' }}>
+          <input
+            className="input"
+            placeholder="написать комментарий…"
+            value={comment}
+            onChange={e => setComment(e.target.value)}
+            onKeyDown={e => e.key === 'Enter' && handleSend()}
+          />
+          <button className="btn icon" onClick={handleSend} disabled={!comment.trim()}>
+            <Icon name="arrowRight" size={18}/>
+          </button>
+        </div>
+      </div>
+
+      {/* Similar */}
+      {similar.length > 0 && (
+        <div style={{ paddingTop: 8, paddingBottom: 24 }}>
+          <div className="content-pad" style={{ marginBottom: 8 }}>
+            <div className="eyebrow">похожие в районе</div>
+          </div>
+          <div className="h-scroll" style={{ paddingBottom: 8 }}>
+            {similar.map(s => (
+              <div
+                key={s.id}
+                className="card"
+                onClick={() => onOpenInitiative?.(s.id)}
+                style={{ flexShrink: 0, width: 240 }}
+              >
+                <div className="row gap-4 middle"><CategoryTag id={s.category}/><StatusBadge status={s.status}/></div>
+                <div className="title" style={{ fontSize: 14 }}>{s.title}</div>
+                <div className="stats">
+                  <span><Icon name="heart" size={13}/> {s.votes}</span>
+                  <span><Icon name="chat" size={13}/> {s.comments_count}</span>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      )}
+    </div>
+  );
+}
+
+function formatLong(s) {
+  const months = ['января','февраля','марта','апреля','мая','июня','июля','августа','сентября','октября','ноября','декабря'];
+  const [y,m,d] = s.split('-');
+  return `${parseInt(d,10)} ${months[parseInt(m,10)-1]} ${y}`;
+}
+
+window.ScreenInitiative = ScreenInitiative;
+
+  </script>
+
+  <script type="text/babel">
+/* global React, Icon, MOCK, AppBar, StepProgress, MiniMap, Check */
+const { useState: useStateSB } = React;
+
+function ScreenSubmit({ onBack, onDone, onOpenFeed }) {
+  const [step, setStep] = useStateSB(0);
+  const [data, setData] = useStateSB({
+    title: '',
+    category: '',
+    description: '',
+    district: '',
+    address: '',
+    addressExact: true,
+    photos: [],
+    source: '',
+    anonymous: true,
+    name: '',
+    email: '',
+    consent: false,
+  });
+  const [submitted, setSubmitted] = useStateSB(false);
+  const [issueId] = useStateSB(() => 'init-' + Math.floor(Math.random() * 900 + 100));
+
+  const update = (k, v) => setData(d => ({ ...d, [k]: v }));
+
+  const canProceed = (() => {
+    if (step === 0) return data.title.trim().length >= 5 && data.category && data.description.trim().length >= 50;
+    if (step === 1) return data.district && data.address.trim();
+    if (step === 2) return true;
+    if (step === 3) return data.consent;
+    return false;
+  })();
+
+  if (submitted) {
+    return (
+      <div className="app-body">
+        <div style={{
+          flex: 1,
+          display: 'flex', flexDirection: 'column',
+          alignItems: 'center', justifyContent: 'center',
+          textAlign: 'center', padding: '40px 24px',
+        }}>
+          <div style={{
+            width: 96, height: 96, borderRadius: '50%',
+            background: 'var(--status-accept-soft)', color: 'var(--status-accept)',
+            display: 'grid', placeItems: 'center', marginBottom: 24,
+          }}>
+            <Icon name="check" size={42} stroke={3}/>
+          </div>
+          <div className="h1">инициатива отправлена</div>
+          <div className="lead" style={{ marginTop: 10, maxWidth: 280 }}>
+            мы передадим её на рассмотрение модератору. вы получите уведомление при смене статуса.
+          </div>
+          <div style={{
+            marginTop: 24, padding: '12px 18px',
+            background: 'var(--surface)', borderRadius: 12, border: '1px solid var(--border)',
+          }}>
+            <div className="eyebrow" style={{ marginBottom: 4 }}>номер заявки</div>
+            <div className="mono" style={{ fontSize: 16, fontWeight: 500, color: 'var(--text-1)' }}>#{issueId}</div>
+          </div>
+          <div className="col gap-4" style={{ width: '100%', marginTop: 32, maxWidth: 320 }}>
+            <button className="btn" onClick={() => onDone?.(issueId)}>
+              отслеживать инициативу
+            </button>
+            <button className="btn ghost" onClick={onOpenFeed}>
+              вернуться к ленте
+            </button>
+          </div>
+        </div>
+      </div>
+    );
+  }
+
+  const stepTitles = ['суть проблемы', 'место', 'фото и документы', 'контакты и отправка'];
+
+  return (
+    <div className="app-body">
+      <AppBar
+        title={`шаг ${step + 1}: ${stepTitles[step]}`}
+        onBack={step === 0 ? onBack : () => setStep(s => s - 1)}
+        right={
+          <button className="icon-btn" onClick={onBack} aria-label="закрыть">
+            <Icon name="close" size={20}/>
+          </button>
+        }
+      />
+      <div style={{ padding: '12px 16px 0' }}>
+        <StepProgress total={4} active={step}/>
+        <div className="row between" style={{ fontSize: 11, color: 'var(--text-3)', marginTop: -8, marginBottom: 14, fontFamily: 'JetBrains Mono, monospace' }}>
+          <span>шаг {step + 1} из 4</span>
+          <span>{Math.round(((step + 1) / 4) * 100)}%</span>
+        </div>
+      </div>
+
+      <div className="content-pad" style={{ paddingBottom: 14, overflowY: 'auto', flex: 1 }}>
+        {step === 0 && (
+          <div className="col gap-8">
+            <div>
+              <div className="h2">опишите проблему</div>
+              <div className="lead" style={{ marginTop: 4 }}>конкретно: что, где, когда</div>
+            </div>
+            <div className="field">
+              <div className="label">заголовок</div>
+              <input
+                className="input"
+                placeholder="напр. «разбит тротуар на ленина 42»"
+                maxLength={100}
+                value={data.title}
+                onChange={e => update('title', e.target.value)}
+              />
+              <div className="hint">
+                <span>будет видно в ленте</span>
+                <span>{data.title.length}/100</span>
+              </div>
+            </div>
+            <div className="field">
+              <div className="label">категория</div>
+              <div className="chip-group">
+                {MOCK.CATEGORIES.map(c => (
+                  <button
+                    key={c.id}
+                    className={`chip${data.category === c.id ? ' primary' : ''}`}
+                    onClick={() => update('category', c.id)}
+                  >{c.name}</button>
+                ))}
+              </div>
+            </div>
+            <div className="field">
+              <div className="label">описание</div>
+              <textarea
+                className="textarea"
+                placeholder="опишите ситуацию подробно. почему это проблема? на кого влияет?"
+                value={data.description}
+                onChange={e => update('description', e.target.value)}
+              />
+              <div className="hint">
+                <span style={{ color: data.description.length >= 50 ? 'var(--status-accept)' : 'var(--text-3)' }}>
+                  {data.description.length >= 50 ? '✓ достаточно подробно' : 'мин. 50 символов'}
+                </span>
+                <span>{data.description.length}/1000</span>
+              </div>
+            </div>
+          </div>
+        )}
+
+        {step === 1 && (
+          <div className="col gap-8">
+            <div>
+              <div className="h2">где это происходит?</div>
+              <div className="lead" style={{ marginTop: 4 }}>точное место поможет быстрее реагировать</div>
+            </div>
+            <div className="field">
+              <div className="label">район</div>
+              <select className="select" value={data.district} onChange={e => update('district', e.target.value)}>
+                <option value="">выберите район</option>
+                {MOCK.DISTRICTS.map(d => <option key={d} value={d}>{d}</option>)}
+              </select>
+            </div>
+            <div className="field">
+              <div className="label">адрес</div>
+              <input
+                className="input"
+                placeholder="ул. ленина, 42"
+                value={data.address}
+                onChange={e => update('address', e.target.value)}
+              />
+              <div className="hint"><span>можно указать ориентир (магазин, остановка)</span></div>
+            </div>
+            <div>
+              <div className="label" style={{ marginBottom: 6, fontSize: 12, color: 'var(--text-2)' }}>уточните пин на карте</div>
+              <div style={{ position: 'relative' }}>
+                <MiniMap pins={2} accent={0} height={220} big/>
+                <div style={{
+                  position: 'absolute', top: '48%', left: '50%',
+                  transform: 'translate(-50%, -100%)',
+                }}>
+                  <svg width="32" height="32" viewBox="0 0 24 24" fill="var(--status-deny)" stroke="#fff" strokeWidth="2">
+                    <path d="M12 22s-7-7.5-7-12a7 7 0 0 1 14 0c0 4.5-7 12-7 12Z"/>
+                    <circle cx="12" cy="10" r="3" fill="#fff"/>
+                  </svg>
+                </div>
+                <button style={{
+                  position: 'absolute', right: 8, bottom: 8,
+                  background: 'var(--surface)', border: '1px solid var(--border-strong)',
+                  padding: '6px 10px', borderRadius: 8, fontSize: 12,
+                  fontFamily: 'inherit', letterSpacing: 'inherit', cursor: 'pointer',
+                  display: 'flex', alignItems: 'center', gap: 4,
+                }}>
+                  <Icon name="locate" size={14}/>
+                  моё местоположение
+                </button>
+              </div>
+            </div>
+            <div className="chip-group">
+              <button
+                className={`chip${data.addressExact ? ' active' : ''}`}
+                onClick={() => update('addressExact', true)}
+              ><Icon name="target" size={13}/> адрес точный</button>
+              <button
+                className={`chip${!data.addressExact ? ' active' : ''}`}
+                onClick={() => update('addressExact', false)}
+              >примерный</button>
+            </div>
+          </div>
+        )}
+
+        {step === 2 && (
+          <div className="col gap-8">
+            <div>
+              <div className="h2">фото и документы</div>
+              <div className="lead" style={{ marginTop: 4 }}>фото ускоряют рассмотрение в 2 раза. до 3 шт.</div>
+            </div>
+            <div style={{
+              border: '1.5px dashed var(--border-strong)',
+              borderRadius: 12,
+              padding: 28,
+              textAlign: 'center',
+              background: 'var(--surface)',
+              cursor: 'pointer',
+            }} onClick={() => update('photos', data.photos.length < 3 ? [...data.photos, `photo-${data.photos.length + 1}`] : data.photos)}>
+              <div style={{
+                width: 48, height: 48, margin: '0 auto 8px',
+                borderRadius: '50%', background: 'var(--primary-soft)', color: 'var(--primary)',
+                display: 'grid', placeItems: 'center',
+              }}>
+                <Icon name="upload" size={22}/>
+              </div>
+              <div style={{ fontSize: 14, fontWeight: 500 }}>добавить фото</div>
+              <div className="lead" style={{ fontSize: 12, marginTop: 4 }}>перетащите файл или нажмите</div>
+            </div>
+            {data.photos.length > 0 && (
+              <div className="row gap-4">
+                {data.photos.map((p, i) => (
+                  <div key={p} style={{ position: 'relative', flex: 1 }}>
+                    <div className="ph-img" style={{ height: 90 }}>{p}</div>
+                    <button
+                      onClick={() => update('photos', data.photos.filter(x => x !== p))}
+                      style={{
+                        position: 'absolute', top: 4, right: 4,
+                        width: 22, height: 22, borderRadius: '50%',
+                        background: 'rgba(12, 22, 38, 0.7)', color: '#fff',
+                        border: 'none', display: 'grid', placeItems: 'center', cursor: 'pointer',
+                      }}>
+                      <Icon name="close" size={12}/>
+                    </button>
+                  </div>
+                ))}
+              </div>
+            )}
+            <div className="field">
+              <div className="label">ссылка на источник или публикацию <span className="muted">(необязательно)</span></div>
+              <input
+                className="input"
+                placeholder="https://"
+                value={data.source}
+                onChange={e => update('source', e.target.value)}
+              />
+            </div>
+            <div style={{ display: 'flex', gap: 10, padding: 10, background: 'var(--surface-2)', borderRadius: 10, fontSize: 12, color: 'var(--text-2)' }}>
+              <Icon name="info" size={16} style={{ flexShrink: 0, color: 'var(--primary)' }}/>
+              <span>фото публикуются вместе с инициативой. не загружайте изображения с лицами без согласия.</span>
+            </div>
+          </div>
+        )}
+
+        {step === 3 && (
+          <div className="col gap-8">
+            <div>
+              <div className="h2">кто подаёт?</div>
+              <div className="lead" style={{ marginTop: 4 }}>имя влияет только на отображение в ленте</div>
+            </div>
+            <div className="card" style={{ cursor: 'default' }}>
+              <div className="eyebrow">предпросмотр</div>
+              <div className="row gap-4 middle" style={{ marginTop: 4 }}>
+                {data.category && <span className="cat-tag">{MOCK.CATEGORIES.find(c => c.id === data.category)?.name}</span>}
+                {data.district && <span className="cat-tag" style={{ background: 'transparent', border: '1px solid var(--border)' }}>{data.district}</span>}
+              </div>
+              <div className="title">{data.title || 'без названия'}</div>
+              {data.description && <div className="excerpt">{data.description}</div>}
+              <div className="row gap-4 middle muted" style={{ fontSize: 12, marginTop: 4 }}>
+                <Icon name="user" size={13}/>
+                <span>{data.anonymous ? 'анонимно' : (data.name || 'без имени')}</span>
+              </div>
+            </div>
+            <div>
+              <div className="label" style={{ fontSize: 12, color: 'var(--text-2)', marginBottom: 6 }}>подпись</div>
+              <div className="chip-group">
+                <button
+                  className={`chip${!data.anonymous ? ' primary' : ''}`}
+                  onClick={() => update('anonymous', false)}
+                >с именем</button>
+                <button
+                  className={`chip${data.anonymous ? ' primary' : ''}`}
+                  onClick={() => update('anonymous', true)}
+                >анонимно</button>
+              </div>
+            </div>
+            {!data.anonymous && (
+              <div className="field">
+                <div className="label">ваше имя</div>
+                <input
+                  className="input"
+                  placeholder="как подписать"
+                  value={data.name}
+                  onChange={e => update('name', e.target.value)}
+                />
+              </div>
+            )}
+            <div className="field">
+              <div className="label">email <span className="muted">(необязательно)</span></div>
+              <input
+                className="input"
+                placeholder="для уведомлений о статусе"
+                value={data.email}
+                onChange={e => update('email', e.target.value)}
+              />
+              <div className="hint"><span>не публикуется, используется только для писем</span></div>
+            </div>
+            <Check value={data.consent} onChange={v => update('consent', v)}>
+              <span>я согласен с <a style={{ color: 'var(--primary)' }}>правилами публикации</a> и обработкой персональных данных
+              </span>
+            </Check>
+          </div>
+        )}
+      </div>
+
+      {/* Sticky footer */}
+      <div style={{
+        background: 'var(--surface)',
+        borderTop: '1px solid var(--border)',
+        padding: '14px 16px',
+        display: 'flex', gap: 8,
+      }}>
+        {step > 0 && (
+          <button className="btn secondary" onClick={() => setStep(s => s - 1)} style={{ flex: 1 }}>
+            назад
+          </button>
+        )}
+        <button
+          className="btn"
+          disabled={!canProceed}
+          onClick={() => {
+            if (step === 3) setSubmitted(true);
+            else setStep(s => s + 1);
+          }}
+          style={{ flex: step === 0 ? 1 : 2 }}
+        >
+          {step === 3 ? 'отправить инициативу' : 'дальше'}
+          {step < 3 && <Icon name="chevron" size={18}/>}
+        </button>
+      </div>
+    </div>
+  );
+}
+
+window.ScreenSubmit = ScreenSubmit;
+
+  </script>
+
+  <script type="text/babel">
+/* global React, Icon, MOCK, AppBar, ChipsRow, StatusBadge, CategoryTag, MiniMap, Sheet */
+const { useState: useStateMP } = React;
+
+function ScreenMap({ city, onOpenInitiative, onChangeCity }) {
+  const [mode, setMode] = useStateMP('normal');
+  const [cat, setCat] = useStateMP('all');
+  const [selected, setSelected] = useStateMP(null); // initiative id or null
+  const [listOpen, setListOpen] = useStateMP(false);
+
+  // Build pins from initiatives
+  const filtered = MOCK.INITIATIVES.filter(i => cat === 'all' || i.category === cat);
+  const inViewCount = filtered.length;
+
+  const selectedInit = selected ? MOCK.INITIATIVES.find(i => i.id === selected) : null;
+
+  // pin positions seeded by index
+  const pinPositions = filtered.map((init, i) => {
+    const x = ((i * 47 + 11) % 78) + 8;
+    const y = ((i * 31 + 19) % 64) + 10;
+    return { ...init, x, y };
+  });
+
+  return (
+    <div className="app-body" style={{ position: 'relative', overflow: 'hidden' }}>
+      {/* Full map */}
+      <div style={{ position: 'absolute', inset: 0, background: 'var(--surface-3)' }}>
+        <svg viewBox="0 0 200 300" style={{ width: '100%', height: '100%' }} preserveAspectRatio="xMidYMid slice">
+          <rect width="200" height="300" fill="#e7ecf3"/>
+          {/* river */}
+          <path d="M-10 180 Q 60 160 120 195 T 220 175 L 220 220 Q 160 230 100 225 T -10 230 Z" fill="#cfdcf6" opacity="0.7"/>
+          {/* parks */}
+          <ellipse cx="50" cy="80" rx="22" ry="14" fill="#d6e6d8"/>
+          <ellipse cx="160" cy="240" rx="28" ry="18" fill="#d6e6d8"/>
+          {/* roads grid */}
+          <g stroke="#fff" strokeWidth="3" fill="none">
+            <line x1="-10" y1="60" x2="220" y2="68"/>
+            <line x1="-10" y1="110" x2="220" y2="115"/>
+            <line x1="-10" y1="170" x2="220" y2="172"/>
+            <line x1="-10" y1="250" x2="220" y2="255"/>
+            <line x1="40" y1="-10" x2="48" y2="320"/>
+            <line x1="100" y1="-10" x2="108" y2="320"/>
+            <line x1="160" y1="-10" x2="168" y2="320"/>
+            <line x1="-10" y1="20" x2="220" y2="300" strokeWidth="2"/>
+          </g>
+          <g stroke="#fff" strokeWidth="1" opacity="0.6" fill="none">
+            <line x1="-10" y1="40" x2="220" y2="42"/>
+            <line x1="-10" y1="90" x2="220" y2="95"/>
+            <line x1="-10" y1="140" x2="220" y2="142"/>
+            <line x1="-10" y1="210" x2="220" y2="215"/>
+            <line x1="20" y1="-10" x2="22" y2="320"/>
+            <line x1="70" y1="-10" x2="72" y2="320"/>
+            <line x1="130" y1="-10" x2="132" y2="320"/>
+            <line x1="190" y1="-10" x2="192" y2="320"/>
+          </g>
+          {/* blocks */}
+          <g fill="#dde3ec" opacity="0.65">
+            <rect x="10" y="20" width="22" height="14" rx="1"/>
+            <rect x="55" y="20" width="40" height="14" rx="1"/>
+            <rect x="115" y="20" width="35" height="14" rx="1"/>
+            <rect x="115" y="120" width="30" height="14" rx="1"/>
+            <rect x="55" y="180" width="35" height="14" rx="1"/>
+            <rect x="115" y="260" width="40" height="14" rx="1"/>
+          </g>
+          {/* heatmap overlay */}
+          {mode === 'heat' && (
+            <g opacity="0.55">
+              <circle cx="50" cy="100" r="50" fill="url(#heat1)"/>
+              <circle cx="130" cy="60" r="40" fill="url(#heat1)"/>
+              <circle cx="100" cy="200" r="55" fill="url(#heat1)"/>
+              <circle cx="170" cy="160" r="35" fill="url(#heat1)"/>
+              <defs>
+                <radialGradient id="heat1">
+                  <stop offset="0%" stopColor="#b32424" stopOpacity="0.7"/>
+                  <stop offset="60%" stopColor="#b6620a" stopOpacity="0.3"/>
+                  <stop offset="100%" stopColor="#b6620a" stopOpacity="0"/>
+                </radialGradient>
+              </defs>
+            </g>
+          )}
+        </svg>
+        {/* pins overlay */}
+        {mode === 'normal' && pinPositions.map(p => {
+          const colors = { pending: '#b6620a', accepted: '#156d3a', in_work: '#0a59d6', done: '#3aa66f', denied: '#b32424' };
+          const c = colors[p.status];
+          const isAccent = p.id === selected;
+          return (
+            <button
+              key={p.id}
+              onClick={() => setSelected(p.id)}
+              style={{
+                position: 'absolute',
+                left: `${p.x}%`, top: `${p.y}%`,
+                transform: 'translate(-50%, -100%)',
+                background: 'transparent', border: 'none', padding: 0, cursor: 'pointer',
+                zIndex: isAccent ? 3 : 1,
+              }}
+            >
+              <svg width={isAccent ? 36 : 24} height={isAccent ? 36 : 24} viewBox="0 0 24 24" fill={c} stroke="#fff" strokeWidth="2.4">
+                <path d="M12 22s-7-7.5-7-12a7 7 0 0 1 14 0c0 4.5-7 12-7 12Z"/>
+                <circle cx="12" cy="10" r="3" fill="#fff"/>
+              </svg>
+            </button>
+          );
+        })}
+      </div>
+
+      {/* Top app bar overlay */}
+      <div style={{ position: 'relative', zIndex: 2, padding: '10px 12px 0' }}>
+        <div style={{
+          background: 'var(--surface)', borderRadius: 'var(--r-12)', padding: '8px 10px',
+          border: '1px solid var(--border)', display: 'flex', alignItems: 'center', gap: 8,
+        }}>
+          <button className="city-chip" onClick={onChangeCity}>
+            <Icon name="pin" size={16}/>
+            <b>{city}</b>
+            <Icon name="chevronD" size={14}/>
+          </button>
+          <div className="grow"/>
+          <button className="icon-btn" style={{ width: 32, height: 32 }}><Icon name="search" size={18}/></button>
+          <button className="icon-btn" style={{ width: 32, height: 32 }}><Icon name="filter" size={18}/></button>
+        </div>
+      </div>
+
+      {/* Category chips on top of map */}
+      <div style={{ position: 'relative', zIndex: 2, paddingTop: 10 }}>
+        <ChipsRow>
+          <button className={`chip${cat === 'all' ? ' primary' : ''}`} onClick={() => setCat('all')}>все</button>
+          {MOCK.CATEGORIES.map(c => (
+            <button key={c.id} className={`chip${cat === c.id ? ' primary' : ''}`} onClick={() => setCat(c.id)}>{c.name}</button>
+          ))}
+        </ChipsRow>
+      </div>
+
+      {/* Right rail controls */}
+      <div style={{ position: 'absolute', right: 12, top: '38%', zIndex: 2, display: 'flex', flexDirection: 'column', gap: 6 }}>
+        <button className="btn secondary icon" style={{ width: 40, height: 40, borderRadius: 12, padding: 0 }}><Icon name="plus" size={18}/></button>
+        <button className="btn secondary icon" style={{ width: 40, height: 40, borderRadius: 12, padding: 0 }}><Icon name="minus" size={18}/></button>
+        <div style={{ height: 4 }}/>
+        <button
+          className="btn icon"
+          style={{ width: 40, height: 40, borderRadius: 12, padding: 0, background: mode === 'heat' ? 'var(--primary)' : 'var(--surface)', color: mode === 'heat' ? '#fff' : 'var(--text-1)', border: mode === 'heat' ? 'none' : '1px solid var(--border-strong)' }}
+          onClick={() => setMode(mode === 'heat' ? 'normal' : 'heat')}
+          aria-label="тепловая карта"
+        ><Icon name="heatmap" size={18}/></button>
+        <button className="btn icon" style={{ width: 40, height: 40, borderRadius: 12, padding: 0, background: 'var(--surface)', color: 'var(--primary)', border: '1px solid var(--border-strong)' }} aria-label="моё местоположение">
+          <Icon name="locate" size={18}/>
+        </button>
+      </div>
+
+      {/* Bottom: list toggle + selected popup */}
+      {selectedInit ? (
+        <div style={{
+          position: 'absolute', left: 12, right: 12, bottom: 16, zIndex: 3,
+        }}>
+          <div className="card flat" style={{ background: 'var(--surface)', borderColor: 'var(--border-strong)' }}>
+            <div className="card-row">
+              <div className="row gap-4 middle"><CategoryTag id={selectedInit.category}/></div>
+              <button onClick={() => setSelected(null)} className="icon-btn" style={{ width: 28, height: 28 }}>
+                <Icon name="close" size={16}/>
+              </button>
+            </div>
+            <div className="title">{selectedInit.title}</div>
+            <div className="row gap-4 middle">
+              <StatusBadge status={selectedInit.status}/>
+              <span className="muted" style={{ fontSize: 12 }}>{selectedInit.district}</span>
+            </div>
+            <div className="card-row">
+              <div className="stats">
+                <span><Icon name="heart" size={14}/> {selectedInit.votes}</span>
+                <span><Icon name="chat" size={14}/> {selectedInit.comments_count}</span>
+              </div>
+              <button
+                className="btn sm"
+                onClick={() => onOpenInitiative?.(selectedInit.id)}
+                style={{ width: 'auto', padding: '0 14px' }}
+              >открыть <Icon name="chevron" size={14}/></button>
+            </div>
+          </div>
+        </div>
+      ) : (
+        <button
+          onClick={() => setListOpen(true)}
+          style={{
+            position: 'absolute', left: '50%', bottom: 18,
+            transform: 'translateX(-50%)', zIndex: 3,
+            background: 'var(--surface)', border: '1px solid var(--border-strong)',
+            borderRadius: 'var(--r-8)', padding: '8px 16px',
+            display: 'flex', alignItems: 'center', gap: 8,
+            fontFamily: 'inherit', letterSpacing: 'inherit',
+            fontSize: 14, fontWeight: 500, color: 'var(--text-1)',
+            cursor: 'pointer',
+          }}
+        >
+          <Icon name="list" size={16}/>
+          <span>список ({inViewCount})</span>
+        </button>
+      )}
+
+      {listOpen && (
+        <Sheet title="инициативы в видимой области" onClose={() => setListOpen(false)} big>
+          <div className="col gap-4" style={{ overflowY: 'auto', paddingBottom: 12 }}>
+            {filtered.map(init => (
+              <div
+                key={init.id}
+                className="row gap-4 middle"
+                style={{
+                  padding: '10px 0', borderBottom: '1px solid var(--divider)', cursor: 'pointer',
+                }}
+                onClick={() => { setListOpen(false); onOpenInitiative?.(init.id); }}
+              >
+                <span style={{
+                  width: 10, height: 10, borderRadius: '50%',
+                  background: ({pending: '#b6620a', accepted: '#156d3a', in_work: '#0a59d6', done: '#3aa66f', denied: '#b32424'})[init.status],
+                }}/>
+                <div className="grow">
+                  <div style={{ fontSize: 14, fontWeight: 500 }}>{init.title}</div>
+                  <div style={{ fontSize: 11, color: 'var(--text-3)' }}>{init.district} · ♥ {init.votes}</div>
+                </div>
+                <Icon name="chevron" size={16} style={{ color: 'var(--text-4)' }}/>
+              </div>
+            ))}
+          </div>
+        </Sheet>
+      )}
+    </div>
+  );
+}
+
+window.ScreenMap = ScreenMap;
+
+  </script>
+
+  <script type="text/babel">
+/* global React, Icon, MOCK, AppBar, StatusBadge, CategoryTag, TimelineH */
+const { useState: useStateMR } = React;
+
+function ScreenModerator({ onBack, onOpenInitiative }) {
+  const [filter, setFilter] = useStateMR('pending');
+  const [selectedId, setSelectedId] = useStateMR(null);
+  const [draftStatus, setDraftStatus] = useStateMR('');
+  const [draftReply, setDraftReply] = useStateMR('');
+  const [department, setDepartment] = useStateMR('');
+
+  const queue = MOCK.INITIATIVES.filter(i => filter === 'all' || i.status === filter);
+
+  const tabs = [
+    { id: 'pending', label: 'новые', count: MOCK.INITIATIVES.filter(i => i.status === 'pending').length, status: 'pend' },
+    { id: 'in_work', label: 'в работе', count: MOCK.INITIATIVES.filter(i => i.status === 'in_work').length, status: 'work' },
+    { id: 'done', label: 'готово', count: MOCK.INITIATIVES.filter(i => i.status === 'done').length, status: 'accept' },
+    { id: 'all', label: 'все', count: MOCK.INITIATIVES.length, status: null },
+  ];
+
+  const selected = selectedId ? MOCK.INITIATIVES.find(i => i.id === selectedId) : null;
+
+  if (selected) {
+    const selTimeline = selTimeline || MOCK.DEFAULT_TIMELINE(selected);
+    return (
+      <div className="app-body">
+        <AppBar
+          onBack={() => setSelectedId(null)}
+          title={`#${selected.id.replace('init-', '')}`}
+          subtitle="разбор инициативы"
+          right={<button className="icon-btn"><Icon name="history" size={20}/></button>}
+        />
+        <div className="content-pad" style={{ padding: 16 }}>
+          {/* badge */}
+          <div className="row gap-4 middle" style={{ marginBottom: 8, flexWrap: 'wrap' }}>
+            <span className="status-badge work" style={{ background: 'var(--primary)', color: '#fff' }}>
+              <Icon name="moderator" size={11}/> режим модератора
+            </span>
+            <CategoryTag id={selected.category}/>
+            <span className="cat-tag" style={{ background: 'transparent', border: '1px solid var(--border-strong)' }}>{selected.district}</span>
+          </div>
+          <div className="h2" style={{ marginBottom: 8 }}>{selected.title}</div>
+          <div className="row gap-4 middle muted" style={{ fontSize: 12, marginBottom: 14 }}>
+            <span>♥ {selected.votes}</span>
+            <span>·</span>
+            <span>✎ {selected.comments_count} коммент.</span>
+            <span>·</span>
+            <span>9 дней с подачи</span>
+          </div>
+
+          {/* current status timeline */}
+          {selTimeline && (
+            <div className="timeline" style={{ marginBottom: 14 }}>
+              <div className="head"><div className="label">текущий статус</div></div>
+              <TimelineH steps={selTimeline}/>
+            </div>
+          )}
+
+          {/* description */}
+          <div className="eyebrow" style={{ marginBottom: 6 }}>описание</div>
+          <p style={{ fontSize: 14, lineHeight: 1.5, color: 'var(--text-1)', marginTop: 0, marginBottom: 14 }}>
+            {selected.description}
+          </p>
+
+          {/* DECISION PANEL */}
+          <div style={{
+            background: 'var(--surface)', border: '1px solid var(--border-strong)',
+            borderRadius: 14, padding: 14, marginBottom: 14,
+          }}>
+            <div className="row between middle" style={{ marginBottom: 10 }}>
+              <div className="h3">решение</div>
+              <span className="status-badge work" style={{ fontSize: 10 }}>обязательно</span>
+            </div>
+            <div className="eyebrow" style={{ marginBottom: 6 }}>сменить статус на</div>
+            <div className="chip-group" style={{ marginBottom: 12 }}>
+              {[
+                { id: 'accepted', l: 'принять', c: 'accept' },
+                { id: 'in_work', l: 'в работу', c: 'work' },
+                { id: 'done', l: 'исполнено', c: 'accept' },
+                { id: 'denied', l: 'отклонить', c: 'deny' },
+              ].map(opt => (
+                <button
+                  key={opt.id}
+                  className={`chip${draftStatus === opt.id ? ' primary' : ''}`}
+                  onClick={() => setDraftStatus(opt.id)}
+                  style={draftStatus === opt.id && opt.id === 'denied' ? { background: 'var(--status-deny)', borderColor: 'var(--status-deny)' } : null}
+                >{opt.l}</button>
+              ))}
+            </div>
+            <div className="field" style={{ marginBottom: 12 }}>
+              <div className="label">ответственное ведомство</div>
+              <select className="select" value={department} onChange={e => setDepartment(e.target.value)}>
+                <option value="">не назначено</option>
+                <option>отдел благоустройства</option>
+                <option>управление транспорта</option>
+                <option>отдел жкх</option>
+                <option>департамент экологии</option>
+                <option>прочее</option>
+              </select>
+            </div>
+            <div className="field" style={{ marginBottom: 12 }}>
+              <div className="label">комментарий к решению <span className="muted">(публичный)</span></div>
+              <textarea
+                className="textarea"
+                placeholder="будет показан гражданину в таймлайне как «официальный ответ»"
+                value={draftReply}
+                onChange={e => setDraftReply(e.target.value)}
+                style={{ minHeight: 80 }}
+              />
+              <div className="hint">
+                <span>{draftReply.length < 30 ? 'мин. 30 символов' : '✓ достаточно'}</span>
+                <span>{draftReply.length}/500</span>
+              </div>
+            </div>
+            <button
+              className="btn"
+              disabled={!draftStatus || draftReply.length < 30}
+              onClick={() => { setDraftStatus(''); setDraftReply(''); setSelectedId(null); }}
+            >
+              <Icon name="check" size={18}/>
+              опубликовать решение
+            </button>
+          </div>
+
+          {/* Internal notes */}
+          <div style={{
+            background: 'var(--surface-2)', borderRadius: 12, padding: 12, marginBottom: 14,
+          }}>
+            <div className="row between middle" style={{ marginBottom: 8 }}>
+              <div className="eyebrow">внутренняя заметка · не видна гражданину</div>
+              <Icon name="eye" size={14} style={{ color: 'var(--text-3)' }}/>
+            </div>
+            <textarea
+              className="textarea"
+              placeholder="заметки для коллег модераторов…"
+              style={{ minHeight: 60, background: 'var(--surface)' }}
+            />
+          </div>
+
+          {/* History */}
+          <div className="eyebrow" style={{ marginBottom: 8 }}>история действий · 3</div>
+          <div className="col gap-4" style={{ marginBottom: 24 }}>
+            {[
+              { t: 'смена статуса на «в работе»', u: 'модератор м.', d: '21 янв 14:32' },
+              { t: 'назначено ведомство: отдел благоустройства', u: 'модератор м.', d: '15 янв 11:14' },
+              { t: 'принята к рассмотрению', u: 'модератор м.', d: '15 янв 11:12' },
+            ].map((h, i) => (
+              <div key={i} className="row gap-4" style={{ padding: '8px 10px', background: 'var(--surface)', borderRadius: 8, border: '1px solid var(--border)' }}>
+                <Icon name="history" size={16} style={{ color: 'var(--text-3)', marginTop: 1 }}/>
+                <div className="grow">
+                  <div style={{ fontSize: 13 }}>{h.t}</div>
+                  <div style={{ fontSize: 11, color: 'var(--text-3)' }}>{h.u} · {h.d}</div>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      </div>
+    );
+  }
+
+  return (
+    <div className="app-body">
+      <AppBar
+        onBack={onBack}
+        title="панель модератора"
+        subtitle="казань · 17 в очереди"
+        right={
+          <button className="icon-btn"><Icon name="settings" size={20}/></button>
+        }
+      />
+
+      {/* KPIs */}
+      <div className="content-pad" style={{ padding: '14px 16px 12px' }}>
+        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: 8 }}>
+          {tabs.slice(0, 3).map(t => (
+            <button
+              key={t.id}
+              onClick={() => setFilter(t.id)}
+              style={{
+                background: filter === t.id ? 'var(--primary)' : 'var(--surface)',
+                color: filter === t.id ? '#fff' : 'var(--text-1)',
+                border: `1px solid ${filter === t.id ? 'var(--primary)' : 'var(--border)'}`,
+                borderRadius: 12, padding: 12,
+                fontFamily: 'inherit', letterSpacing: 'inherit',
+                cursor: 'pointer', textAlign: 'left',
+              }}
+            >
+              <div style={{ fontSize: 12, opacity: filter === t.id ? 0.8 : 0.6 }}>{t.label}</div>
+              <div style={{ fontSize: 24, fontWeight: 500, lineHeight: 1.1, marginTop: 2 }}>
+                {t.count}
+              </div>
+            </button>
+          ))}
+        </div>
+      </div>
+
+      <div className="content-pad" style={{ padding: '4px 16px 8px', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+        <span className="eyebrow">очередь разбора</span>
+        <button style={{ background: 'none', border: 'none', color: 'var(--primary)', fontSize: 14, fontWeight: 500, cursor: 'pointer', display: 'flex', alignItems: 'center', gap: 4 }}>
+          <Icon name="sort" size={14}/>
+          старые сверху
+        </button>
+      </div>
+
+      <div className="col gap-4" style={{ padding: '0 16px 16px' }}>
+        {queue.map(init => {
+          const isUrgent = init.votes > 200;
+          return (
+            <div
+              key={init.id}
+              className="card"
+              onClick={() => setSelectedId(init.id)}
+              style={{ borderLeft: isUrgent ? '3px solid var(--status-deny)' : null }}
+            >
+              <div className="card-row">
+                <div className="row gap-4 middle">
+                  <span className="mono" style={{ fontSize: 11, color: 'var(--text-3)' }}>#{init.id.replace('init-', '')}</span>
+                  {isUrgent && (
+                    <span className="status-badge deny" style={{ fontSize: 10 }}>
+                      <Icon name="flag" size={10}/> срочно
+                    </span>
+                  )}
+                </div>
+                <StatusBadge status={init.status}/>
+              </div>
+              <div className="title">{init.title}</div>
+              <div className="row gap-4 middle muted" style={{ fontSize: 12 }}>
+                <CategoryTag id={init.category}/>
+                <span>{init.district}</span>
+                <span>·</span>
+                <span>{init.author}</span>
+              </div>
+              <div className="card-row">
+                <div className="stats">
+                  <span><Icon name="heart" size={14}/> {init.votes}</span>
+                  <span><Icon name="chat" size={14}/> {init.comments_count}</span>
+                  <span><Icon name="clock" size={14}/> 9д</span>
+                </div>
+                <button className="btn sm" style={{ width: 'auto', padding: '0 14px' }}>
+                  разобрать <Icon name="chevron" size={14}/>
+                </button>
+              </div>
+            </div>
+          );
+        })}
+      </div>
+    </div>
+  );
+}
+
+window.ScreenModerator = ScreenModerator;
+
+  </script>
+
+  <script type="text/babel">
+/* global React, Icon, MOCK, AppBar, TabBar, InitiativeCard, StatusBadge */
+const { useState: useStatePR } = React;
+
+function ScreenProfile({ city, onChangeCity, onOpenInitiative, onSwitchRole }) {
+  const [tab, setTab] = useStatePR('mine');
+
+  const mine = MOCK.INITIATIVES.slice(0, 3);
+  const supported = MOCK.INITIATIVES.slice(2, 7);
+  const notifications = MOCK.NOTIFICATIONS;
+
+  return (
+    <div className="app-body">
+      <div className="appbar" style={{ paddingTop: 8 }}>
+        <div className="grow">
+          <div className="title">профиль</div>
+        </div>
+        <button className="icon-btn"><Icon name="bell" size={20}/><span className="badge"/></button>
+        <button className="icon-btn"><Icon name="settings" size={20}/></button>
+      </div>
+
+      <div className="content-pad" style={{ padding: '16px' }}>
+        <div className="row gap-6 middle" style={{ marginBottom: 16 }}>
+          <div className="avatar lg">а</div>
+          <div className="grow">
+            <div className="h2" style={{ marginBottom: 2 }}>александр</div>
+            <button onClick={onChangeCity} style={{
+              background: 'none', border: 'none', padding: 0, cursor: 'pointer',
+              fontFamily: 'inherit', letterSpacing: 'inherit',
+              color: 'var(--text-2)', fontSize: 13, display: 'flex', alignItems: 'center', gap: 4,
+            }}>
+              <Icon name="pin" size={13} style={{ color: 'var(--primary)' }}/>
+              {city} · сменить
+            </button>
+          </div>
+          <button className="icon-btn"><Icon name="edit" size={18}/></button>
+        </div>
+
+        {/* Stats */}
+        <div style={{
+          display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: 8, marginBottom: 18,
+        }}>
+          {[
+            { n: 3, l: 'подано' },
+            { n: 21, l: 'голосов' },
+            { n: 1, l: 'исполнено' },
+          ].map(s => (
+            <div key={s.l} style={{
+              background: 'var(--surface)', borderRadius: 12,
+              border: '1px solid var(--border)', padding: 12, textAlign: 'center',
+            }}>
+              <div style={{ fontSize: 24, fontWeight: 500, lineHeight: 1.1 }}>{s.n}</div>
+              <div style={{ fontSize: 12, color: 'var(--text-3)', marginTop: 4 }}>{s.l}</div>
+            </div>
+          ))}
+        </div>
+
+        {/* Recent notifications */}
+        <div className="row between middle" style={{ marginBottom: 8 }}>
+          <div className="eyebrow">уведомления</div>
+          <button style={{ background: 'none', border: 'none', color: 'var(--primary)', fontSize: 14, fontWeight: 500, cursor: 'pointer' }}>все ({notifications.length})</button>
+        </div>
+        <div className="col gap-4" style={{ marginBottom: 18 }}>
+          {notifications.slice(0, 2).map(n => {
+            const iconName = n.kind === 'official' ? 'handshake' : n.kind === 'status' ? 'sparkle' : 'chat';
+            return (
+              <div
+                key={n.id}
+                onClick={() => onOpenInitiative?.(n.initId)}
+                style={{
+                  display: 'flex', gap: 12, padding: 12, alignItems: 'flex-start',
+                  background: 'var(--surface)', borderRadius: 12, border: '1px solid var(--border)',
+                  cursor: 'pointer',
+                }}
+              >
+                <div style={{
+                  width: 32, height: 32, borderRadius: 8,
+                  background: n.unread ? 'var(--primary-soft)' : 'var(--surface-2)',
+                  color: n.unread ? 'var(--primary)' : 'var(--text-3)',
+                  display: 'grid', placeItems: 'center', flexShrink: 0,
+                }}>
+                  <Icon name={iconName} size={16}/>
+                </div>
+                <div className="grow">
+                  <div className="row gap-4 middle">
+                    <span style={{ fontSize: 14, fontWeight: 500 }}>{n.title}</span>
+                    {n.unread && <span style={{ width: 6, height: 6, background: 'var(--primary)', borderRadius: '50%' }}/>}
+                  </div>
+                  <div style={{ fontSize: 12, color: 'var(--text-2)' }}>{n.sub}</div>
+                </div>
+                <div style={{ fontSize: 10, color: 'var(--text-3)', fontFamily: 'JetBrains Mono, monospace' }}>{n.when}</div>
+              </div>
+            );
+          })}
+        </div>
+
+        {/* Tabs */}
+        <div style={{ marginBottom: 12, marginLeft: -16, marginRight: -16 }}>
+          <TabBar
+            value={tab}
+            onChange={setTab}
+            options={[
+              { value: 'mine', label: `мои инициативы · ${mine.length}` },
+              { value: 'supported', label: `поддержанные · ${supported.length}` },
+            ]}
+          />
+        </div>
+
+        <div className="col gap-4">
+          {(tab === 'mine' ? mine : supported).map(init => (
+            <div key={init.id} className="card" onClick={() => onOpenInitiative?.(init.id)}>
+              <div className="card-row">
+                <StatusBadge status={init.status}/>
+                <span className="mono" style={{ fontSize: 11, color: 'var(--text-3)' }}>#{init.id.replace('init-','')}</span>
+              </div>
+              <div className="title" style={{ fontSize: 14 }}>{init.title}</div>
+              {/* progress pills */}
+              <div className="row gap-2" style={{ marginTop: 4 }}>
+                {['submitted', 'accepted', 'in_work', 'done'].map((s, i) => {
+                  const stateIndex = { pending: 0, accepted: 1, in_work: 2, done: 3, denied: 1 }[init.status];
+                  const active = i <= stateIndex;
+                  return (
+                    <div key={s} style={{
+                      flex: 1, height: 4, borderRadius: 2,
+                      background: active ? (init.status === 'denied' && i > 0 ? 'var(--status-deny)' : 'var(--primary)') : 'var(--surface-3)',
+                    }}/>
+                  );
+                })}
+              </div>
+              <div className="row between middle" style={{ marginTop: 4 }}>
+                <span className="muted" style={{ fontSize: 11 }}>♥ {init.votes} · ✎ {init.comments_count}</span>
+                <span className="muted" style={{ fontSize: 11 }}>{init.created_at}</span>
+              </div>
+            </div>
+          ))}
+        </div>
+
+        {/* Dev role switcher */}
+        <div style={{
+          marginTop: 20, padding: 12,
+          background: 'var(--surface-2)', borderRadius: 12,
+          border: '1px dashed var(--border-strong)',
+        }}>
+          <div className="row gap-4 middle" style={{ marginBottom: 8 }}>
+            <div style={{
+              width: 28, height: 28, borderRadius: 6,
+              background: 'var(--primary-soft)', color: 'var(--primary)',
+              display: 'grid', placeItems: 'center',
+            }}><Icon name="moderator" size={16}/></div>
+            <div className="grow">
+              <div style={{ fontSize: 14, fontWeight: 500 }}>dev: смена роли</div>
+              <div style={{ fontSize: 12, color: 'var(--text-3)' }}>демо-доступ к панелям</div>
+            </div>
+          </div>
+          <div className="col gap-4">
+            <button className="btn sm secondary" style={{ width: '100%', whiteSpace: 'nowrap' }} onClick={() => onSwitchRole?.('moderator')}>
+              войти как модератор
+            </button>
+            <button className="btn sm secondary" style={{ width: '100%', whiteSpace: 'nowrap' }} onClick={() => onSwitchRole?.('analyst')}>
+              аналитик / дашборд
+            </button>
+          </div>
+        </div>
+
+        {/* Settings */}
+        <div className="eyebrow" style={{ marginTop: 18, marginBottom: 8 }}>настройки уведомлений</div>
+        <div style={{ background: 'var(--surface)', borderRadius: 12, border: '1px solid var(--border)', overflow: 'hidden' }}>
+          {[
+            { l: 'email-уведомления', s: 'на почту а@***.ru', on: true },
+            { l: 'push-уведомления', s: 'в браузере и приложении', on: true },
+            { l: 'дайджест раз в неделю', s: 'самые важные обновления', on: false },
+          ].map((t, i, arr) => (
+            <div key={t.l} className="list-row" style={{ borderBottom: i === arr.length - 1 ? 'none' : null }}>
+              <div className="body">
+                <div className="ti">{t.l}</div>
+                <div className="sub">{t.s}</div>
+              </div>
+              {/* fake toggle */}
+              <div style={{
+                width: 36, height: 22, borderRadius: 999,
+                background: t.on ? 'var(--primary)' : 'var(--surface-3)',
+                position: 'relative', flexShrink: 0,
+              }}>
+                <div style={{
+                  position: 'absolute', top: 2, left: t.on ? 16 : 2,
+                  width: 18, height: 18, borderRadius: '50%',
+                  background: '#fff', transition: 'left .14s',
+                  border: '1px solid rgba(0,0,0,.08)',
+                }}/>
+              </div>
+            </div>
+          ))}
+        </div>
+
+        <div style={{ marginTop: 32, marginBottom: 24, textAlign: 'center', fontSize: 11, color: 'var(--text-3)', fontFamily: 'JetBrains Mono, monospace' }}>
+          инициатива · 0.1.0 — прототип
+        </div>
+      </div>
+    </div>
+  );
+}
+
+window.ScreenProfile = ScreenProfile;
+
+  </script>
+
+  <script type="text/babel">
+/* global React, Icon, MOCK, AppBar, Segmented */
+const { useState: useStateDB, useMemo: useMemoDB } = React;
+
+function ScreenDashboard({ onBack, city, onOpenInitiative }) {
+  const [period, setPeriod] = useStateDB('month');
+  const d = MOCK.DASHBOARD;
+
+  const periods = [
+    { value: 'week', label: 'нед' },
+    { value: 'month', label: 'мес' },
+    { value: 'quarter', label: 'квр' },
+    { value: 'year', label: 'год' },
+  ];
+
+  const topByVotes = MOCK.INITIATIVES.slice().sort((a,b) => b.votes - a.votes).slice(0, 5);
+
+  // line chart - normalize
+  const maxMonth = Math.max(...d.byMonth.map(m => m.n));
+  const points = d.byMonth.map((m, i) => {
+    const x = (i / (d.byMonth.length - 1)) * 100;
+    const y = 100 - (m.n / maxMonth) * 100;
+    return [x, y];
+  });
+  const path = points.map((p, i) => (i === 0 ? `M ${p[0]} ${p[1]}` : `L ${p[0]} ${p[1]}`)).join(' ');
+  const area = `${path} L 100 100 L 0 100 Z`;
+
+  // donut math
+  let cumulative = 0;
+  const donutSegs = d.byStatus.map(s => {
+    const start = cumulative;
+    cumulative += s.pct;
+    return { ...s, start, end: cumulative };
+  });
+
+  return (
+    <div className="app-body">
+      <AppBar
+        onBack={onBack}
+        title="дашборд аналитики"
+        subtitle={`${city} · публичные данные`}
+        right={<button className="icon-btn"><Icon name="download" size={20}/></button>}
+      />
+
+      <div className="content-pad" style={{ padding: '12px 16px 24px' }}>
+        {/* Period switcher */}
+        <Segmented value={period} onChange={setPeriod} options={periods}/>
+
+        {/* Big metric */}
+        <div style={{
+          marginTop: 14,
+          background: 'var(--primary)',
+          color: '#fff',
+          borderRadius: 'var(--r-12)', padding: 16,
+          position: 'relative',
+          overflow: 'hidden',
+          border: '1px solid var(--primary)',
+        }}>
+          <div style={{ position: 'relative', zIndex: 1 }}>
+            <div className="eyebrow" style={{ color: 'rgba(255,255,255,0.7)' }}>принято к исполнению</div>
+            <div style={{ fontSize: 24, fontWeight: 500, lineHeight: 1.1, marginTop: 4 }}>
+              63<span style={{ fontSize: 16 }}>%</span>
+            </div>
+            <div className="row gap-4 middle" style={{ marginTop: 8, fontSize: 12 }}>
+              <span style={{
+                background: 'rgba(255,255,255,0.18)', padding: '2px 8px', borderRadius: 'var(--r-6)',
+                fontFamily: 'JetBrains Mono, monospace', fontSize: 12, fontWeight: 500,
+              }}>↑ +8%</span>
+              <span style={{ opacity: 0.85 }}>к прошлому периоду</span>
+            </div>
+          </div>
+          <svg viewBox="0 0 100 50" preserveAspectRatio="none" style={{ position: 'absolute', right: 0, bottom: 0, width: '50%', height: 40, opacity: 0.45 }}>
+            <polyline
+              points="0,40 15,32 30,35 45,22 60,25 75,12 100,8"
+              fill="none" stroke="#fff" strokeWidth="1.5" strokeLinecap="round"
+            />
+          </svg>
+        </div>
+
+        {/* Other KPIs */}
+        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: 8, marginTop: 10 }}>
+          {[
+            { n: d.totals.all, l: 'всего' },
+            { n: `${d.totals.avg_days}д`, l: 'ср. ответ' },
+            { n: `${d.totals.citizens}+`, l: 'граждан' },
+          ].map(s => (
+            <div key={s.l} style={{
+              background: 'var(--surface)', border: '1px solid var(--border)',
+              borderRadius: 12, padding: 10, textAlign: 'left',
+            }}>
+              <div style={{ fontSize: 12, color: 'var(--text-3)' }}>{s.l}</div>
+              <div style={{ fontSize: 20, fontWeight: 500 }}>{s.n}</div>
+            </div>
+          ))}
+        </div>
+
+        {/* By category — bar */}
+        <div style={{
+          marginTop: 14, background: 'var(--surface)', border: '1px solid var(--border)',
+          borderRadius: 14, padding: 14,
+        }}>
+          <div className="row between middle" style={{ marginBottom: 14 }}>
+            <div className="h3">по категориям</div>
+            <Icon name="chart" size={16} style={{ color: 'var(--text-3)' }}/>
+          </div>
+          <div className="col gap-4">
+            {d.byCategory.map(c => {
+              const cat = MOCK.CATEGORIES.find(x => x.id === c.id);
+              return (
+                <div key={c.id} className="row gap-4 middle">
+                  <span style={{ width: 100, fontSize: 12, color: 'var(--text-2)' }}>{cat?.name}</span>
+                  <div style={{ flex: 1, height: 18, background: 'var(--surface-2)', borderRadius: 4, position: 'relative', overflow: 'hidden' }}>
+                    <div style={{
+                      width: `${(c.n / d.byCategory[0].n) * 100}%`, height: '100%',
+                      background: c.id === 'beauty' ? 'var(--primary)' : 'var(--primary-soft-2)',
+                      borderRadius: 4,
+                      transition: 'width .3s',
+                    }}/>
+                  </div>
+                  <span style={{ width: 32, textAlign: 'right', fontSize: 14, fontWeight: 500, fontVariantNumeric: 'tabular-nums' }}>{c.n}</span>
+                </div>
+              );
+            })}
+          </div>
+        </div>
+
+        {/* Two-column: Donut + Line */}
+        <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 10, marginTop: 14 }}>
+          {/* Donut */}
+          <div style={{ background: 'var(--surface)', border: '1px solid var(--border)', borderRadius: 14, padding: 12 }}>
+            <div className="h3" style={{ fontSize: 14, marginBottom: 8 }}>статусы</div>
+            <div style={{ position: 'relative', display: 'grid', placeItems: 'center' }}>
+              <svg viewBox="0 0 100 100" style={{ width: 110, height: 110 }}>
+                {donutSegs.map((s, i) => {
+                  const a0 = (s.start / 100) * 2 * Math.PI - Math.PI / 2;
+                  const a1 = (s.end / 100) * 2 * Math.PI - Math.PI / 2;
+                  const r = 38, R = 50;
+                  const x0 = 50 + R * Math.cos(a0), y0 = 50 + R * Math.sin(a0);
+                  const x1 = 50 + R * Math.cos(a1), y1 = 50 + R * Math.sin(a1);
+                  const x0i = 50 + r * Math.cos(a0), y0i = 50 + r * Math.sin(a0);
+                  const x1i = 50 + r * Math.cos(a1), y1i = 50 + r * Math.sin(a1);
+                  const large = (a1 - a0) > Math.PI ? 1 : 0;
+                  return (
+                    <path
+                      key={s.id}
+                      d={`M ${x0} ${y0} A ${R} ${R} 0 ${large} 1 ${x1} ${y1} L ${x1i} ${y1i} A ${r} ${r} 0 ${large} 0 ${x0i} ${y0i} Z`}
+                      fill={s.color}
+                    />
+                  );
+                })}
+                <text x="50" y="48" textAnchor="middle" fontSize="14" fontWeight="700" fill="var(--text-1)" style={{ letterSpacing: '-0.04em' }}>342</text>
+                <text x="50" y="60" textAnchor="middle" fontSize="6" fill="var(--text-3)" style={{ letterSpacing: '-0.04em' }}>всего</text>
+              </svg>
+            </div>
+            <div className="col gap-2" style={{ marginTop: 8 }}>
+              {donutSegs.map(s => (
+                <div key={s.id} className="row gap-4 middle" style={{ fontSize: 11 }}>
+                  <span style={{ width: 8, height: 8, borderRadius: 2, background: s.color }}/>
+                  <span className="grow" style={{ color: 'var(--text-2)' }}>{MOCK.STATUS[s.id].label}</span>
+                  <span style={{ fontVariantNumeric: 'tabular-nums', color: 'var(--text-1)', fontWeight: 500 }}>{s.pct}%</span>
+                </div>
+              ))}
+            </div>
+          </div>
+
+          {/* Line — динамика */}
+          <div style={{ background: 'var(--surface)', border: '1px solid var(--border)', borderRadius: 14, padding: 12 }}>
+            <div className="h3" style={{ fontSize: 14, marginBottom: 4 }}>динамика</div>
+            <div className="muted" style={{ fontSize: 11, marginBottom: 8 }}>подачи по месяцам</div>
+            <svg viewBox="0 0 100 100" preserveAspectRatio="none" style={{ width: '100%', height: 100 }}>
+              <defs>
+                <linearGradient id="area" x1="0" y1="0" x2="0" y2="1">
+                  <stop offset="0%" stopColor="var(--primary)" stopOpacity="0.3"/>
+                  <stop offset="100%" stopColor="var(--primary)" stopOpacity="0"/>
+                </linearGradient>
+              </defs>
+              <path d={area} fill="url(#area)"/>
+              <path d={path} stroke="var(--primary)" strokeWidth="2" fill="none" vectorEffect="non-scaling-stroke"/>
+              {points.map((p, i) => (
+                <circle key={i} cx={p[0]} cy={p[1]} r="1.6" fill="var(--primary)"/>
+              ))}
+            </svg>
+            <div className="row between" style={{ marginTop: 4 }}>
+              {d.byMonth.map(m => (
+                <span key={m.m} style={{ fontSize: 9, color: 'var(--text-3)', fontFamily: 'JetBrains Mono, monospace' }}>{m.m}</span>
+              ))}
+            </div>
+          </div>
+        </div>
+
+        {/* By district */}
+        <div style={{
+          marginTop: 14, background: 'var(--surface)', border: '1px solid var(--border)',
+          borderRadius: 14, padding: 14,
+        }}>
+          <div className="row between middle" style={{ marginBottom: 12 }}>
+            <div className="h3">по районам</div>
+            <span className="muted" style={{ fontSize: 11 }}>топ-6</span>
+          </div>
+          <div className="col gap-6">
+            {d.byDistrict.map((r, i) => (
+              <div key={r.name} className="col gap-2">
+                <div className="row between middle">
+                  <span style={{ fontSize: 13, fontWeight: 500 }}>{r.name}</span>
+                  <span style={{ fontSize: 12, color: 'var(--text-3)', fontVariantNumeric: 'tabular-nums' }}>
+                    <b style={{ color: 'var(--text-1)' }}>{r.n}</b> · {r.pct}%
+                  </span>
+                </div>
+                <div style={{ height: 6, background: 'var(--surface-2)', borderRadius: 3, overflow: 'hidden' }}>
+                  <div style={{
+                    width: `${r.pct * 3.5}%`, height: '100%',
+                    background: 'var(--primary)',
+                    borderRadius: 3,
+                  }}/>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+
+        {/* Top by votes */}
+        <div style={{
+          marginTop: 14, background: 'var(--surface)', border: '1px solid var(--border)',
+          borderRadius: 14, padding: 14,
+        }}>
+          <div className="row between middle" style={{ marginBottom: 12 }}>
+            <div className="h3">топ по голосам</div>
+            <button style={{ background: 'none', border: 'none', color: 'var(--primary)', fontSize: 14, fontWeight: 500, cursor: 'pointer' }}>смотреть все</button>
+          </div>
+          <div className="col">
+            {topByVotes.map((init, i) => (
+              <div
+                key={init.id}
+                onClick={() => onOpenInitiative?.(init.id)}
+                style={{
+                  display: 'flex', gap: 10, alignItems: 'center', cursor: 'pointer',
+                  padding: '10px 0',
+                  borderTop: i === 0 ? 'none' : '1px solid var(--divider)',
+                }}
+              >
+                <span style={{
+                  width: 26, height: 26, borderRadius: 6,
+                  background: i < 3 ? 'var(--primary)' : 'var(--surface-2)',
+                  color: i < 3 ? '#fff' : 'var(--text-2)',
+                  display: 'grid', placeItems: 'center',
+                  fontSize: 12, fontWeight: 500, flexShrink: 0,
+                }}>{i + 1}</span>
+                <div className="grow" style={{ minWidth: 0 }}>
+                  <div style={{ fontSize: 13, fontWeight: 500, lineHeight: 1.3, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{init.title}</div>
+                  <div style={{ fontSize: 10, color: 'var(--text-3)' }}>{init.district}</div>
+                </div>
+                <div style={{ fontSize: 14, fontWeight: 500, fontVariantNumeric: 'tabular-nums', color: 'var(--primary)' }}>{init.votes}</div>
+              </div>
+            ))}
+          </div>
+        </div>
+
+        {/* Footer note */}
+        <div style={{ marginTop: 16, padding: 12, background: 'var(--surface-2)', borderRadius: 10, fontSize: 11, color: 'var(--text-2)', lineHeight: 1.4, display: 'flex', gap: 8 }}>
+          <Icon name="info" size={14} style={{ flexShrink: 0, color: 'var(--primary)' }}/>
+          <span>данные обновляются ежедневно. источник: муниципальная база инициатив. <a style={{ color: 'var(--primary)' }}>скачать csv</a></span>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+window.ScreenDashboard = ScreenDashboard;
+
+  </script>
+
+  <script type="text/babel">
+/* global React, ReactDOM, Icon, MOCK,
+   StatusBar, BottomNav,
+   ScreenOnboard, ScreenFeed, ScreenInitiative, ScreenSubmit,
+   ScreenMap, ScreenModerator, ScreenProfile, ScreenDashboard */
+const { useState, useEffect } = React;
+
+const ROUTES = [
+  { key: 'onboard',    url: '/onboarding', bottom: null },
+  { key: 'feed',       url: '/feed',       bottom: 'feed' },
+  { key: 'initiative', url: '/init/:id',   bottom: 'feed' },
+  { key: 'submit',     url: '/submit',     bottom: 'submit' },
+  { key: 'map',        url: '/map',        bottom: 'map' },
+  { key: 'moderator',  url: '/moderator',  bottom: null },
+  { key: 'profile',    url: '/profile',    bottom: 'profile' },
+  { key: 'dashboard',  url: '/dashboard',  bottom: null },
+];
+
+function App() {
+  const [city, setCity] = useState(() => localStorage.getItem('init.city') || '');
+  const [route, setRoute] = useState(() => localStorage.getItem('init.city') ? 'feed' : 'onboard');
+  const [initId, setInitId] = useState('init-001');
+  const [changeCityMode, setChangeCityMode] = useState(false);
+
+  useEffect(() => {
+    if (city) localStorage.setItem('init.city', city);
+  }, [city]);
+
+  useEffect(() => {
+    const hash = `#${route}${route === 'initiative' ? `/${initId}` : ''}`;
+    if (window.location.hash !== hash) window.history.replaceState(null, '', hash);
+  }, [route, initId]);
+
+  useEffect(() => {
+    const h = window.location.hash.replace('#', '');
+    if (!h) return;
+    const [r, id] = h.split('/');
+    if (ROUTES.find(x => x.key === r)) setRoute(r);
+    if (id) setInitId(id);
+  }, []);
+
+  const goto = (key, opts = {}) => {
+    if (key === 'initiative' && opts.id) setInitId(opts.id);
+    setRoute(key);
+    requestAnimationFrame(() => {
+      document.querySelectorAll('.app-body').forEach(el => el.scrollTo({ top: 0 }));
+      window.scrollTo({ top: 0 });
+    });
+  };
+
+  const handleBottomNav = (k) => {
+    if (k === 'feed') goto('feed');
+    else if (k === 'map') goto('map');
+    else if (k === 'submit') goto('submit');
+    else if (k === 'profile') goto('profile');
+  };
+
+  const handlePickCity = (c) => {
+    if (c === null) { setChangeCityMode(false); return; }
+    setCity(c);
+    setChangeCityMode(false);
+    goto('feed');
+  };
+
+  const activeBottom = ROUTES.find(r => r.key === route)?.bottom;
+  const showBottomNav = !!activeBottom && !changeCityMode;
+
+  return (
+    <div style={{ minHeight: '100vh', display: 'flex', flexDirection: 'column', background: 'var(--bg)', position: 'relative', maxWidth: 480, margin: '0 auto' }}>
+      {(route === 'onboard' || changeCityMode) && (
+        <ScreenOnboard hasCity={changeCityMode} onPick={handlePickCity}/>
+      )}
+      {route === 'feed' && !changeCityMode && (
+        <ScreenFeed
+          city={city}
+          onOpenInitiative={(id) => goto('initiative', { id })}
+          onChangeCity={() => setChangeCityMode(true)}
+          onOpenNotifications={() => goto('profile')}
+        />
+      )}
+      {route === 'initiative' && !changeCityMode && (
+        <ScreenInitiative
+          initId={initId}
+          onBack={() => goto('feed')}
+          onOpenInitiative={(id) => goto('initiative', { id })}
+        />
+      )}
+      {route === 'submit' && !changeCityMode && (
+        <ScreenSubmit
+          onBack={() => goto('feed')}
+          onOpenFeed={() => goto('feed')}
+          onDone={(id) => { setInitId('init-001'); goto('initiative'); }}
+        />
+      )}
+      {route === 'map' && !changeCityMode && (
+        <ScreenMap
+          city={city}
+          onOpenInitiative={(id) => goto('initiative', { id })}
+          onChangeCity={() => setChangeCityMode(true)}
+        />
+      )}
+      {route === 'moderator' && !changeCityMode && (
+        <ScreenModerator
+          onBack={() => goto('profile')}
+          onOpenInitiative={(id) => goto('initiative', { id })}
+        />
+      )}
+      {route === 'profile' && !changeCityMode && (
+        <ScreenProfile
+          city={city}
+          onChangeCity={() => setChangeCityMode(true)}
+          onOpenInitiative={(id) => goto('initiative', { id })}
+          onSwitchRole={(r) => goto(r === 'moderator' ? 'moderator' : 'dashboard')}
+        />
+      )}
+      {route === 'dashboard' && !changeCityMode && (
+        <ScreenDashboard
+          city={city}
+          onBack={() => goto('profile')}
+          onOpenInitiative={(id) => goto('initiative', { id })}
+        />
+      )}
+      {showBottomNav && (
+        <BottomNav active={activeBottom} onNav={handleBottomNav}/>
+      )}
+    </div>
+  );
+}
+
+ReactDOM.createRoot(document.getElementById('root')).render(<App/>);
+  </script>
+</body>
+</html>
