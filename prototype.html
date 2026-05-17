@@ -292,6 +292,13 @@ button, input, select, textarea {
 }
 .app-body::-webkit-scrollbar { width: 0; }
 
+/* iOS Safari fix: 100vh includes browser chrome, dvh tracks actual visible area */
+.app-root {
+  height: 100vh;           /* fallback for old browsers */
+  height: 100dvh;          /* Safari 15.4+: dynamic viewport, excludes browser chrome */
+  overflow: hidden;
+}
+
 /* app bar */
 .appbar {
   position: sticky;
@@ -3457,7 +3464,7 @@ function App() {
   const showBottomNav = !!activeBottom && !changeCityMode;
 
   return (
-    <div style={{ height: '100vh', overflow: 'hidden', display: 'flex', flexDirection: 'column', background: 'var(--bg)', position: 'relative', maxWidth: 480, margin: '0 auto' }}>
+    <div className="app-root" style={{ display: 'flex', flexDirection: 'column', background: 'var(--bg)', position: 'relative', maxWidth: 480, margin: '0 auto' }}>
       {(route === 'onboard' || changeCityMode) && (
         <ScreenOnboard hasCity={changeCityMode} onPick={handlePickCity}/>
       )}
