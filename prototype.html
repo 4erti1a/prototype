@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="ru">
 <head>
   <meta charset="UTF-8">
@@ -283,6 +283,7 @@ button, input, select, textarea {
 /* app body */
 .app-body {
   flex: 1;
+  min-height: 0;          /* critical: lets flex child shrink so bnav stays pinned */
   overflow-y: auto;
   overscroll-behavior: contain;
   display: flex;
@@ -645,18 +646,18 @@ button, input, select, textarea {
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  gap: 4px;
+  gap: 3px;
   background: transparent;
   border: none;
   color: var(--text-3);
-  font-size: 12px;
+  font-size: 10px;
   font-weight: 400;
   cursor: pointer;
   font-family: inherit;
-  padding: 8px 0;
+  padding: 6px 2px;
   border-radius: var(--r-8);
 }
-.bnav-item svg { width: 24px; height: 24px; }
+.bnav-item svg { width: 20px; height: 20px; }
 .bnav-item.active { color: var(--primary); font-weight: 700; }
 
 /* fab inside bnav — circular, 52×52, lifted -6px, svg centred */
@@ -1310,13 +1311,14 @@ function ChipsRow({ children, padded = true }) {
   );
 }
 
-/* ─── bottom nav (4 items + fab) ─── */
+/* ─── bottom nav (5 items + fab) ─── */
 function BottomNav({ active, onNav }) {
   const items = [
-    { k: 'feed',    l: 'лента',   icon: 'list' },
-    { k: 'map',     l: 'карта',   icon: 'map' },
-    { k: 'submit',  l: 'подать',  fab: true },
-    { k: 'profile', l: 'профиль', icon: 'user' },
+    { k: 'feed',     l: 'лента',    icon: 'list'     },
+    { k: 'map',      l: 'карта',    icon: 'map'       },
+    { k: 'submit',   l: 'подать',   fab: true          },
+    { k: 'bookmark', l: 'избранное', icon: 'bookmark' },
+    { k: 'profile',  l: 'профиль',  icon: 'user'      },
   ];
   return (
     <div className="bnav">
@@ -1336,7 +1338,7 @@ function BottomNav({ active, onNav }) {
           className={`bnav-item${active === it.k ? ' active' : ''}`}
           onClick={() => onNav(it.k)}
         >
-          <Icon name={it.icon} size={22} stroke={2}/>
+          <Icon name={it.icon} size={20} stroke={2}/>
           <span>{it.l}</span>
         </button>
       ))}
@@ -2541,8 +2543,8 @@ function ScreenMap({ city, onOpenInitiative, onChangeCity }) {
             <Icon name="chevronD" size={14}/>
           </button>
           <div className="grow"/>
-          <button className="icon-btn" style={{ width: 32, height: 32 }}><Icon name="search" size={18}/></button>
-          <button className="icon-btn" style={{ width: 32, height: 32 }}><Icon name="filter" size={18}/></button>
+          <button style={{ background: 'none', border: 'none', padding: '4px', cursor: 'pointer', color: 'var(--text-2)', display: 'flex', alignItems: 'center' }}><Icon name="search" size={18}/></button>
+          <button style={{ background: 'none', border: 'none', padding: '4px', cursor: 'pointer', color: 'var(--text-2)', display: 'flex', alignItems: 'center' }}><Icon name="filter" size={18}/></button>
         </div>
       </div>
 
