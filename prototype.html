@@ -3457,7 +3457,7 @@ function App() {
   const showBottomNav = !!activeBottom && !changeCityMode;
 
   return (
-    <div style={{ minHeight: '100vh', display: 'flex', flexDirection: 'column', background: 'var(--bg)', position: 'relative', maxWidth: 480, margin: '0 auto' }}>
+    <div style={{ height: '100vh', overflow: 'hidden', display: 'flex', flexDirection: 'column', background: 'var(--bg)', position: 'relative', maxWidth: 480, margin: '0 auto' }}>
       {(route === 'onboard' || changeCityMode) && (
         <ScreenOnboard hasCity={changeCityMode} onPick={handlePickCity}/>
       )}
