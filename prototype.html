@@ -946,6 +946,239 @@ body { overscroll-behavior-y: none; }
 .app-body { flex: 1; min-height: 0; }
 .statusbar { display: none; }
 </style>
+
+<style>
+/* ═══════════════════════════════════════════════════════
+   RESPONSIVE — tablet 768+ and desktop 1280+
+   ═══════════════════════════════════════════════════════ */
+
+/* ─── tablet 768–1279px ─── */
+@media (min-width: 768px) {
+  .app-root { max-width: 768px; }
+
+  /* nav */
+  .bnav { height: 84px; }
+  .bnav-item { font-size: 12px; gap: 4px; padding: 8px 4px; }
+  .bnav-item svg { width: 24px; height: 24px; }
+
+  /* appbar */
+  .appbar { min-height: 56px; }
+  .appbar .title { font-size: 18px; }
+
+  /* feed: 2-column grid */
+  .feed-grid {
+    display: grid !important;
+    flex-direction: unset;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+    padding: 16px !important;
+  }
+
+  /* category chips wrap instead of horizontal scroll */
+  .chips-wrap .h-scroll {
+    flex-wrap: wrap;
+    overflow-x: visible;
+    padding-bottom: 12px;
+  }
+
+  /* submit form centred */
+  .submit-content { max-width: 560px; margin: 0 auto; padding: 0 24px; }
+  .submit-nav { flex-direction: row !important; gap: 12px; }
+  .submit-nav .btn { flex: 1; }
+
+  /* map taller */
+  .map-frame { min-height: 400px !important; }
+
+  /* moderator: 2 columns */
+  .mod-queue {
+    display: grid !important;
+    flex-direction: unset;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+  }
+
+  /* profile / dashboard: centred, wider stat grid */
+  .profile-inner, .dashboard-inner { max-width: 680px; margin: 0 auto; }
+  .kpi-grid-3 { grid-template-columns: repeat(3, 1fr); }
+  .kpi-grid-2 { grid-template-columns: 1fr 1fr !important; }
+}
+
+/* ─── desktop 1280px+ ─── */
+@media (min-width: 1280px) {
+
+  /* hide mobile layout entirely on desktop */
+  .app-root { display: none !important; }
+
+  /* desktop shell */
+  .desktop-root {
+    display: flex;
+    min-height: 100vh;
+    min-height: 100dvh;
+    background: var(--bg);
+  }
+
+  .desktop-sidebar {
+    width: 240px;
+    flex-shrink: 0;
+    height: 100vh;
+    height: 100dvh;
+    position: sticky;
+    top: 0;
+    background: var(--surface);
+    border-right: 1px solid var(--border);
+    display: flex;
+    flex-direction: column;
+    padding: 24px 12px 24px;
+    overflow-y: auto;
+    z-index: 10;
+  }
+
+  .ds-brand { margin-bottom: 28px; padding: 0 8px; }
+  .ds-logo { font-size: 20px; font-weight: 700; color: var(--text-1); }
+  .ds-logo span { color: var(--primary); }
+  .ds-sub {
+    font-size: 11px;
+    font-family: 'JetBrains Mono', monospace;
+    color: var(--text-3);
+    margin-top: 3px;
+  }
+
+  .ds-nav { display: flex; flex-direction: column; gap: 2px; }
+  .ds-nav-item {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 10px 12px;
+    border-radius: var(--r-8);
+    border: none;
+    background: transparent;
+    color: var(--text-2);
+    font-size: 14px;
+    font-weight: 400;
+    font-family: inherit;
+    letter-spacing: -0.04em;
+    text-transform: lowercase;
+    cursor: pointer;
+    width: 100%;
+    text-align: left;
+    transition: background .12s, color .12s;
+  }
+  .ds-nav-item:hover { background: var(--surface-2); color: var(--text-1); }
+  .ds-nav-item.active {
+    background: var(--primary-soft);
+    color: var(--primary);
+    font-weight: 700;
+  }
+  .ds-nav-divider { height: 1px; background: var(--border); margin: 8px 0; }
+
+  .desktop-main {
+    flex: 1;
+    min-width: 0;
+    height: 100vh;
+    height: 100dvh;
+    overflow-y: auto;
+    overscroll-behavior: contain;
+  }
+  .desktop-main::-webkit-scrollbar { width: 0; }
+
+  /* app-body inside desktop: remove inner scroll, let desktop-main scroll */
+  .desktop-main .app-body {
+    overflow-y: visible;
+    overflow-x: visible;
+    flex: none;
+    min-height: 0;
+    max-width: 900px;
+    margin: 0 auto;
+    padding-bottom: 48px;
+  }
+  /* map is full-bleed — needs explicit height, no centering */
+  .desktop-main .map-screen-body {
+    max-width: none;
+    margin: 0;
+    padding-bottom: 0;
+    height: 100dvh;
+    overflow: hidden;
+  }
+
+  /* sticky appbar still sticks to desktop-main scroll */
+  .desktop-main .appbar { top: 0; }
+
+  /* feed: 3-column grid */
+  .feed-grid {
+    display: grid !important;
+    flex-direction: unset;
+    grid-template-columns: repeat(3, 1fr) !important;
+    gap: 20px;
+    padding: 24px !important;
+  }
+
+  /* map taller */
+  .map-frame { min-height: 520px !important; }
+
+  /* initiative 2-col layout */
+  .init-layout {
+    display: grid;
+    grid-template-columns: 2fr 1fr;
+    gap: 32px;
+    align-items: start;
+    padding: 24px;
+  }
+  .init-sidebar-panel {
+    position: sticky;
+    top: 80px;
+  }
+
+  /* submit wider, 2-col fields */
+  .submit-content { max-width: 640px; margin: 0 auto; padding: 0 40px; }
+  .submit-field-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+  }
+  .submit-nav { flex-direction: row !important; gap: 12px; }
+  .submit-nav .btn { flex: 1; }
+
+  /* moderator: 3-column layout */
+  .mod-layout {
+    display: grid !important;
+    grid-template-columns: 1fr 1fr 320px;
+    gap: 0;
+    align-items: start;
+    min-height: calc(100vh - 60px);
+  }
+  .mod-col {
+    border-right: 1px solid var(--border);
+    min-height: calc(100vh - 60px);
+    overflow-y: auto;
+  }
+  .mod-col:last-child { border-right: none; }
+  .mod-queue {
+    display: flex !important;
+    flex-direction: column;
+    gap: 0;
+    padding: 12px;
+  }
+  .mod-queue .card { border-radius: var(--r-8); }
+
+  /* profile: 2-col */
+  .profile-layout {
+    display: grid;
+    grid-template-columns: 240px 1fr;
+    gap: 32px;
+    padding: 32px 40px;
+    align-items: start;
+  }
+  .profile-side { position: sticky; top: 80px; }
+  .profile-inner { max-width: none; margin: 0; }
+
+  /* dashboard: wider stats */
+  .dashboard-inner { max-width: none; margin: 0; }
+  .kpi-grid-3 { grid-template-columns: repeat(4, 1fr) !important; }
+  .kpi-grid-2 { grid-template-columns: 1fr 1fr !important; }
+  .dash-charts-row { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+  .dash-bottom-row { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+}
+</style>
 </head>
 <body>
   <div id="root"></div>
@@ -1752,7 +1985,7 @@ function ScreenFeed({ city, onOpenInitiative, onChangeCity, onOpenNotifications 
       </div>
 
       {/* List */}
-      <div className="col gap-4" style={{ padding: '0 16px 16px' }}>
+      <div className="col gap-4 feed-grid" style={{ padding: '0 16px 16px' }}>
         {filtered.length === 0 ? (
           <div className="empty">
             <div className="icn"><Icon name="document" size={22}/></div>
@@ -2455,7 +2688,7 @@ function ScreenMap({ city, onOpenInitiative, onChangeCity }) {
   });
 
   return (
-    <div className="app-body" style={{ position: 'relative', overflow: 'hidden' }}>
+    <div className="app-body map-screen-body" style={{ position: 'relative', overflow: 'hidden' }}>
       {/* Full map */}
       <div style={{ position: 'absolute', inset: 0, background: 'var(--surface-3)' }}>
         <svg viewBox="0 0 200 300" style={{ width: '100%', height: '100%' }} preserveAspectRatio="xMidYMid slice">
@@ -2869,7 +3102,7 @@ function ScreenModerator({ onBack, onOpenInitiative }) {
         </button>
       </div>
 
-      <div className="col gap-4" style={{ padding: '0 16px 16px' }}>
+      <div className="col gap-4 mod-queue" style={{ padding: '0 16px 16px' }}>
         {queue.map(init => {
           const isUrgent = init.votes > 200;
           return (
@@ -3205,7 +3438,7 @@ function ScreenDashboard({ onBack, city, onOpenInitiative }) {
         </div>
 
         {/* Other KPIs */}
-        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: 8, marginTop: 10 }}>
+        <div className="kpi-grid-3" style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: 8, marginTop: 10 }}>
           {[
             { n: d.totals.all, l: 'всего' },
             { n: `${d.totals.avg_days}д`, l: 'ср. ответ' },
@@ -3403,15 +3636,91 @@ window.ScreenDashboard = ScreenDashboard;
    ScreenMap, ScreenModerator, ScreenProfile, ScreenDashboard */
 const { useState, useEffect } = React;
 
+/* ─── responsive breakpoint hook ─── */
+function useWindowWidth() {
+  const [w, setW] = React.useState(window.innerWidth);
+  React.useEffect(() => {
+    const h = () => setW(window.innerWidth);
+    window.addEventListener('resize', h);
+    return () => window.removeEventListener('resize', h);
+  }, []);
+  return w;
+}
+
+/* ─── desktop sidebar ─── */
+function DesktopSidebar({ active, onNav, city, onChangeCity }) {
+  const navItems = [
+    { k: 'feed',     l: 'лента',    icon: 'list'     },
+    { k: 'map',      l: 'карта',    icon: 'map'       },
+    { k: 'submit',   l: 'подать',   icon: 'plus'      },
+    { k: 'bookmark', l: 'избранное', icon: 'bookmark' },
+    { k: 'profile',  l: 'профиль',  icon: 'user'      },
+  ];
+  return (
+    <aside className="desktop-sidebar">
+      <div className="ds-brand">
+        <div className="ds-logo">иници<span>ати</span>ва</div>
+        <div className="ds-sub">прототип v0.1</div>
+      </div>
+      <nav className="ds-nav">
+        {navItems.map(item => (
+          <button
+            key={item.k}
+            className={`ds-nav-item${active === item.k ? ' active' : ''}`}
+            onClick={() => onNav(item.k)}
+          >
+            <Icon name={item.icon} size={20}/>
+            <span>{item.l}</span>
+          </button>
+        ))}
+        <div className="ds-nav-divider"/>
+        <button
+          className="ds-nav-item"
+          onClick={() => onNav('dashboard')}
+          style={active === 'dashboard' ? { background: 'var(--primary-soft)', color: 'var(--primary)', fontWeight: 700 } : null}
+        >
+          <Icon name="chart" size={20}/>
+          <span>аналитика</span>
+        </button>
+        <button
+          className="ds-nav-item"
+          onClick={() => onNav('moderator')}
+          style={active === 'moderator' ? { background: 'var(--primary-soft)', color: 'var(--primary)', fontWeight: 700 } : null}
+        >
+          <Icon name="moderator" size={20}/>
+          <span>модератор</span>
+        </button>
+      </nav>
+      {city && (
+        <button
+          onClick={onChangeCity}
+          style={{
+            marginTop: 'auto', display: 'flex', alignItems: 'center', gap: 8,
+            padding: '10px 12px', borderRadius: 'var(--r-8)',
+            background: 'var(--surface-2)', border: 'none',
+            color: 'var(--text-2)', fontSize: 13, cursor: 'pointer',
+            fontFamily: 'inherit', letterSpacing: '-0.04em', textTransform: 'lowercase',
+            width: '100%', textAlign: 'left',
+          }}
+        >
+          <Icon name="pin" size={16} style={{ color: 'var(--primary)', flexShrink: 0 }}/>
+          <span style={{ flex: 1, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{city}</span>
+          <Icon name="chevronD" size={14}/>
+        </button>
+      )}
+    </aside>
+  );
+}
+
 const ROUTES = [
-  { key: 'onboard',    url: '/onboarding', bottom: null },
-  { key: 'feed',       url: '/feed',       bottom: 'feed' },
-  { key: 'initiative', url: '/init/:id',   bottom: 'feed' },
-  { key: 'submit',     url: '/submit',     bottom: 'submit' },
-  { key: 'map',        url: '/map',        bottom: 'map' },
-  { key: 'moderator',  url: '/moderator',  bottom: null },
-  { key: 'profile',    url: '/profile',    bottom: 'profile' },
-  { key: 'dashboard',  url: '/dashboard',  bottom: null },
+  { key: 'onboard',    bottom: null    },
+  { key: 'feed',       bottom: 'feed'  },
+  { key: 'initiative', bottom: 'feed'  },
+  { key: 'submit',     bottom: 'submit'},
+  { key: 'map',        bottom: 'map'   },
+  { key: 'moderator',  bottom: null    },
+  { key: 'profile',    bottom: 'profile'},
+  { key: 'dashboard',  bottom: null    },
 ];
 
 function App() {
@@ -3419,6 +3728,9 @@ function App() {
   const [route, setRoute] = useState(() => localStorage.getItem('init.city') ? 'feed' : 'onboard');
   const [initId, setInitId] = useState('init-001');
   const [changeCityMode, setChangeCityMode] = useState(false);
+  const w = useWindowWidth();
+  const isDesktop = w >= 1280;
+  const isTablet  = w >= 768;
 
   useEffect(() => {
     if (city) localStorage.setItem('init.city', city);
@@ -3441,16 +3753,17 @@ function App() {
     if (key === 'initiative' && opts.id) setInitId(opts.id);
     setRoute(key);
     requestAnimationFrame(() => {
-      document.querySelectorAll('.app-body').forEach(el => el.scrollTo({ top: 0 }));
-      window.scrollTo({ top: 0 });
+      document.querySelectorAll('.app-body, .desktop-main').forEach(el => el.scrollTo({ top: 0 }));
     });
   };
 
-  const handleBottomNav = (k) => {
-    if (k === 'feed') goto('feed');
-    else if (k === 'map') goto('map');
-    else if (k === 'submit') goto('submit');
-    else if (k === 'profile') goto('profile');
+  const handleNav = (k) => {
+    if (k === 'feed')      goto('feed');
+    else if (k === 'map')  goto('map');
+    else if (k === 'submit')    goto('submit');
+    else if (k === 'profile')   goto('profile');
+    else if (k === 'dashboard') goto('dashboard');
+    else if (k === 'moderator') goto('moderator');
   };
 
   const handlePickCity = (c) => {
@@ -3463,8 +3776,9 @@ function App() {
   const activeBottom = ROUTES.find(r => r.key === route)?.bottom;
   const showBottomNav = !!activeBottom && !changeCityMode;
 
-  return (
-    <div className="app-root" style={{ display: 'flex', flexDirection: 'column', background: 'var(--bg)', position: 'relative', maxWidth: 480, margin: '0 auto' }}>
+  /* ── screen content shared between mobile and desktop ── */
+  const screenContent = (
+    <>
       {(route === 'onboard' || changeCityMode) && (
         <ScreenOnboard hasCity={changeCityMode} onPick={handlePickCity}/>
       )}
@@ -3518,8 +3832,37 @@ function App() {
           onOpenInitiative={(id) => goto('initiative', { id })}
         />
       )}
+    </>
+  );
+
+  /* ── desktop layout ── */
+  if (isDesktop) {
+    return (
+      <div className="desktop-root">
+        <DesktopSidebar
+          active={changeCityMode ? null : (activeBottom || route)}
+          onNav={handleNav}
+          city={city}
+          onChangeCity={() => setChangeCityMode(true)}
+        />
+        <main className="desktop-main">
+          {screenContent}
+        </main>
+      </div>
+    );
+  }
+
+  /* ── mobile / tablet layout ── */
+  return (
+    <div className="app-root" style={{
+      display: 'flex', flexDirection: 'column',
+      background: 'var(--bg)', position: 'relative',
+      maxWidth: isTablet ? '768px' : '480px',
+      margin: '0 auto',
+    }}>
+      {screenContent}
       {showBottomNav && (
-        <BottomNav active={activeBottom} onNav={handleBottomNav}/>
+        <BottomNav active={activeBottom} onNav={handleNav}/>
       )}
     </div>
   );
