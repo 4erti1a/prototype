@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>инициатива · прототип</title>
+  <title>Инициатива · Прототип</title>
   <link href="https://fonts.googleapis.com/css2?family=Lato:wght@400;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
   <style>
 /* ─── inter, lowercase, -4% letter-spacing everywhere ─── */
@@ -1273,172 +1273,224 @@ window.Icon = Icon;
 // Mock data for the prototype.
 
 const CITIES = [
-  { name: 'москва', region: 'москва', pop: 13 },
-  { name: 'санкт-петербург', region: 'санкт-петербург', pop: 5.5 },
-  { name: 'казань', region: 'татарстан', pop: 1.3 },
-  { name: 'екатеринбург', region: 'свердловская обл.', pop: 1.5 },
-  { name: 'новосибирск', region: 'новосибирская обл.', pop: 1.6 },
-  { name: 'нижний новгород', region: 'нижегородская обл.', pop: 1.2 },
-  { name: 'челябинск', region: 'челябинская обл.', pop: 1.2 },
-  { name: 'самара', region: 'самарская обл.', pop: 1.1 },
-  { name: 'омск', region: 'омская обл.', pop: 1.1 },
-  { name: 'ростов-на-дону', region: 'ростовская обл.', pop: 1.1 },
-  { name: 'уфа', region: 'башкортостан', pop: 1.1 },
-  { name: 'красноярск', region: 'красноярский край', pop: 1.1 },
-  { name: 'пермь', region: 'пермский край', pop: 1.0 },
-  { name: 'воронеж', region: 'воронежская обл.', pop: 1.0 },
-  { name: 'волгоград', region: 'волгоградская обл.', pop: 1.0 },
-  { name: 'краснодар', region: 'краснодарский край', pop: 0.97 },
-  { name: 'саратов', region: 'саратовская обл.', pop: 0.84 },
-  { name: 'тюмень', region: 'тюменская обл.', pop: 0.83 },
-  { name: 'тольятти', region: 'самарская обл.', pop: 0.69 },
-  { name: 'ижевск', region: 'удмуртия', pop: 0.65 },
+  { name: 'Москва', region: 'Москва', pop: 13 },
+  { name: 'Санкт-Петербург', region: 'Санкт-Петербург', pop: 5.5 },
+  { name: 'Казань', region: 'Татарстан', pop: 1.3 },
+  { name: 'Екатеринбург', region: 'Свердловская обл.', pop: 1.5 },
+  { name: 'Новосибирск', region: 'Новосибирская обл.', pop: 1.6 },
+  { name: 'Нижний Новгород', region: 'Нижегородская обл.', pop: 1.2 },
+  { name: 'Челябинск', region: 'Челябинская обл.', pop: 1.2 },
+  { name: 'Самара', region: 'Самарская обл.', pop: 1.1 },
+  { name: 'Омск', region: 'Омская обл.', pop: 1.1 },
+  { name: 'Ростов-на-Дону', region: 'Ростовская обл.', pop: 1.1 },
+  { name: 'Уфа', region: 'Башкортостан', pop: 1.1 },
+  { name: 'Красноярск', region: 'Красноярский край', pop: 1.1 },
+  { name: 'Пермь', region: 'Пермский край', pop: 1.0 },
+  { name: 'Воронеж', region: 'Воронежская обл.', pop: 1.0 },
+  { name: 'Волгоград', region: 'Волгоградская обл.', pop: 1.0 },
+  { name: 'Краснодар', region: 'Краснодарский край', pop: 0.97 },
+  { name: 'Саратов', region: 'Саратовская обл.', pop: 0.84 },
+  { name: 'Тюмень', region: 'Тюменская обл.', pop: 0.83 },
+  { name: 'Тольятти', region: 'Самарская обл.', pop: 0.69 },
+  { name: 'Ижевск', region: 'Удмуртия', pop: 0.65 },
 ];
 
 const CATEGORIES = [
-  { id: 'beauty',   name: 'благоустройство' },
-  { id: 'zhkh',     name: 'жкх' },
-  { id: 'transport',name: 'транспорт' },
-  { id: 'eco',      name: 'экология' },
-  { id: 'safety',   name: 'безопасность' },
-  { id: 'edu',      name: 'образование' },
-  { id: 'other',    name: 'прочее' },
+  { id: 'beauty',   name: 'Благоустройство' },
+  { id: 'zhkh',     name: 'ЖКХ' },
+  { id: 'transport',name: 'Транспорт' },
+  { id: 'eco',      name: 'Экология' },
+  { id: 'safety',   name: 'Безопасность' },
+  { id: 'edu',      name: 'Образование' },
+  { id: 'other',    name: 'Прочее' },
 ];
 
-const DISTRICTS = ['центральный', 'советский', 'вахитовский', 'приволжский', 'кировский', 'московский', 'ново-савиновский'];
+const DISTRICTS = ['Невский', 'Калининский', 'Приморский', 'Фрунзенский', 'Красногвардейский', 'Московский', 'Выборгский'];
 
 const STATUS = {
-  pending:  { id: 'pending',  label: 'на рассмотрении', cls: 'pend' },
-  accepted: { id: 'accepted', label: 'принята',         cls: 'accept' },
-  in_work:  { id: 'in_work',  label: 'в работе',        cls: 'work' },
-  done:     { id: 'done',     label: 'исполнена',       cls: 'accept' },
-  denied:   { id: 'denied',   label: 'отклонена',       cls: 'deny' },
+  pending:  { id: 'pending',  label: 'На рассмотрении', cls: 'pend' },
+  accepted: { id: 'accepted', label: 'Принята',         cls: 'accept' },
+  in_work:  { id: 'in_work',  label: 'В работе',        cls: 'work' },
+  done:     { id: 'done',     label: 'Исполнена',       cls: 'accept' },
+  denied:   { id: 'denied',   label: 'Отклонена',       cls: 'deny' },
 };
 
 const DEFAULT_TIMELINE = (init) => [
-  { id: 'submitted', label: 'подана',    date: init.created_at, state: 'done',    desc: 'инициатива опубликована' },
-  { id: 'accepted',  label: 'принята',   date: null,            state: 'pending', desc: '' },
-  { id: 'in_work',   label: 'в работе',  date: null,            state: 'pending', desc: '' },
-  { id: 'done',      label: 'исполнена', date: null,            state: 'pending', desc: '' },
+  { id: 'submitted', label: 'Подана',    date: init.created_at, state: 'done',    desc: 'Инициатива опубликована' },
+  { id: 'accepted',  label: 'Принята',   date: null,            state: 'pending', desc: '' },
+  { id: 'in_work',   label: 'В работе',  date: null,            state: 'pending', desc: '' },
+  { id: 'done',      label: 'Исполнена', date: null,            state: 'pending', desc: '' },
 ];
 
 const INITIATIVES = [
   {
     id: 'init-001',
-    title: 'отремонтировать тротуар на ленина 42',
+    title: 'Отремонтировать тротуар на пр. Елизарова, 42',
     category: 'beauty',
-    district: 'центральный',
-    description: 'тротуар разбит на протяжении 80 метров, пешеходы вынуждены ходить по проезжей части. особенно опасно для родителей с колясками и пожилых людей. рядом школа №19 — дети ежедневно проходят по этому участку.',
+    district: 'Невский',
+    description: 'Тротуар разбит на протяжении 80 метров, пешеходы вынуждены ходить по проезжей части. Особенно опасно для родителей с колясками и пожилых людей. Рядом школа №19 — дети ежедневно проходят по этому участку.',
     status: 'in_work',
     votes: 143,
     voted: false,
     comments_count: 12,
     created_at: '2026-01-12',
-    author: 'анонимно',
+    author: 'Анонимно',
     location: { lat: 55.796, lon: 49.106 },
     photos: 3,
+    assignee: {
+      name: 'Иванов Пётр Сергеевич',
+      role: 'Начальник отдела благоустройства',
+      dept: 'Администрация Невского района',
+    },
     timeline: [
-      { id: 'submitted', label: 'подана', date: '2026-01-12', state: 'done', desc: 'инициатива опубликована, анонимно, район центральный' },
-      { id: 'accepted',  label: 'принята к рассмотрению', date: '2026-01-15', state: 'done', desc: 'передана в отдел благоустройства администрации', official: 'передана в отдел благоустройства. ответственный — иванов п.с.' },
-      { id: 'in_work',   label: 'в работе', date: '2026-01-21', state: 'now', desc: 'произведён выезд на объект, составляется смета работ', official: 'выезд состоялся, смета будет готова до 5 февраля. подрядчик определён по 44-фз.' },
-      { id: 'done',      label: 'исполнена', date: null, state: 'pending', desc: '' },
+      { id: 'submitted', label: 'Подана', date: '2026-01-12', state: 'done', desc: 'Инициатива опубликована, анонимно, район Невский' },
+      { id: 'accepted',  label: 'Принята к рассмотрению', date: '2026-01-15', state: 'done', desc: 'Передана в отдел благоустройства администрации', official: 'Передана в отдел благоустройства. Ответственный — Иванов П.С.' },
+      { id: 'in_work',   label: 'В работе', date: '2026-01-21', state: 'now', desc: 'Произведён выезд на объект, составляется смета работ', official: 'Выезд состоялся, смета будет готова до 5 февраля. Подрядчик определён по 44-ФЗ.' },
+      { id: 'done',      label: 'Исполнена', date: null, state: 'pending', desc: '' },
     ],
     comments: [
-      { id: 'c1', author: 'ольга м.', date: '13 янв', text: 'давно жду! на коляске невозможно пройти.', avatar: 'о' },
-      { id: 'c2', author: 'модератор', date: '15 янв', text: 'обращение принято, инициативу направили в профильный отдел. ответ в течение 14 дней.', avatar: 'м', official: true },
-      { id: 'c3', author: 'дмитрий в.', date: '16 янв', text: 'предлагаю заодно сделать пандус у школы.', avatar: 'д' },
+      { id: 'c1', author: 'Ольга М.', date: '13 янв', text: 'Давно жду! На коляске невозможно пройти.', avatar: 'О' },
+      { id: 'c2', author: 'Модератор', date: '15 янв', text: 'Обращение принято, инициативу направили в профильный отдел. Ответ в течение 14 дней.', avatar: 'М', official: true },
+      { id: 'c3', author: 'Дмитрий В.', date: '16 янв', text: 'Предлагаю заодно сделать пандус у школы.', avatar: 'Д' },
     ],
   },
   {
     id: 'init-002',
-    title: 'дворовое освещение, ул. татарстан 18',
+    title: 'Дворовое освещение, ул. Белы Куна, 18',
     category: 'zhkh',
-    district: 'советский',
-    description: 'три фонаря во дворе не работают уже два месяца. вечером темно и небезопасно. рядом детская площадка.',
+    district: 'Калининский',
+    description: 'Три фонаря во дворе не работают уже два месяца. Вечером темно и небезопасно. Рядом детская площадка.',
     status: 'pending',
     votes: 87,
     comments_count: 5,
     created_at: '2026-04-09',
-    author: 'марина к.',
+    author: 'Марина К.',
     photos: 1,
   },
   {
     id: 'init-003',
-    title: 'установить навес на остановке №34',
+    title: 'Установить навес на остановке №34',
     category: 'transport',
-    district: 'приволжский',
-    description: 'оживлённая остановка без навеса от дождя и снега. ожидание зимой особенно тяжело для пожилых.',
+    district: 'Фрунзенский',
+    description: 'Оживлённая остановка без навеса от дождя и снега. Ожидание зимой особенно тяжело для пожилых.',
     status: 'accepted',
     votes: 211,
     comments_count: 18,
     created_at: '2026-04-03',
-    author: 'анонимно',
+    author: 'Анонимно',
     photos: 2,
+    assignee: {
+      name: 'Кузнецова Марина Алексеевна',
+      role: 'Главный специалист отдела транспорта',
+      dept: 'Администрация Фрунзенского района',
+    },
+    timeline: [
+      { id: 'submitted', label: 'Подана',    date: '2026-04-03', state: 'done', desc: 'Инициатива опубликована' },
+      { id: 'accepted',  label: 'Принята',   date: '2026-05-05', state: 'now',  desc: 'Передана в профильный отдел', official: 'Инициатива принята к рассмотрению. Ответственный — Кузнецова М.А.' },
+      { id: 'in_work',   label: 'В работе',  date: null,         state: 'pending', desc: '' },
+      { id: 'done',      label: 'Исполнена', date: null,         state: 'pending', desc: '' },
+    ],
   },
   {
     id: 'init-004',
-    title: 'остановить вырубку деревьев в парке горького',
+    title: 'Остановить вырубку деревьев в парке Удельном',
     category: 'eco',
-    district: 'вахитовский',
-    description: 'под видом санитарной чистки вырубают здоровые липы. требуем независимую экспертизу деревьев.',
+    district: 'Приморский',
+    description: 'Под видом санитарной чистки вырубают здоровые липы. Требуем независимую экспертизу деревьев.',
     status: 'denied',
     votes: 388,
     comments_count: 47,
     created_at: '2026-03-28',
-    author: 'анна с.',
+    author: 'Анна С.',
     photos: 3,
+    assignee: {
+      name: 'Фёдоров Алексей Борисович',
+      role: 'Начальник отдела экологии',
+      dept: 'Администрация Приморского района',
+    },
   },
   {
     id: 'init-005',
-    title: 'ямы у школы №19 на проезжей части',
+    title: 'Ямы у школы №19 на проезжей части',
     category: 'safety',
-    district: 'кировский',
-    description: 'крупные ямы прямо у пешеходного перехода. дети идут в школу — опасно.',
+    district: 'Красногвардейский',
+    description: 'Крупные ямы прямо у пешеходного перехода. Дети идут в школу — опасно.',
     status: 'pending',
     votes: 64,
     comments_count: 8,
     created_at: '2026-03-25',
-    author: 'родительский комитет',
+    author: 'Родительский комитет',
     photos: 2,
   },
   {
     id: 'init-006',
-    title: 'детская площадка двор №12, ул. меридианная',
+    title: 'Детская площадка двор №12, ул. Оптиков',
     category: 'beauty',
-    district: 'ново-савиновский',
-    description: 'площадка разрушена, оборудование опасно. нужен полный ремонт.',
+    district: 'Выборгский',
+    description: 'Площадка разрушена, оборудование опасно. Нужен полный ремонт.',
     status: 'done',
     votes: 178,
     comments_count: 22,
     created_at: '2025-12-04',
-    author: 'анонимно',
+    author: 'Анонимно',
     photos: 2,
   },
   {
     id: 'init-007',
-    title: 'светофор на пересечении баумана / лобачевского',
+    title: 'Светофор на пересечении пр. Просвещения / пр. Авиаконструкторов',
     category: 'transport',
-    district: 'вахитовский',
-    description: 'неурегулированный переход, поток машин большой, часты дтп. нужен светофор.',
+    district: 'Приморский',
+    description: 'Неурегулированный переход, поток машин большой, часты ДТП. Нужен светофор.',
     status: 'in_work',
     votes: 256,
     comments_count: 31,
     created_at: '2026-02-18',
-    author: 'анонимно',
+    author: 'Анонимно',
     photos: 1,
   },
   {
     id: 'init-008',
-    title: 'мусорные баки переполнены — победы 8/1',
+    title: 'Мусорные баки переполнены — ул. Типанова, 8',
     category: 'zhkh',
-    district: 'московский',
-    description: 'вывоз раз в неделю, баков не хватает. неприятный запах, антисанитария.',
+    district: 'Московский',
+    description: 'Вывоз раз в неделю, баков не хватает. Неприятный запах, антисанитария.',
     status: 'pending',
     votes: 42,
     comments_count: 3,
     created_at: '2026-04-11',
-    author: 'роман т.',
+    author: 'Роман Т.',
     photos: 1,
+  },
+  {
+    id: 'init-009',
+    title: 'Установлен пандус у школы №19',
+    category: 'beauty',
+    district: 'Красногвардейский',
+    description: 'По инициативе жителей был установлен пандус у центрального входа школы №19. Работы выполнены в срок.',
+    status: 'done',
+    votes: 97,
+    comments_count: 6,
+    created_at: '2026-01-15',
+    author: 'Анна В.',
+    photos: 2,
+    rating_avg: 4.3,
+    rating_count: 18,
+    assignee: {
+      name: 'Смирнова Елена Николаевна',
+      role: 'Специалист отдела благоустройства',
+      dept: 'Администрация Красногвардейского района',
+    },
+    timeline: [
+      { id: 'submitted', label: 'Подана',    date: '2026-01-15', state: 'done', desc: 'Инициатива опубликована' },
+      { id: 'accepted',  label: 'Принята',   date: '2026-01-18', state: 'done', desc: 'Передана в профильный отдел', official: 'Инициатива принята к исполнению. Ответственный — Смирнова Е.Н.' },
+      { id: 'in_work',   label: 'В работе',  date: '2026-01-25', state: 'done', desc: 'Начаты строительные работы', official: 'Подрядчик приступил к работам.' },
+      { id: 'done',      label: 'Исполнена', date: '2026-02-10', state: 'done', desc: 'Пандус установлен и сдан', official: 'Работы завершены, объект введён в эксплуатацию.' },
+    ],
+    comments: [
+      { id: 'c1', author: 'Анна В.', date: '16 янв', text: 'Спасибо! Наконец-то!', avatar: 'А' },
+      { id: 'c2', author: 'Модератор', date: '18 янв', text: 'Инициатива принята к исполнению.', avatar: 'М', official: true },
+      { id: 'c3', author: 'Анна В.', date: '11 фев', text: 'Пандус установили — всё аккуратно сделано.', avatar: 'А' },
+    ],
   },
 ];
 
@@ -1466,20 +1518,20 @@ const DASHBOARD = {
     { m: 'апр', n: 84 },
   ],
   byDistrict: [
-    { name: 'центральный',    n: 92, pct: 27 },
-    { name: 'советский',      n: 78, pct: 23 },
-    { name: 'вахитовский',    n: 64, pct: 19 },
-    { name: 'приволжский',    n: 51, pct: 15 },
-    { name: 'кировский',      n: 33, pct: 10 },
-    { name: 'ново-савиновский', n: 24, pct: 7 },
+    { name: 'Невский',           n: 92, pct: 27 },
+    { name: 'Калининский',       n: 78, pct: 23 },
+    { name: 'Приморский',        n: 64, pct: 19 },
+    { name: 'Фрунзенский',       n: 51, pct: 15 },
+    { name: 'Красногвардейский', n: 33, pct: 10 },
+    { name: 'Выборгский',        n: 24, pct: 7 },
   ],
 };
 
 const NOTIFICATIONS = [
-  { id: 'n1', kind: 'status', title: 'статус «в работе»', sub: 'тротуар на ленина 42', when: '2 часа назад', initId: 'init-001', unread: true },
-  { id: 'n2', kind: 'official', title: 'официальный ответ модератора', sub: 'дет. площадка двор №12', when: 'вчера', initId: 'init-006', unread: true },
-  { id: 'n3', kind: 'comment', title: 'новый комментарий', sub: '«предлагаю заодно сделать пандус…»', when: '3 дня назад', initId: 'init-001', unread: false },
-  { id: 'n4', kind: 'status', title: 'статус «исполнена»', sub: 'дет. площадка двор №12', when: '12 апр', initId: 'init-006', unread: false },
+  { id: 'n1', kind: 'status', title: 'Статус «В работе»', sub: 'Тротуар на пр. Елизарова, 42', when: '2 часа назад', initId: 'init-001', unread: true },
+  { id: 'n2', kind: 'official', title: 'Официальный ответ модератора', sub: 'Дет. площадка двор №12', when: 'Вчера', initId: 'init-006', unread: true },
+  { id: 'n3', kind: 'comment', title: 'Новый комментарий', sub: '«Предлагаю заодно сделать пандус…»', when: '3 дня назад', initId: 'init-001', unread: false },
+  { id: 'n4', kind: 'status', title: 'Статус «Исполнена»', sub: 'Дет. площадка двор №12', when: '12 апр', initId: 'init-006', unread: false },
 ];
 
 window.MOCK = {
@@ -1511,7 +1563,7 @@ function AppBar({ title, subtitle, onBack, right, center, sticky = true }) {
   return (
     <div className="appbar" style={!sticky ? { position: 'static' } : null}>
       {onBack && (
-        <button className="back-btn" onClick={onBack} aria-label="назад">
+        <button className="back-btn" onClick={onBack} aria-label="Назад">
           <Icon name="chevronL" size={22} />
         </button>
       )}
@@ -1554,17 +1606,17 @@ function ChipsRow({ children, padded = true }) {
 /* ─── bottom nav (5 items + fab) ─── */
 function BottomNav({ active, onNav }) {
   const items = [
-    { k: 'feed',     l: 'лента',    icon: 'list'     },
-    { k: 'map',      l: 'карта',    icon: 'map'       },
-    { k: 'submit',   l: 'подать',   fab: true          },
-    { k: 'bookmark', l: 'избранное', icon: 'bookmark' },
-    { k: 'profile',  l: 'профиль',  icon: 'user'      },
+    { k: 'feed',     l: 'Лента',    icon: 'list'     },
+    { k: 'map',      l: 'Карта',    icon: 'map'       },
+    { k: 'submit',   l: 'Подать',   fab: true          },
+    { k: 'bookmark', l: 'Избранное', icon: 'bookmark' },
+    { k: 'profile',  l: 'Профиль',  icon: 'user'      },
   ];
   return (
     <div className="bnav">
       {items.map(it => it.fab ? (
         <button key={it.k} className="bnav-item fab" onClick={() => onNav(it.k)}>
-          <span className="fab-bg" aria-label="подать">
+          <span className="fab-bg" aria-label="Подать">
             <svg width="24" height="24" viewBox="0 0 24 24" fill="none" aria-hidden="true">
               <line x1="12" y1="5" x2="12" y2="19" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round"/>
               <line x1="5" y1="12" x2="19" y2="12" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round"/>
@@ -1611,6 +1663,12 @@ function InitiativeCard({ init, onOpen, compact, voted, onVote }) {
             {init.votes + (voted ? 1 : 0)}
           </span>
           <span><Icon name="chat" size={14} stroke={2}/> {init.comments_count}</span>
+          {init.rating_avg != null && (
+            <span style={{ display: 'inline-flex', alignItems: 'center', gap: 3, fontSize: 12, color: 'var(--text-2)' }}>
+              <Icon name="star" size={12} fill="#f59e0b" stroke={1} style={{ color: '#f59e0b' }}/>
+              {init.rating_avg.toFixed(1)} ({init.rating_count})
+            </span>
+          )}
         </div>
         <span className="muted" style={{ fontSize: 12 }}>{fmtDate(init.created_at)}</span>
       </div>
@@ -1789,13 +1847,13 @@ function ScreenOnboard({ onPick, hasCity }) {
     return MOCK.CITIES.filter(c => c.name.startsWith(query.toLowerCase()));
   }, [query]);
 
-  const popular = ['москва', 'санкт-петербург', 'казань', 'екатеринбург', 'новосибирск', 'нижний новгород'];
+  const popular = ['Москва', 'Санкт-Петербург', 'Казань', 'Екатеринбург', 'Новосибирск', 'Нижний Новгород'];
 
   return (
     <div className="app-body" style={{ background: 'var(--bg)' }}>
       {hasCity && (
         <AppBar
-          title="сменить город"
+          title="Сменить город"
           onBack={() => onPick(null)}
         />
       )}
@@ -1809,7 +1867,7 @@ function ScreenOnboard({ onPick, hasCity }) {
               lineHeight: 1.2,
               margin: 0,
             }}>
-              добро пожаловать<br/>в <span style={{ color: 'var(--primary)' }}>инициативу</span>
+              Добро пожаловать<br/>в <span style={{ color: 'var(--primary)' }}>инициативу</span>
             </h1>
             <div style={{
               fontSize: 14,
@@ -1818,7 +1876,7 @@ function ScreenOnboard({ onPick, hasCity }) {
               marginTop: 8,
               lineHeight: 1.4,
             }}>
-              выберите ваш город, чтобы увидеть инициативы рядом
+              Выберите ваш город, чтобы увидеть инициативы рядом
             </div>
           </div>
         )}
@@ -1826,7 +1884,7 @@ function ScreenOnboard({ onPick, hasCity }) {
           <span className="ic"><Icon name="search" size={18}/></span>
           <input
             className="input"
-            placeholder="например: казань"
+            placeholder="Например: Казань"
             value={query}
             onChange={e => setQuery(e.target.value)}
             autoFocus={!hasCity}
@@ -1835,7 +1893,7 @@ function ScreenOnboard({ onPick, hasCity }) {
 
         {!query && (
           <>
-            <div className="eyebrow" style={{ marginBottom: 8 }}>популярные</div>
+            <div className="eyebrow" style={{ marginBottom: 8 }}>Популярные</div>
             <div className="chip-group" style={{ marginBottom: 22 }}>
               {popular.map(c => (
                 <button key={c} className="chip" onClick={() => onPick(c)}>{c}</button>
@@ -1844,7 +1902,7 @@ function ScreenOnboard({ onPick, hasCity }) {
           </>
         )}
 
-        <div className="eyebrow" style={{ marginBottom: 8 }}>все города · {results.length}</div>
+        <div className="eyebrow" style={{ marginBottom: 8 }}>Все города · {results.length}</div>
         <div style={{ background: 'var(--surface)', borderRadius: 12, overflow: 'hidden' }}>
           {results.map((c, i) => (
             <div
@@ -1866,8 +1924,8 @@ function ScreenOnboard({ onPick, hasCity }) {
           {results.length === 0 && (
             <div className="empty" style={{ padding: '40px 16px' }}>
               <div className="icn"><Icon name="search" size={22}/></div>
-              <div className="ti">город не найден</div>
-              <div className="desc">попробуйте другой запрос или выберите из популярных</div>
+              <div className="ti">Город не найден</div>
+              <div className="desc">Попробуйте другой запрос или выберите из популярных</div>
             </div>
           )}
         </div>
@@ -1875,7 +1933,7 @@ function ScreenOnboard({ onPick, hasCity }) {
         {!hasCity && (
           <div style={{ marginTop: 18, display: 'flex', alignItems: 'center', gap: 10, color: 'var(--text-3)', fontSize: 12 }}>
             <Icon name="info" size={14}/>
-            <span>без регистрации, выбор сохранится локально</span>
+            <span>Без регистрации, выбор сохранится локально</span>
           </div>
         )}
       </div>
@@ -1895,26 +1953,45 @@ function ScreenFeed({ city, onOpenInitiative, onChangeCity, onOpenNotifications 
   const [status, setStatus] = useStateFD('all');
   const [cat, setCat] = useStateFD('all');
   const [sort, setSort] = useStateFD('new');
+  const [district, setDistrict] = useStateFD('all');
+  const [districtOpen, setDistrictOpen] = useStateFD(false);
   const [voted, setVoted] = useStateFD({});
   const [filtersOpen, setFiltersOpen] = useStateFD(false);
+  const [isDesktop, setIsDesktop] = React.useState(window.innerWidth >= 1280);
+
+  React.useEffect(() => {
+    const handler = () => setIsDesktop(window.innerWidth >= 1280);
+    window.addEventListener('resize', handler);
+    return () => window.removeEventListener('resize', handler);
+  }, []);
+
+  const districts = ['Все', ...new Set(MOCK.INITIATIVES.map(x => x.district).filter(Boolean))].sort();
+
+  React.useEffect(() => {
+    if (!districtOpen) return;
+    const handler = () => setDistrictOpen(false);
+    document.addEventListener('click', handler);
+    return () => document.removeEventListener('click', handler);
+  }, [districtOpen]);
 
   const statuses = [
-    { id: 'all', label: 'все' },
-    { id: 'pending', label: 'на рассмотрении' },
-    { id: 'accepted', label: 'принято' },
-    { id: 'in_work', label: 'в работе' },
-    { id: 'done', label: 'исполнено' },
-    { id: 'denied', label: 'отклонено' },
+    { id: 'all', label: 'Все' },
+    { id: 'pending', label: 'На рассмотрении' },
+    { id: 'accepted', label: 'Принято' },
+    { id: 'in_work', label: 'В работе' },
+    { id: 'done', label: 'Исполнено' },
+    { id: 'denied', label: 'Отклонено' },
   ];
 
   const filtered = useMemoFD(() => {
     let xs = MOCK.INITIATIVES.slice();
     if (status !== 'all') xs = xs.filter(x => x.status === status);
     if (cat !== 'all') xs = xs.filter(x => x.category === cat);
+    if (district !== 'all') xs = xs.filter(x => x.district === district);
     if (sort === 'popular') xs.sort((a, b) => b.votes - a.votes);
     else if (sort === 'new') xs.sort((a, b) => b.created_at.localeCompare(a.created_at));
     return xs;
-  }, [status, cat, sort]);
+  }, [status, cat, sort, district]);
 
   return (
     <div className="app-body">
@@ -1922,14 +1999,14 @@ function ScreenFeed({ city, onOpenInitiative, onChangeCity, onOpenNotifications 
       <div className="appbar" style={{ paddingTop: 8 }}>
         <button className="city-chip" onClick={onChangeCity}>
           <Icon name="pin" size={16}/>
-          <span>город: <b>{city}</b></span>
+          <span>Город: <b>{city}</b></span>
           <Icon name="chevronD" size={14}/>
         </button>
         <div className="grow"/>
-        <button className="icon-btn" onClick={() => setFiltersOpen(true)} aria-label="фильтры">
+        <button className="icon-btn" onClick={() => setFiltersOpen(true)} aria-label="Фильтры">
           <Icon name="filter" size={20}/>
         </button>
-        <button className="icon-btn" onClick={onOpenNotifications} aria-label="уведомления">
+        <button className="icon-btn" onClick={onOpenNotifications} aria-label="Уведомления">
           <Icon name="bell" size={20}/>
           <span className="badge"/>
         </button>
@@ -1937,35 +2014,90 @@ function ScreenFeed({ city, onOpenInitiative, onChangeCity, onOpenNotifications 
 
       {/* Hero */}
       <div className="content-pad" style={{ paddingTop: 12, paddingBottom: 12 }}>
-        <div className="h1">инициативы города</div>
+        <div className="h1">Инициативы города</div>
         <div className="lead" style={{ marginTop: 4 }}>
           {filtered.length} {plural(filtered.length, ['инициатива', 'инициативы', 'инициатив'])} · обновлено только что
         </div>
       </div>
 
-      {/* Status chips */}
-      <ChipsRow>
-        {statuses.map(s => (
-          <button
-            key={s.id}
-            className={`chip${status === s.id ? ' active' : ''}`}
-            onClick={() => setStatus(s.id)}
-          >
-            {s.label}
-            {s.id !== 'all' && (
-              <span className="count">{MOCK.INITIATIVES.filter(x => x.status === s.id).length}</span>
-            )}
-          </button>
-        ))}
-      </ChipsRow>
+      {/* Status / District / Category chips */}
+      <div style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
+        <ChipsRow>
+          {statuses.map(s => (
+            <button
+              key={s.id}
+              className={`chip${status === s.id ? ' active' : ''}`}
+              onClick={() => setStatus(s.id)}
+            >
+              {s.label}
+              {s.id !== 'all' && (
+                <span className="count">{MOCK.INITIATIVES.filter(x => x.status === s.id).length}</span>
+              )}
+            </button>
+          ))}
+        </ChipsRow>
 
-      {/* Category + sort */}
-      <div className="content-pad" style={{ paddingTop: 12, paddingBottom: 4, display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-        <ChipsRow padded={false}>
+        <div style={{ padding: '0 16px' }}>
+          <div style={{ position: 'relative', display: 'inline-block' }}>
+            <button
+              className={`chip${district !== 'all' ? ' active' : ''}`}
+              onClick={e => { e.stopPropagation(); setDistrictOpen(o => !o); }}
+              style={{ display: 'flex', alignItems: 'center', gap: 4 }}
+            >
+              {district === 'all' ? 'Все районы' : district}
+              <Icon name="chevronD" size={12}
+                style={{ transform: districtOpen ? 'rotate(180deg)' : 'none', transition: 'transform 0.15s' }}
+              />
+            </button>
+            {districtOpen && (
+              <div style={{
+                position: 'absolute',
+                top: 'calc(100% + 4px)',
+                left: 0,
+                zIndex: 200,
+                background: 'var(--surface)',
+                border: '1px solid var(--border)',
+                borderRadius: 'var(--r-8)',
+                boxShadow: '0 4px 16px rgba(0,0,0,0.10)',
+                minWidth: 180,
+                padding: '4px 0',
+                display: 'flex',
+                flexDirection: 'column',
+              }}>
+                {['all', ...districts.slice(1)].map(d => (
+                  <button
+                    key={d}
+                    onClick={() => { setDistrict(d); setDistrictOpen(false); }}
+                    style={{
+                      background: district === d ? 'var(--primary-soft)' : 'none',
+                      border: 'none',
+                      textAlign: 'left',
+                      padding: '8px 14px',
+                      fontSize: 13,
+                      color: district === d ? 'var(--primary)' : 'var(--text-1)',
+                      fontWeight: district === d ? 700 : 400,
+                      cursor: 'pointer',
+                      borderRadius: 0,
+                    }}
+                  >
+                    {d === 'all' ? 'Все районы' : d}
+                    <span style={{ color: 'var(--text-3)', marginLeft: 6, fontSize: 11 }}>
+                      {d === 'all'
+                        ? MOCK.INITIATIVES.length
+                        : MOCK.INITIATIVES.filter(x => x.district === d).length}
+                    </span>
+                  </button>
+                ))}
+              </div>
+            )}
+          </div>
+        </div>
+
+        <ChipsRow>
           <button
             className={`chip sm${cat === 'all' ? ' active' : ''}`}
             onClick={() => setCat('all')}
-          >все категории</button>
+          >Все категории</button>
           {MOCK.CATEGORIES.slice(0, 4).map(c => (
             <button
               key={c.id}
@@ -1976,11 +2108,11 @@ function ScreenFeed({ city, onOpenInitiative, onChangeCity, onOpenNotifications 
         </ChipsRow>
       </div>
       <div className="content-pad" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', paddingBottom: 8 }}>
-        <span className="eyebrow">сортировка</span>
+        <span className="eyebrow">Сортировка</span>
         <button className="row gap-2 middle" style={{ background: 'none', border: 'none', color: 'var(--primary)', fontSize: 14, fontWeight: 500, cursor: 'pointer' }}
           onClick={() => setSort(sort === 'new' ? 'popular' : 'new')}>
           <Icon name="sort" size={14}/>
-          <span>{sort === 'new' ? 'новые' : 'популярные'}</span>
+          <span>{sort === 'new' ? 'Новые' : 'Популярные'}</span>
         </button>
       </div>
 
@@ -1989,8 +2121,8 @@ function ScreenFeed({ city, onOpenInitiative, onChangeCity, onOpenNotifications 
         {filtered.length === 0 ? (
           <div className="empty">
             <div className="icn"><Icon name="document" size={22}/></div>
-            <div className="ti">пока ничего нет</div>
-            <div className="desc">по выбранным фильтрам инициатив не найдено. попробуйте сбросить фильтры или подайте первую.</div>
+            <div className="ti">Пока ничего нет</div>
+            <div className="desc">По выбранным фильтрам инициатив не найдено. Попробуйте сбросить фильтры или подайте первую.</div>
           </div>
         ) : filtered.map(init => (
           <InitiativeCard
@@ -2003,44 +2135,154 @@ function ScreenFeed({ city, onOpenInitiative, onChangeCity, onOpenNotifications 
       </div>
 
       {filtersOpen && (
-        <Sheet title="фильтры" onClose={() => setFiltersOpen(false)} big>
-          <div className="col gap-8" style={{ overflowY: 'auto' }}>
-            <div>
-              <div className="eyebrow" style={{ marginBottom: 8 }}>категория</div>
-              <div className="chip-group">
-                <button
-                  className={`chip${cat === 'all' ? ' active' : ''}`}
-                  onClick={() => setCat('all')}
-                >все</button>
-                {MOCK.CATEGORIES.map(c => (
+        isDesktop
+          ? (
+            <>
+              <div
+                onClick={() => setFiltersOpen(false)}
+                style={{
+                  position: 'fixed', inset: 0,
+                  background: 'rgba(0,0,0,0.18)',
+                  zIndex: 290,
+                }}
+              />
+              <div style={{
+                position: 'fixed',
+                top: 0, right: 0, bottom: 0,
+                width: 340,
+                zIndex: 300,
+                background: 'var(--surface)',
+                borderLeft: '1px solid var(--border)',
+                boxShadow: '-8px 0 32px rgba(0,0,0,0.10)',
+                display: 'flex',
+                flexDirection: 'column',
+                overflow: 'hidden',
+              }}>
+                <div style={{
+                  display: 'flex', alignItems: 'center', justifyContent: 'space-between',
+                  padding: '20px 20px 16px',
+                  borderBottom: '1px solid var(--border)',
+                  flexShrink: 0,
+                }}>
+                  <span style={{ fontSize: 16, fontWeight: 700, color: 'var(--text-1)' }}>Фильтры</span>
                   <button
-                    key={c.id}
-                    className={`chip${cat === c.id ? ' active' : ''}`}
-                    onClick={() => setCat(c.id)}
-                  >{c.name}</button>
-                ))}
+                    onClick={() => setFiltersOpen(false)}
+                    style={{
+                      background: 'none',
+                      border: 'none',
+                      padding: 4,
+                      cursor: 'pointer',
+                      color: 'var(--text-3)',
+                      display: 'flex',
+                      alignItems: 'center',
+                      lineHeight: 1,
+                    }}
+                  >
+                    <Icon name="close" size={18}/>
+                  </button>
+                </div>
+                <div style={{ flex: 1, overflowY: 'auto', padding: '16px 20px', display: 'flex', flexDirection: 'column', gap: 20 }}>
+                  <div>
+                    <div className="eyebrow" style={{ marginBottom: 8 }}>Категория</div>
+                    <div className="chip-group">
+                      <button className={`chip${cat === 'all' ? ' active' : ''}`} onClick={() => setCat('all')}>Все</button>
+                      {MOCK.CATEGORIES.map(c => (
+                        <button key={c.id} className={`chip${cat === c.id ? ' active' : ''}`} onClick={() => setCat(c.id)}>{c.name}</button>
+                      ))}
+                    </div>
+                  </div>
+                  <div>
+                    <div className="eyebrow" style={{ marginBottom: 8 }}>Район</div>
+                    <div className="chip-group">
+                      <button className={`chip${district === 'all' ? ' active' : ''}`} onClick={() => setDistrict('all')}>Все</button>
+                      {districts.slice(1).map(d => (
+                        <button key={d} className={`chip${district === d ? ' active' : ''}`} onClick={() => setDistrict(d)}>{d}</button>
+                      ))}
+                    </div>
+                  </div>
+                  <div>
+                    <div className="eyebrow" style={{ marginBottom: 8 }}>Сортировка</div>
+                    <div className="chip-group">
+                      {[
+                        { id: 'new', l: 'Новые сверху' },
+                        { id: 'popular', l: 'Популярные' },
+                        { id: 'urgent', l: 'Срок истекает' },
+                      ].map(s => (
+                        <button key={s.id} className={`chip${sort === s.id ? ' active' : ''}`} onClick={() => setSort(s.id)}>{s.l}</button>
+                      ))}
+                    </div>
+                  </div>
+                </div>
+                <div style={{
+                  padding: '12px 20px 20px',
+                  borderTop: '1px solid var(--border)',
+                  flexShrink: 0,
+                  display: 'flex',
+                  flexDirection: 'column',
+                  gap: 8,
+                }}>
+                  <button className="btn" onClick={() => setFiltersOpen(false)}>Применить</button>
+                  <button className="btn ghost" onClick={() => { setStatus('all'); setCat('all'); setSort('new'); setDistrict('all'); }}>Сбросить</button>
+                </div>
               </div>
-            </div>
-            <div>
-              <div className="eyebrow" style={{ marginBottom: 8 }}>сортировка</div>
-              <div className="chip-group">
-                {[
-                  { id: 'new', l: 'новые сверху' },
-                  { id: 'popular', l: 'популярные' },
-                  { id: 'urgent', l: 'срок истекает' },
-                ].map(s => (
-                  <button
-                    key={s.id}
-                    className={`chip${sort === s.id ? ' active' : ''}`}
-                    onClick={() => setSort(s.id)}
-                  >{s.l}</button>
-                ))}
+            </>
+          )
+          : (
+            <Sheet title="Фильтры" onClose={() => setFiltersOpen(false)} big>
+              <div className="col gap-8" style={{ overflowY: 'auto' }}>
+                <div>
+                  <div className="eyebrow" style={{ marginBottom: 8 }}>Категория</div>
+                  <div className="chip-group">
+                    <button
+                      className={`chip${cat === 'all' ? ' active' : ''}`}
+                      onClick={() => setCat('all')}
+                    >Все</button>
+                    {MOCK.CATEGORIES.map(c => (
+                      <button
+                        key={c.id}
+                        className={`chip${cat === c.id ? ' active' : ''}`}
+                        onClick={() => setCat(c.id)}
+                      >{c.name}</button>
+                    ))}
+                  </div>
+                </div>
+                <div>
+                  <div className="eyebrow" style={{ marginBottom: 8 }}>Район</div>
+                  <div className="chip-group">
+                    <button
+                      className={`chip${district === 'all' ? ' active' : ''}`}
+                      onClick={() => setDistrict('all')}
+                    >Все</button>
+                    {districts.slice(1).map(d => (
+                      <button
+                        key={d}
+                        className={`chip${district === d ? ' active' : ''}`}
+                        onClick={() => setDistrict(d)}
+                      >{d}</button>
+                    ))}
+                  </div>
+                </div>
+                <div>
+                  <div className="eyebrow" style={{ marginBottom: 8 }}>Сортировка</div>
+                  <div className="chip-group">
+                    {[
+                      { id: 'new', l: 'Новые сверху' },
+                      { id: 'popular', l: 'Популярные' },
+                      { id: 'urgent', l: 'Срок истекает' },
+                    ].map(s => (
+                      <button
+                        key={s.id}
+                        className={`chip${sort === s.id ? ' active' : ''}`}
+                        onClick={() => setSort(s.id)}
+                      >{s.l}</button>
+                    ))}
+                  </div>
+                </div>
+                <button className="btn" onClick={() => setFiltersOpen(false)}>Применить</button>
+                <button className="btn ghost" onClick={() => { setStatus('all'); setCat('all'); setSort('new'); setDistrict('all'); }}>Сбросить</button>
               </div>
-            </div>
-            <button className="btn" onClick={() => setFiltersOpen(false)}>применить</button>
-            <button className="btn ghost" onClick={() => { setStatus('all'); setCat('all'); setSort('new'); }}>сбросить</button>
-          </div>
-        </Sheet>
+            </Sheet>
+          )
       )}
     </div>
   );
@@ -2062,6 +2304,113 @@ window.plural = plural;
 /* global React, Icon, MOCK, AppBar, StatusBadge, CategoryTag, MiniMap, TimelineH, formatShortDate */
 const { useState: useStateID } = React;
 
+function SLATimer({ slaStart }) {
+  const daysElapsed = Math.floor((Date.now() - new Date(slaStart)) / 86400000);
+  const daysLeft = 30 - daysElapsed;
+  const pct = Math.min(100, Math.max(0, (daysElapsed / 30) * 100));
+
+  let color, text;
+  if (daysLeft <= 0) {
+    color = 'var(--st-deny-fg)';
+    text = 'Срок истёк';
+  } else if (daysLeft <= 7) {
+    color = 'var(--st-pend-fg)';
+    text = `Осталось ${daysLeft} дн.`;
+  } else {
+    color = 'var(--st-accept-fg)';
+    text = `Осталось ${daysLeft} дн.`;
+  }
+
+  return (
+    <div style={{ padding: '0 16px 12px' }}>
+      <div style={{
+        display: 'flex', alignItems: 'center', gap: 8,
+        padding: '8px 12px',
+        background: 'var(--surface)',
+        borderRadius: 'var(--r-8)',
+        border: '1px solid var(--border)',
+      }}>
+        <Icon name="clock" size={14} style={{ color, flexShrink: 0 }}/>
+        <span style={{ fontSize: 13, color, fontWeight: 400, whiteSpace: 'nowrap' }}>{text}</span>
+        <div style={{ flex: 1, background: 'var(--border)', height: 4, borderRadius: 2, overflow: 'hidden' }}>
+          <div style={{ width: `${pct}%`, height: '100%', background: color, borderRadius: 2 }}/>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+function RatingBlock({ initId }) {
+  const [rating, setRating] = useStateID(null);
+  const [hover, setHover] = useStateID(null);
+  const [submitted, setSubmitted] = useStateID(false);
+  const [appeal, setAppeal] = useStateID(false);
+  const [appealText, setAppealText] = useStateID('');
+  const [appealSent, setAppealSent] = useStateID(false);
+
+  const labels = { 1: 'Очень плохо', 2: 'Плохо', 3: 'Удовлетворительно', 4: 'Хорошо', 5: 'Отлично' };
+  const activeRating = hover ?? rating;
+
+  const Stars = ({ size = 24, interactive = false }) => (
+    <div style={{ display: 'flex', gap: 4 }}>
+      {[1, 2, 3, 4, 5].map(i => (
+        <button
+          key={i}
+          disabled={!interactive}
+          onClick={interactive ? () => setRating(i) : undefined}
+          onMouseEnter={interactive ? () => setHover(i) : undefined}
+          onMouseLeave={interactive ? () => setHover(null) : undefined}
+          style={{ background: 'none', border: 'none', padding: 0, cursor: interactive ? 'pointer' : 'default', display: 'flex' }}
+        >
+          <Icon
+            name="star" size={size}
+            fill={activeRating >= i ? '#f59e0b' : 'none'}
+            stroke={1.5}
+            style={{ color: activeRating >= i ? '#f59e0b' : 'var(--border-strong)' }}
+          />
+        </button>
+      ))}
+    </div>
+  );
+
+  return (
+    <div style={{ margin: '12px 16px', padding: '14px', background: 'var(--surface)', borderRadius: 'var(--r-12)', border: '1px solid var(--border)' }}>
+      {appealSent ? (
+        <div style={{ display: 'flex', alignItems: 'center', gap: 8, color: 'var(--st-accept-fg)', fontSize: 13 }}>
+          <Icon name="check" size={16} stroke={2.5}/>
+          <span>Жалоба принята, рассматривается в течение 10 рабочих дней</span>
+        </div>
+      ) : appeal ? (
+        <div style={{ display: 'flex', flexDirection: 'column', gap: 10 }}>
+          <div style={{ fontWeight: 700, fontSize: 14 }}>Обжалование решения</div>
+          <div style={{ fontSize: 12, color: 'var(--text-3)' }}>Опишите, почему вы считаете инициативу неисполненной</div>
+          <textarea className="textarea" value={appealText} onChange={e => setAppealText(e.target.value)}/>
+          <div style={{ display: 'flex', gap: 8 }}>
+            <button className="btn sm" style={{ flex: 1 }} onClick={() => { setAppealSent(true); setAppeal(false); }}>Отправить жалобу</button>
+            <button className="btn sm secondary" style={{ flex: 1 }} onClick={() => setAppeal(false)}>Отмена</button>
+          </div>
+        </div>
+      ) : submitted ? (
+        <div style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
+          <div style={{ fontSize: 13, color: 'var(--text-2)' }}>Вы оценили исполнение</div>
+          <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
+            <Stars size={20}/>
+            <span style={{ fontSize: 13, color: 'var(--text-2)' }}>{labels[rating]}</span>
+          </div>
+          <button className="btn sm secondary" style={{ width: 'auto', alignSelf: 'flex-start' }} onClick={() => setAppeal(true)}>Обжаловать</button>
+        </div>
+      ) : (
+        <div style={{ display: 'flex', flexDirection: 'column', gap: 10 }}>
+          <div style={{ fontSize: 13, color: 'var(--text-2)' }}>Оцените исполнение</div>
+          <Stars size={24} interactive/>
+          {rating && <div style={{ fontSize: 12, color: 'var(--text-3)' }}>{labels[rating]}</div>}
+          <button className="btn sm" disabled={rating === null} style={{ width: 'auto', alignSelf: 'flex-start' }} onClick={() => setSubmitted(true)}>Отправить</button>
+        </div>
+      )}
+    </div>
+  );
+}
+
 function ScreenInitiative({ initId, onBack, onOpenInitiative }) {
   const init = MOCK.INITIATIVES.find(x => x.id === initId) || MOCK.INITIATIVES[0];
   const timeline = init.timeline || MOCK.DEFAULT_TIMELINE(init);
@@ -2070,6 +2419,10 @@ function ScreenInitiative({ initId, onBack, onOpenInitiative }) {
   const [comment, setComment] = useStateID('');
   const [comments, setComments] = useStateID(init.comments || []);
   const [expandedStep, setExpandedStep] = useStateID(null);
+  const [complaintStep, setComplaintStep] = useStateID(null);
+  const [complaintText, setComplaintText] = useStateID('');
+  const [complaintSent, setComplaintSent] = useStateID(false);
+  const isMobile = useWindowWidth() < 768;
 
   const handleVote = () => {
     if (downvoted) setDownvoted(false);
@@ -2083,10 +2436,10 @@ function ScreenInitiative({ initId, onBack, onOpenInitiative }) {
     if (!comment.trim()) return;
     setComments([...comments, {
       id: `c-${Date.now()}`,
-      author: 'вы',
-      date: 'только что',
+      author: 'Вы',
+      date: 'Только что',
       text: comment.trim(),
-      avatar: 'в',
+      avatar: 'В',
       mine: true,
     }]);
     setComment('');
@@ -2100,7 +2453,7 @@ function ScreenInitiative({ initId, onBack, onOpenInitiative }) {
     <div className="app-body">
       <AppBar
         onBack={onBack}
-        title={`инициатива #${init.id.replace('init-', '')}`}
+        title={`Инициатива #${init.id.replace('init-', '')}`}
         right={
           <>
             <button className="icon-btn"><Icon name="share" size={18}/></button>
@@ -2130,7 +2483,7 @@ function ScreenInitiative({ initId, onBack, onOpenInitiative }) {
       <div style={{ padding: '0 16px 14px' }}>
         <div className="timeline">
           <div className="head">
-            <div className="label">статус инициативы</div>
+            <div className="label">Статус инициативы</div>
             <span className="eyebrow">{timeline.filter(s => s.state === 'done').length}/{timeline.length}</span>
           </div>
           <TimelineH steps={timeline}/>
@@ -2153,7 +2506,7 @@ function ScreenInitiative({ initId, onBack, onOpenInitiative }) {
                     {s.label}
                   </span>
                   <span style={{ fontSize: 11, color: 'var(--text-3)', fontFamily: 'JetBrains Mono, monospace' }}>
-                    {s.date ? formatShortDate(s.date) : 'ожидается'}
+                    {s.date ? formatShortDate(s.date) : 'Ожидается'}
                   </span>
                 </div>
                 {expandedStep === s.id && s.official && (
@@ -2164,8 +2517,99 @@ function ScreenInitiative({ initId, onBack, onOpenInitiative }) {
                     padding: 10, borderRadius: 8,
                     fontSize: 12, color: 'var(--primary-ink)', lineHeight: 1.4,
                   }}>
-                    <span className="eyebrow" style={{ color: 'var(--primary)', display: 'block', marginBottom: 2 }}>официальный ответ</span>
+                    <span className="eyebrow" style={{ color: 'var(--primary)', display: 'block', marginBottom: 2 }}>Официальный ответ</span>
                     {s.official}
+                    {init.assignee && (
+                      <div style={{ marginTop: 6 }}>
+                        <div style={{
+                          display: 'flex', gap: 8, alignItems: 'center',
+                          padding: '8px 10px',
+                          background: 'var(--surface-2)',
+                          borderRadius: complaintStep === s.id ? 'var(--r-8) var(--r-8) 0 0' : 'var(--r-8)',
+                        }}>
+                          <div className="avatar sm">
+                            {init.assignee.name.split(' ').slice(0, 2).map(w => w[0]).join('')}
+                          </div>
+                          <div style={{ flex: 1, minWidth: 0 }}>
+                            <div style={{ fontWeight: 700, fontSize: 13 }}>{init.assignee.name}</div>
+                            <div style={{ fontSize: 11, color: 'var(--text-3)' }}>{init.assignee.role}</div>
+                          </div>
+                          {complaintSent && complaintStep === s.id ? (
+                            <div style={{ display: 'flex', alignItems: 'center', gap: 4,
+                              fontSize: 11, color: 'var(--st-accept-fg)', whiteSpace: 'nowrap' }}>
+                              <Icon name="check" size={12}/>
+                              Жалоба отправлена
+                            </div>
+                          ) : (
+                            <button
+                              onClick={(e) => {
+                                e.stopPropagation();
+                                setComplaintStep(complaintStep === s.id ? null : s.id);
+                                setComplaintText('');
+                              }}
+                              style={{
+                                background: 'transparent',
+                                border: '1px solid var(--border-strong)',
+                                borderRadius: 'var(--r-6)',
+                                padding: '3px 8px',
+                                fontSize: 11,
+                                color: 'var(--text-2)',
+                                cursor: 'pointer',
+                                fontFamily: 'inherit',
+                                letterSpacing: '-0.04em',
+                                whiteSpace: 'nowrap',
+                                flexShrink: 0,
+                              }}
+                            >
+                              Пожаловаться
+                            </button>
+                          )}
+                        </div>
+                        {complaintStep === s.id && !complaintSent && (
+                          <div style={{
+                            background: 'var(--surface-2)',
+                            borderTop: '1px solid var(--border)',
+                            borderRadius: '0 0 var(--r-8) var(--r-8)',
+                            padding: '10px 10px 12px',
+                          }}>
+                            <div style={{ fontSize: 11, color: 'var(--text-3)', marginBottom: 6, lineHeight: 1.4 }}>
+                              Опишите, что именно вас не устраивает в работе ответственного сотрудника
+                            </div>
+                            <textarea
+                              className="textarea"
+                              placeholder="Ваше обращение..."
+                              value={complaintText}
+                              onChange={e => setComplaintText(e.target.value)}
+                              onClick={e => e.stopPropagation()}
+                              style={{ fontSize: 13, minHeight: 72, marginBottom: 8 }}
+                            />
+                            <div style={{ display: 'flex', gap: 6 }}>
+                              <button
+                                className="btn sm"
+                                disabled={!complaintText.trim()}
+                                onClick={(e) => {
+                                  e.stopPropagation();
+                                  setComplaintSent(true);
+                                }}
+                                style={{ flex: 1 }}
+                              >
+                                Отправить
+                              </button>
+                              <button
+                                className="btn sm secondary"
+                                onClick={(e) => {
+                                  e.stopPropagation();
+                                  setComplaintStep(null);
+                                }}
+                                style={{ flex: 1 }}
+                              >
+                                Отмена
+                              </button>
+                            </div>
+                          </div>
+                        )}
+                      </div>
+                    )}
                   </div>
                 )}
               </button>
@@ -2174,9 +2618,121 @@ function ScreenInitiative({ initId, onBack, onOpenInitiative }) {
         </div>
       </div>
 
+      {(init.status === 'accepted' || init.status === 'in_work') && (() => {
+        const acceptedStep = timeline.find(s => s.id === 'accepted');
+        return acceptedStep?.date ? <SLATimer slaStart={acceptedStep.date}/> : null;
+      })()}
+
+      {init.assignee && (init.status === 'accepted' || init.status === 'in_work' || init.status === 'done') && (
+        <div style={{ padding: '0 16px 12px' }}>
+          <div style={{
+            background: 'var(--surface)',
+            borderRadius: complaintStep === 'assignee' && !complaintSent ? 'var(--r-8) var(--r-8) 0 0' : 'var(--r-8)',
+            border: '1px solid var(--border)',
+            overflow: 'hidden',
+          }}>
+            <div style={{
+              display: 'flex',
+              flexDirection: isMobile ? 'column' : 'row',
+              justifyContent: isMobile ? undefined : 'space-between',
+              alignItems: isMobile ? undefined : 'center',
+              gap: isMobile ? 8 : 10,
+              padding: '10px 12px',
+            }}>
+              <div style={{ display: 'flex', gap: 10, alignItems: 'center', flex: 1, minWidth: 0 }}>
+                <div className="avatar sm" style={{ flexShrink: 0 }}>
+                  {init.assignee.name.split(' ').slice(0, 2).map(w => w[0]).join('')}
+                </div>
+                <div style={{ flex: 1, minWidth: 0 }}>
+                  <div style={{ fontSize: 12, color: 'var(--text-3)', marginBottom: 1 }}>Ответственный</div>
+                  <div style={{ fontSize: 13, fontWeight: 700, color: 'var(--text-1)', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
+                    {init.assignee.name}
+                  </div>
+                  <div style={{ fontSize: 11, color: 'var(--text-3)' }}>{init.assignee.role}</div>
+                </div>
+              </div>
+              {complaintSent && complaintStep === 'assignee' ? (
+                <div style={{ display: 'flex', alignItems: 'center', gap: 4, fontSize: 11, color: 'var(--st-accept-fg)', whiteSpace: 'nowrap', flexShrink: 0 }}>
+                  <Icon name="check" size={12}/>
+                  Жалоба отправлена
+                </div>
+              ) : (
+                <button
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    setComplaintStep(complaintStep === 'assignee' ? null : 'assignee');
+                    setComplaintText('');
+                    setComplaintSent(false);
+                  }}
+                  style={{
+                    background: 'transparent',
+                    border: '1px solid var(--border)',
+                    borderRadius: 'var(--r-6)',
+                    padding: '5px 10px',
+                    fontSize: 12,
+                    color: 'var(--text-2)',
+                    cursor: 'pointer',
+                    fontFamily: 'inherit',
+                    letterSpacing: '-0.04em',
+                    whiteSpace: 'nowrap',
+                    flexShrink: 0,
+                    display: 'flex',
+                    alignItems: 'center',
+                    gap: 4,
+                    ...(isMobile && { width: '100%', justifyContent: 'center' }),
+                  }}
+                >
+                  ⚠ Пожаловаться
+                </button>
+              )}
+            </div>
+            {complaintStep === 'assignee' && !complaintSent && (
+              <div style={{ borderTop: '1px solid var(--border)', padding: '10px 12px 12px' }}>
+                <div style={{ fontSize: 11, color: 'var(--text-3)', marginBottom: 6, lineHeight: 1.4 }}>
+                  Опишите, что именно вас не устраивает в работе ответственного сотрудника
+                </div>
+                <textarea
+                  className="textarea"
+                  placeholder="Ваше обращение..."
+                  value={complaintText}
+                  onChange={e => setComplaintText(e.target.value)}
+                  onClick={e => e.stopPropagation()}
+                  style={{ fontSize: 13, minHeight: 72, marginBottom: 8 }}
+                />
+                <div style={{ display: 'flex', gap: 6 }}>
+                  <button
+                    className="btn sm"
+                    disabled={!complaintText.trim()}
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      setComplaintSent(true);
+                    }}
+                    style={{ flex: 1 }}
+                  >
+                    Отправить
+                  </button>
+                  <button
+                    className="btn sm secondary"
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      setComplaintStep(null);
+                    }}
+                    style={{ flex: 1 }}
+                  >
+                    Отмена
+                  </button>
+                </div>
+              </div>
+            )}
+          </div>
+        </div>
+      )}
+
+      {init.status === 'done' && <RatingBlock initId={init.id}/>}
+
       {/* Description */}
       <div className="content-pad" style={{ paddingBottom: 14 }}>
-        <div className="eyebrow" style={{ marginBottom: 8 }}>описание</div>
+        <div className="eyebrow" style={{ marginBottom: 8 }}>Описание</div>
         <p style={{ fontSize: 14, color: 'var(--text-1)', lineHeight: 1.55, margin: 0 }}>
           {init.description}
         </p>
@@ -2185,11 +2741,11 @@ function ScreenInitiative({ initId, onBack, onOpenInitiative }) {
       {/* Photos */}
       {init.photos > 0 && (
         <div style={{ padding: '0 16px 14px' }}>
-          <div className="eyebrow" style={{ marginBottom: 8 }}>фотографии · {init.photos}</div>
+          <div className="eyebrow" style={{ marginBottom: 8 }}>Фотографии · {init.photos}</div>
           <div className="row gap-4" style={{ overflow: 'hidden' }}>
             {Array.from({ length: init.photos }).map((_, i) => (
               <div key={i} className="ph-img" style={{ flex: 1, height: 110 }}>
-                фото {i + 1}
+                Фото {i + 1}
               </div>
             ))}
           </div>
@@ -2199,8 +2755,8 @@ function ScreenInitiative({ initId, onBack, onOpenInitiative }) {
       {/* Map */}
       <div style={{ padding: '0 16px 14px' }}>
         <div className="row between middle" style={{ marginBottom: 8 }}>
-          <span className="eyebrow">на карте</span>
-          <button style={{ background: 'none', border: 'none', color: 'var(--primary)', fontSize: 14, fontWeight: 500, cursor: 'pointer' }}>построить маршрут →</button>
+          <span className="eyebrow">На карте</span>
+          <button style={{ background: 'none', border: 'none', color: 'var(--primary)', fontSize: 14, fontWeight: 500, cursor: 'pointer' }}>Построить маршрут →</button>
         </div>
         <MiniMap pins={3} accent={1} height={140}/>
       </div>
@@ -2210,22 +2766,22 @@ function ScreenInitiative({ initId, onBack, onOpenInitiative }) {
         <div className="row gap-4">
           <button className={`btn${voted ? '' : ''}`} onClick={handleVote} style={{ flex: 2 }}>
             <Icon name={voted ? 'heartFill' : 'heart'} size={18} stroke={2.2}/>
-            <span>{voted ? 'вы поддержали' : 'поддержать'} · {init.votes + (voted ? 1 : 0)}</span>
+            <span>{voted ? 'Вы поддержали' : 'Поддержать'} · {init.votes + (voted ? 1 : 0)}</span>
           </button>
           <button className={`btn secondary${downvoted ? '' : ''}`} onClick={handleDownvote} style={{ flex: 1 }}>
-            против {downvoted ? '✓' : ''}
+            Против {downvoted ? '✓' : ''}
           </button>
         </div>
         <div className="row gap-4 middle" style={{ marginTop: 10, fontSize: 12, color: 'var(--text-2)' }}>
           <Icon name="user" size={14}/>
-          <span>уже поддержано <b>27 жителями</b> вашего района</span>
+          <span>Уже поддержано <b>27 жителями</b> вашего района</span>
         </div>
       </div>
 
       {/* Comments */}
       <div className="content-pad" style={{ paddingTop: 16, paddingBottom: 14 }}>
         <div className="row between middle" style={{ marginBottom: 10 }}>
-          <div className="h3">обсуждение</div>
+          <div className="h3">Обсуждение</div>
           <span className="muted" style={{ fontSize: 12 }}>{comments.length} {plural(comments.length, ['комментарий','комментария','комментариев'])}</span>
         </div>
         <div className="col gap-6">
@@ -2237,7 +2793,7 @@ function ScreenInitiative({ initId, onBack, onOpenInitiative }) {
               <div className="grow">
                 <div className="row gap-4 middle">
                   <span style={{ fontSize: 14, fontWeight: 500 }}>{c.author}</span>
-                  {c.official && <span className="status-badge work">официальный ответ</span>}
+                  {c.official && <span className="status-badge work">Официальный ответ</span>}
                   <span style={{ fontSize: 12, color: 'var(--text-3)' }}>· {c.date}</span>
                 </div>
                 <div style={{
@@ -2255,7 +2811,7 @@ function ScreenInitiative({ initId, onBack, onOpenInitiative }) {
         <div className="row gap-4" style={{ marginTop: 14, alignItems: 'flex-end' }}>
           <input
             className="input"
-            placeholder="написать комментарий…"
+            placeholder="Написать комментарий…"
             value={comment}
             onChange={e => setComment(e.target.value)}
             onKeyDown={e => e.key === 'Enter' && handleSend()}
@@ -2270,7 +2826,7 @@ function ScreenInitiative({ initId, onBack, onOpenInitiative }) {
       {similar.length > 0 && (
         <div style={{ paddingTop: 8, paddingBottom: 24 }}>
           <div className="content-pad" style={{ marginBottom: 8 }}>
-            <div className="eyebrow">похожие в районе</div>
+            <div className="eyebrow">Похожие в районе</div>
           </div>
           <div className="h-scroll" style={{ paddingBottom: 8 }}>
             {similar.map(s => (
@@ -2354,23 +2910,23 @@ function ScreenSubmit({ onBack, onDone, onOpenFeed }) {
           }}>
             <Icon name="check" size={42} stroke={3}/>
           </div>
-          <div className="h1">инициатива отправлена</div>
+          <div className="h1">Инициатива отправлена</div>
           <div className="lead" style={{ marginTop: 10, maxWidth: 280 }}>
-            мы передадим её на рассмотрение модератору. вы получите уведомление при смене статуса.
+            Мы передадим её на рассмотрение модератору. Вы получите уведомление при смене статуса.
           </div>
           <div style={{
             marginTop: 24, padding: '12px 18px',
             background: 'var(--surface)', borderRadius: 12, border: '1px solid var(--border)',
           }}>
-            <div className="eyebrow" style={{ marginBottom: 4 }}>номер заявки</div>
+            <div className="eyebrow" style={{ marginBottom: 4 }}>Номер заявки</div>
             <div className="mono" style={{ fontSize: 16, fontWeight: 500, color: 'var(--text-1)' }}>#{issueId}</div>
           </div>
           <div className="col gap-4" style={{ width: '100%', marginTop: 32, maxWidth: 320 }}>
             <button className="btn" onClick={() => onDone?.(issueId)}>
-              отслеживать инициативу
+              Отслеживать инициативу
             </button>
             <button className="btn ghost" onClick={onOpenFeed}>
-              вернуться к ленте
+              Вернуться к ленте
             </button>
           </div>
         </div>
@@ -2378,15 +2934,15 @@ function ScreenSubmit({ onBack, onDone, onOpenFeed }) {
     );
   }
 
-  const stepTitles = ['суть проблемы', 'место', 'фото и документы', 'контакты и отправка'];
+  const stepTitles = ['Суть проблемы', 'Место', 'Фото и документы', 'Контакты и отправка'];
 
   return (
     <div className="app-body">
       <AppBar
-        title={`шаг ${step + 1}: ${stepTitles[step]}`}
+        title={`Шаг ${step + 1}: ${stepTitles[step]}`}
         onBack={step === 0 ? onBack : () => setStep(s => s - 1)}
         right={
-          <button className="icon-btn" onClick={onBack} aria-label="закрыть">
+          <button className="icon-btn" onClick={onBack} aria-label="Закрыть">
             <Icon name="close" size={20}/>
           </button>
         }
@@ -2394,7 +2950,7 @@ function ScreenSubmit({ onBack, onDone, onOpenFeed }) {
       <div style={{ padding: '12px 16px 0' }}>
         <StepProgress total={4} active={step}/>
         <div className="row between" style={{ fontSize: 11, color: 'var(--text-3)', marginTop: -8, marginBottom: 14, fontFamily: 'JetBrains Mono, monospace' }}>
-          <span>шаг {step + 1} из 4</span>
+          <span>Шаг {step + 1} из 4</span>
           <span>{Math.round(((step + 1) / 4) * 100)}%</span>
         </div>
       </div>
@@ -2403,25 +2959,25 @@ function ScreenSubmit({ onBack, onDone, onOpenFeed }) {
         {step === 0 && (
           <div className="col gap-8">
             <div>
-              <div className="h2">опишите проблему</div>
-              <div className="lead" style={{ marginTop: 4 }}>конкретно: что, где, когда</div>
+              <div className="h2">Опишите проблему</div>
+              <div className="lead" style={{ marginTop: 4 }}>Конкретно: что, где, когда</div>
             </div>
             <div className="field">
-              <div className="label">заголовок</div>
+              <div className="label">Заголовок</div>
               <input
                 className="input"
-                placeholder="напр. «разбит тротуар на ленина 42»"
+                placeholder="Напр. «разбит тротуар на пр. Елизарова, 42»"
                 maxLength={100}
                 value={data.title}
                 onChange={e => update('title', e.target.value)}
               />
               <div className="hint">
-                <span>будет видно в ленте</span>
+                <span>Будет видно в ленте</span>
                 <span>{data.title.length}/100</span>
               </div>
             </div>
             <div className="field">
-              <div className="label">категория</div>
+              <div className="label">Категория</div>
               <div className="chip-group">
                 {MOCK.CATEGORIES.map(c => (
                   <button
@@ -2433,16 +2989,16 @@ function ScreenSubmit({ onBack, onDone, onOpenFeed }) {
               </div>
             </div>
             <div className="field">
-              <div className="label">описание</div>
+              <div className="label">Описание</div>
               <textarea
                 className="textarea"
-                placeholder="опишите ситуацию подробно. почему это проблема? на кого влияет?"
+                placeholder="Опишите ситуацию подробно. Почему это проблема? На кого влияет?"
                 value={data.description}
                 onChange={e => update('description', e.target.value)}
               />
               <div className="hint">
                 <span style={{ color: data.description.length >= 50 ? 'var(--status-accept)' : 'var(--text-3)' }}>
-                  {data.description.length >= 50 ? '✓ достаточно подробно' : 'мин. 50 символов'}
+                  {data.description.length >= 50 ? '✓ Достаточно подробно' : 'Мин. 50 символов'}
                 </span>
                 <span>{data.description.length}/1000</span>
               </div>
@@ -2453,28 +3009,28 @@ function ScreenSubmit({ onBack, onDone, onOpenFeed }) {
         {step === 1 && (
           <div className="col gap-8">
             <div>
-              <div className="h2">где это происходит?</div>
-              <div className="lead" style={{ marginTop: 4 }}>точное место поможет быстрее реагировать</div>
+              <div className="h2">Где это происходит?</div>
+              <div className="lead" style={{ marginTop: 4 }}>Точное место поможет быстрее реагировать</div>
             </div>
             <div className="field">
-              <div className="label">район</div>
+              <div className="label">Район</div>
               <select className="select" value={data.district} onChange={e => update('district', e.target.value)}>
-                <option value="">выберите район</option>
+                <option value="">Выберите район</option>
                 {MOCK.DISTRICTS.map(d => <option key={d} value={d}>{d}</option>)}
               </select>
             </div>
             <div className="field">
-              <div className="label">адрес</div>
+              <div className="label">Адрес</div>
               <input
                 className="input"
-                placeholder="ул. ленина, 42"
+                placeholder="Пр. Елизарова, 42"
                 value={data.address}
                 onChange={e => update('address', e.target.value)}
               />
-              <div className="hint"><span>можно указать ориентир (магазин, остановка)</span></div>
+              <div className="hint"><span>Можно указать ориентир (магазин, остановка)</span></div>
             </div>
             <div>
-              <div className="label" style={{ marginBottom: 6, fontSize: 12, color: 'var(--text-2)' }}>уточните пин на карте</div>
+              <div className="label" style={{ marginBottom: 6, fontSize: 12, color: 'var(--text-2)' }}>Уточните пин на карте</div>
               <div style={{ position: 'relative' }}>
                 <MiniMap pins={2} accent={0} height={220} big/>
                 <div style={{
@@ -2494,7 +3050,7 @@ function ScreenSubmit({ onBack, onDone, onOpenFeed }) {
                   display: 'flex', alignItems: 'center', gap: 4,
                 }}>
                   <Icon name="locate" size={14}/>
-                  моё местоположение
+                  Моё местоположение
                 </button>
               </div>
             </div>
@@ -2502,11 +3058,11 @@ function ScreenSubmit({ onBack, onDone, onOpenFeed }) {
               <button
                 className={`chip${data.addressExact ? ' active' : ''}`}
                 onClick={() => update('addressExact', true)}
-              ><Icon name="target" size={13}/> адрес точный</button>
+              ><Icon name="target" size={13}/> Адрес точный</button>
               <button
                 className={`chip${!data.addressExact ? ' active' : ''}`}
                 onClick={() => update('addressExact', false)}
-              >примерный</button>
+              >Примерный</button>
             </div>
           </div>
         )}
@@ -2514,8 +3070,8 @@ function ScreenSubmit({ onBack, onDone, onOpenFeed }) {
         {step === 2 && (
           <div className="col gap-8">
             <div>
-              <div className="h2">фото и документы</div>
-              <div className="lead" style={{ marginTop: 4 }}>фото ускоряют рассмотрение в 2 раза. до 3 шт.</div>
+              <div className="h2">Фото и документы</div>
+              <div className="lead" style={{ marginTop: 4 }}>Фото ускоряют рассмотрение в 2 раза. До 3 шт.</div>
             </div>
             <div style={{
               border: '1.5px dashed var(--border-strong)',
@@ -2532,8 +3088,8 @@ function ScreenSubmit({ onBack, onDone, onOpenFeed }) {
               }}>
                 <Icon name="upload" size={22}/>
               </div>
-              <div style={{ fontSize: 14, fontWeight: 500 }}>добавить фото</div>
-              <div className="lead" style={{ fontSize: 12, marginTop: 4 }}>перетащите файл или нажмите</div>
+              <div style={{ fontSize: 14, fontWeight: 500 }}>Добавить фото</div>
+              <div className="lead" style={{ fontSize: 12, marginTop: 4 }}>Перетащите файл или нажмите</div>
             </div>
             {data.photos.length > 0 && (
               <div className="row gap-4">
@@ -2555,7 +3111,7 @@ function ScreenSubmit({ onBack, onDone, onOpenFeed }) {
               </div>
             )}
             <div className="field">
-              <div className="label">ссылка на источник или публикацию <span className="muted">(необязательно)</span></div>
+              <div className="label">Ссылка на источник или публикацию <span className="muted">(необязательно)</span></div>
               <input
                 className="input"
                 placeholder="https://"
@@ -2565,7 +3121,7 @@ function ScreenSubmit({ onBack, onDone, onOpenFeed }) {
             </div>
             <div style={{ display: 'flex', gap: 10, padding: 10, background: 'var(--surface-2)', borderRadius: 10, fontSize: 12, color: 'var(--text-2)' }}>
               <Icon name="info" size={16} style={{ flexShrink: 0, color: 'var(--primary)' }}/>
-              <span>фото публикуются вместе с инициативой. не загружайте изображения с лицами без согласия.</span>
+              <span>Фото публикуются вместе с инициативой. Не загружайте изображения с лицами без согласия.</span>
             </div>
           </div>
         )}
@@ -2573,58 +3129,58 @@ function ScreenSubmit({ onBack, onDone, onOpenFeed }) {
         {step === 3 && (
           <div className="col gap-8">
             <div>
-              <div className="h2">кто подаёт?</div>
-              <div className="lead" style={{ marginTop: 4 }}>имя влияет только на отображение в ленте</div>
+              <div className="h2">Кто подаёт?</div>
+              <div className="lead" style={{ marginTop: 4 }}>Имя влияет только на отображение в ленте</div>
             </div>
             <div className="card" style={{ cursor: 'default' }}>
-              <div className="eyebrow">предпросмотр</div>
+              <div className="eyebrow">Предпросмотр</div>
               <div className="row gap-4 middle" style={{ marginTop: 4 }}>
                 {data.category && <span className="cat-tag">{MOCK.CATEGORIES.find(c => c.id === data.category)?.name}</span>}
                 {data.district && <span className="cat-tag" style={{ background: 'transparent', border: '1px solid var(--border)' }}>{data.district}</span>}
               </div>
-              <div className="title">{data.title || 'без названия'}</div>
+              <div className="title">{data.title || 'Без названия'}</div>
               {data.description && <div className="excerpt">{data.description}</div>}
               <div className="row gap-4 middle muted" style={{ fontSize: 12, marginTop: 4 }}>
                 <Icon name="user" size={13}/>
-                <span>{data.anonymous ? 'анонимно' : (data.name || 'без имени')}</span>
+                <span>{data.anonymous ? 'Анонимно' : (data.name || 'Без имени')}</span>
               </div>
             </div>
             <div>
-              <div className="label" style={{ fontSize: 12, color: 'var(--text-2)', marginBottom: 6 }}>подпись</div>
+              <div className="label" style={{ fontSize: 12, color: 'var(--text-2)', marginBottom: 6 }}>Подпись</div>
               <div className="chip-group">
                 <button
                   className={`chip${!data.anonymous ? ' primary' : ''}`}
                   onClick={() => update('anonymous', false)}
-                >с именем</button>
+                >С именем</button>
                 <button
                   className={`chip${data.anonymous ? ' primary' : ''}`}
                   onClick={() => update('anonymous', true)}
-                >анонимно</button>
+                >Анонимно</button>
               </div>
             </div>
             {!data.anonymous && (
               <div className="field">
-                <div className="label">ваше имя</div>
+                <div className="label">Ваше имя</div>
                 <input
                   className="input"
-                  placeholder="как подписать"
+                  placeholder="Как подписать"
                   value={data.name}
                   onChange={e => update('name', e.target.value)}
                 />
               </div>
             )}
             <div className="field">
-              <div className="label">email <span className="muted">(необязательно)</span></div>
+              <div className="label">Email <span className="muted">(необязательно)</span></div>
               <input
                 className="input"
-                placeholder="для уведомлений о статусе"
+                placeholder="Для уведомлений о статусе"
                 value={data.email}
                 onChange={e => update('email', e.target.value)}
               />
-              <div className="hint"><span>не публикуется, используется только для писем</span></div>
+              <div className="hint"><span>Не публикуется, используется только для писем</span></div>
             </div>
             <Check value={data.consent} onChange={v => update('consent', v)}>
-              <span>я согласен с <a style={{ color: 'var(--primary)' }}>правилами публикации</a> и обработкой персональных данных
+              <span>Я согласен с <a style={{ color: 'var(--primary)' }}>правилами публикации</a> и обработкой персональных данных
               </span>
             </Check>
           </div>
@@ -2640,7 +3196,7 @@ function ScreenSubmit({ onBack, onDone, onOpenFeed }) {
       }}>
         {step > 0 && (
           <button className="btn secondary" onClick={() => setStep(s => s - 1)} style={{ flex: 1 }}>
-            назад
+            Назад
           </button>
         )}
         <button
@@ -2652,7 +3208,7 @@ function ScreenSubmit({ onBack, onDone, onOpenFeed }) {
           }}
           style={{ flex: step === 0 ? 1 : 2 }}
         >
-          {step === 3 ? 'отправить инициативу' : 'дальше'}
+          {step === 3 ? 'Отправить инициативу' : 'Дальше'}
           {step < 3 && <Icon name="chevron" size={18}/>}
         </button>
       </div>
@@ -2791,7 +3347,7 @@ function ScreenMap({ city, onOpenInitiative, onChangeCity }) {
       {/* Category chips on top of map */}
       <div style={{ position: 'relative', zIndex: 2, paddingTop: 10 }}>
         <ChipsRow>
-          <button className={`chip${cat === 'all' ? ' primary' : ''}`} onClick={() => setCat('all')}>все</button>
+          <button className={`chip${cat === 'all' ? ' primary' : ''}`} onClick={() => setCat('all')}>Все</button>
           {MOCK.CATEGORIES.map(c => (
             <button key={c.id} className={`chip${cat === c.id ? ' primary' : ''}`} onClick={() => setCat(c.id)}>{c.name}</button>
           ))}
@@ -2807,9 +3363,9 @@ function ScreenMap({ city, onOpenInitiative, onChangeCity }) {
           className="btn icon"
           style={{ width: 40, height: 40, borderRadius: 12, padding: 0, background: mode === 'heat' ? 'var(--primary)' : 'var(--surface)', color: mode === 'heat' ? '#fff' : 'var(--text-1)', border: mode === 'heat' ? 'none' : '1px solid var(--border-strong)' }}
           onClick={() => setMode(mode === 'heat' ? 'normal' : 'heat')}
-          aria-label="тепловая карта"
+          aria-label="Тепловая карта"
         ><Icon name="heatmap" size={18}/></button>
-        <button className="btn icon" style={{ width: 40, height: 40, borderRadius: 12, padding: 0, background: 'var(--surface)', color: 'var(--primary)', border: '1px solid var(--border-strong)' }} aria-label="моё местоположение">
+        <button className="btn icon" style={{ width: 40, height: 40, borderRadius: 12, padding: 0, background: 'var(--surface)', color: 'var(--primary)', border: '1px solid var(--border-strong)' }} aria-label="Моё местоположение">
           <Icon name="locate" size={18}/>
         </button>
       </div>
@@ -2840,7 +3396,7 @@ function ScreenMap({ city, onOpenInitiative, onChangeCity }) {
                 className="btn sm"
                 onClick={() => onOpenInitiative?.(selectedInit.id)}
                 style={{ width: 'auto', padding: '0 14px' }}
-              >открыть <Icon name="chevron" size={14}/></button>
+              >Открыть <Icon name="chevron" size={14}/></button>
             </div>
           </div>
         </div>
@@ -2859,12 +3415,12 @@ function ScreenMap({ city, onOpenInitiative, onChangeCity }) {
           }}
         >
           <Icon name="list" size={16}/>
-          <span>список ({inViewCount})</span>
+          <span>Список ({inViewCount})</span>
         </button>
       )}
 
       {listOpen && (
-        <Sheet title="инициативы в видимой области" onClose={() => setListOpen(false)} big>
+        <Sheet title="Инициативы в видимой области" onClose={() => setListOpen(false)} big>
           <div className="col gap-4" style={{ overflowY: 'auto', paddingBottom: 12 }}>
             {filtered.map(init => (
               <div
@@ -2911,10 +3467,10 @@ function ScreenModerator({ onBack, onOpenInitiative }) {
   const queue = MOCK.INITIATIVES.filter(i => filter === 'all' || i.status === filter);
 
   const tabs = [
-    { id: 'pending', label: 'новые', count: MOCK.INITIATIVES.filter(i => i.status === 'pending').length, status: 'pend' },
-    { id: 'in_work', label: 'в работе', count: MOCK.INITIATIVES.filter(i => i.status === 'in_work').length, status: 'work' },
-    { id: 'done', label: 'готово', count: MOCK.INITIATIVES.filter(i => i.status === 'done').length, status: 'accept' },
-    { id: 'all', label: 'все', count: MOCK.INITIATIVES.length, status: null },
+    { id: 'pending', label: 'Новые', count: MOCK.INITIATIVES.filter(i => i.status === 'pending').length, status: 'pend' },
+    { id: 'in_work', label: 'В работе', count: MOCK.INITIATIVES.filter(i => i.status === 'in_work').length, status: 'work' },
+    { id: 'done', label: 'Готово', count: MOCK.INITIATIVES.filter(i => i.status === 'done').length, status: 'accept' },
+    { id: 'all', label: 'Все', count: MOCK.INITIATIVES.length, status: null },
   ];
 
   const selected = selectedId ? MOCK.INITIATIVES.find(i => i.id === selectedId) : null;
@@ -2926,14 +3482,14 @@ function ScreenModerator({ onBack, onOpenInitiative }) {
         <AppBar
           onBack={() => setSelectedId(null)}
           title={`#${selected.id.replace('init-', '')}`}
-          subtitle="разбор инициативы"
+          subtitle="Разбор инициативы"
           right={<button className="icon-btn"><Icon name="history" size={20}/></button>}
         />
         <div className="content-pad" style={{ padding: 16 }}>
           {/* badge */}
           <div className="row gap-4 middle" style={{ marginBottom: 8, flexWrap: 'wrap' }}>
             <span className="status-badge work" style={{ background: 'var(--primary)', color: '#fff' }}>
-              <Icon name="moderator" size={11}/> режим модератора
+              <Icon name="moderator" size={11}/> Режим модератора
             </span>
             <CategoryTag id={selected.category}/>
             <span className="cat-tag" style={{ background: 'transparent', border: '1px solid var(--border-strong)' }}>{selected.district}</span>
@@ -2950,13 +3506,13 @@ function ScreenModerator({ onBack, onOpenInitiative }) {
           {/* current status timeline */}
           {selTimeline && (
             <div className="timeline" style={{ marginBottom: 14 }}>
-              <div className="head"><div className="label">текущий статус</div></div>
+              <div className="head"><div className="label">Текущий статус</div></div>
               <TimelineH steps={selTimeline}/>
             </div>
           )}
 
           {/* description */}
-          <div className="eyebrow" style={{ marginBottom: 6 }}>описание</div>
+          <div className="eyebrow" style={{ marginBottom: 6 }}>Описание</div>
           <p style={{ fontSize: 14, lineHeight: 1.5, color: 'var(--text-1)', marginTop: 0, marginBottom: 14 }}>
             {selected.description}
           </p>
@@ -2967,16 +3523,16 @@ function ScreenModerator({ onBack, onOpenInitiative }) {
             borderRadius: 14, padding: 14, marginBottom: 14,
           }}>
             <div className="row between middle" style={{ marginBottom: 10 }}>
-              <div className="h3">решение</div>
-              <span className="status-badge work" style={{ fontSize: 10 }}>обязательно</span>
+              <div className="h3">Решение</div>
+              <span className="status-badge work" style={{ fontSize: 10 }}>Обязательно</span>
             </div>
-            <div className="eyebrow" style={{ marginBottom: 6 }}>сменить статус на</div>
+            <div className="eyebrow" style={{ marginBottom: 6 }}>Сменить статус на</div>
             <div className="chip-group" style={{ marginBottom: 12 }}>
               {[
-                { id: 'accepted', l: 'принять', c: 'accept' },
-                { id: 'in_work', l: 'в работу', c: 'work' },
-                { id: 'done', l: 'исполнено', c: 'accept' },
-                { id: 'denied', l: 'отклонить', c: 'deny' },
+                { id: 'accepted', l: 'Принять', c: 'accept' },
+                { id: 'in_work', l: 'В работу', c: 'work' },
+                { id: 'done', l: 'Исполнено', c: 'accept' },
+                { id: 'denied', l: 'Отклонить', c: 'deny' },
               ].map(opt => (
                 <button
                   key={opt.id}
@@ -2987,27 +3543,27 @@ function ScreenModerator({ onBack, onOpenInitiative }) {
               ))}
             </div>
             <div className="field" style={{ marginBottom: 12 }}>
-              <div className="label">ответственное ведомство</div>
+              <div className="label">Ответственное ведомство</div>
               <select className="select" value={department} onChange={e => setDepartment(e.target.value)}>
-                <option value="">не назначено</option>
-                <option>отдел благоустройства</option>
-                <option>управление транспорта</option>
-                <option>отдел жкх</option>
-                <option>департамент экологии</option>
-                <option>прочее</option>
+                <option value="">Не назначено</option>
+                <option>Отдел благоустройства</option>
+                <option>Управление транспорта</option>
+                <option>Отдел ЖКХ</option>
+                <option>Департамент экологии</option>
+                <option>Прочее</option>
               </select>
             </div>
             <div className="field" style={{ marginBottom: 12 }}>
-              <div className="label">комментарий к решению <span className="muted">(публичный)</span></div>
+              <div className="label">Комментарий к решению <span className="muted">(публичный)</span></div>
               <textarea
                 className="textarea"
-                placeholder="будет показан гражданину в таймлайне как «официальный ответ»"
+                placeholder="Будет показан гражданину в таймлайне как «официальный ответ»"
                 value={draftReply}
                 onChange={e => setDraftReply(e.target.value)}
                 style={{ minHeight: 80 }}
               />
               <div className="hint">
-                <span>{draftReply.length < 30 ? 'мин. 30 символов' : '✓ достаточно'}</span>
+                <span>{draftReply.length < 30 ? 'Мин. 30 символов' : '✓ Достаточно'}</span>
                 <span>{draftReply.length}/500</span>
               </div>
             </div>
@@ -3017,7 +3573,7 @@ function ScreenModerator({ onBack, onOpenInitiative }) {
               onClick={() => { setDraftStatus(''); setDraftReply(''); setSelectedId(null); }}
             >
               <Icon name="check" size={18}/>
-              опубликовать решение
+              Опубликовать решение
             </button>
           </div>
 
@@ -3026,23 +3582,23 @@ function ScreenModerator({ onBack, onOpenInitiative }) {
             background: 'var(--surface-2)', borderRadius: 12, padding: 12, marginBottom: 14,
           }}>
             <div className="row between middle" style={{ marginBottom: 8 }}>
-              <div className="eyebrow">внутренняя заметка · не видна гражданину</div>
+              <div className="eyebrow">Внутренняя заметка · не видна гражданину</div>
               <Icon name="eye" size={14} style={{ color: 'var(--text-3)' }}/>
             </div>
             <textarea
               className="textarea"
-              placeholder="заметки для коллег модераторов…"
+              placeholder="Заметки для коллег модераторов…"
               style={{ minHeight: 60, background: 'var(--surface)' }}
             />
           </div>
 
           {/* History */}
-          <div className="eyebrow" style={{ marginBottom: 8 }}>история действий · 3</div>
+          <div className="eyebrow" style={{ marginBottom: 8 }}>История действий · 3</div>
           <div className="col gap-4" style={{ marginBottom: 24 }}>
             {[
-              { t: 'смена статуса на «в работе»', u: 'модератор м.', d: '21 янв 14:32' },
-              { t: 'назначено ведомство: отдел благоустройства', u: 'модератор м.', d: '15 янв 11:14' },
-              { t: 'принята к рассмотрению', u: 'модератор м.', d: '15 янв 11:12' },
+              { t: 'Смена статуса на «В работе»', u: 'Модератор М.', d: '21 янв 14:32' },
+              { t: 'Назначено ведомство: Отдел благоустройства', u: 'Модератор М.', d: '15 янв 11:14' },
+              { t: 'Принята к рассмотрению', u: 'Модератор М.', d: '15 янв 11:12' },
             ].map((h, i) => (
               <div key={i} className="row gap-4" style={{ padding: '8px 10px', background: 'var(--surface)', borderRadius: 8, border: '1px solid var(--border)' }}>
                 <Icon name="history" size={16} style={{ color: 'var(--text-3)', marginTop: 1 }}/>
@@ -3062,8 +3618,8 @@ function ScreenModerator({ onBack, onOpenInitiative }) {
     <div className="app-body">
       <AppBar
         onBack={onBack}
-        title="панель модератора"
-        subtitle="казань · 17 в очереди"
+        title="Панель модератора"
+        subtitle="Санкт-Петербург · 17 в очереди"
         right={
           <button className="icon-btn"><Icon name="settings" size={20}/></button>
         }
@@ -3095,10 +3651,10 @@ function ScreenModerator({ onBack, onOpenInitiative }) {
       </div>
 
       <div className="content-pad" style={{ padding: '4px 16px 8px', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-        <span className="eyebrow">очередь разбора</span>
+        <span className="eyebrow">Очередь разбора</span>
         <button style={{ background: 'none', border: 'none', color: 'var(--primary)', fontSize: 14, fontWeight: 500, cursor: 'pointer', display: 'flex', alignItems: 'center', gap: 4 }}>
           <Icon name="sort" size={14}/>
-          старые сверху
+          Старые сверху
         </button>
       </div>
 
@@ -3117,7 +3673,7 @@ function ScreenModerator({ onBack, onOpenInitiative }) {
                   <span className="mono" style={{ fontSize: 11, color: 'var(--text-3)' }}>#{init.id.replace('init-', '')}</span>
                   {isUrgent && (
                     <span className="status-badge deny" style={{ fontSize: 10 }}>
-                      <Icon name="flag" size={10}/> срочно
+                      <Icon name="flag" size={10}/> Срочно
                     </span>
                   )}
                 </div>
@@ -3137,7 +3693,7 @@ function ScreenModerator({ onBack, onOpenInitiative }) {
                   <span><Icon name="clock" size={14}/> 9д</span>
                 </div>
                 <button className="btn sm" style={{ width: 'auto', padding: '0 14px' }}>
-                  разобрать <Icon name="chevron" size={14}/>
+                  Разобрать <Icon name="chevron" size={14}/>
                 </button>
               </div>
             </div>
@@ -3167,7 +3723,7 @@ function ScreenProfile({ city, onChangeCity, onOpenInitiative, onSwitchRole }) {
     <div className="app-body">
       <div className="appbar" style={{ paddingTop: 8 }}>
         <div className="grow">
-          <div className="title">профиль</div>
+          <div className="title">Профиль</div>
         </div>
         <button className="icon-btn"><Icon name="bell" size={20}/><span className="badge"/></button>
         <button className="icon-btn"><Icon name="settings" size={20}/></button>
@@ -3175,16 +3731,16 @@ function ScreenProfile({ city, onChangeCity, onOpenInitiative, onSwitchRole }) {
 
       <div className="content-pad" style={{ padding: '16px' }}>
         <div className="row gap-6 middle" style={{ marginBottom: 16 }}>
-          <div className="avatar lg">а</div>
+          <div className="avatar lg">А</div>
           <div className="grow">
-            <div className="h2" style={{ marginBottom: 2 }}>александр</div>
+            <div className="h2" style={{ marginBottom: 2 }}>Александр</div>
             <button onClick={onChangeCity} style={{
               background: 'none', border: 'none', padding: 0, cursor: 'pointer',
               fontFamily: 'inherit', letterSpacing: 'inherit',
               color: 'var(--text-2)', fontSize: 13, display: 'flex', alignItems: 'center', gap: 4,
             }}>
               <Icon name="pin" size={13} style={{ color: 'var(--primary)' }}/>
-              {city} · сменить
+              {city} · Сменить
             </button>
           </div>
           <button className="icon-btn"><Icon name="edit" size={18}/></button>
@@ -3195,9 +3751,9 @@ function ScreenProfile({ city, onChangeCity, onOpenInitiative, onSwitchRole }) {
           display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: 8, marginBottom: 18,
         }}>
           {[
-            { n: 3, l: 'подано' },
-            { n: 21, l: 'голосов' },
-            { n: 1, l: 'исполнено' },
+            { n: 3, l: 'Подано' },
+            { n: 21, l: 'Голосов' },
+            { n: 1, l: 'Исполнено' },
           ].map(s => (
             <div key={s.l} style={{
               background: 'var(--surface)', borderRadius: 12,
@@ -3211,8 +3767,8 @@ function ScreenProfile({ city, onChangeCity, onOpenInitiative, onSwitchRole }) {
 
         {/* Recent notifications */}
         <div className="row between middle" style={{ marginBottom: 8 }}>
-          <div className="eyebrow">уведомления</div>
-          <button style={{ background: 'none', border: 'none', color: 'var(--primary)', fontSize: 14, fontWeight: 500, cursor: 'pointer' }}>все ({notifications.length})</button>
+          <div className="eyebrow">Уведомления</div>
+          <button style={{ background: 'none', border: 'none', color: 'var(--primary)', fontSize: 14, fontWeight: 500, cursor: 'pointer' }}>Все ({notifications.length})</button>
         </div>
         <div className="col gap-4" style={{ marginBottom: 18 }}>
           {notifications.slice(0, 2).map(n => {
@@ -3254,8 +3810,8 @@ function ScreenProfile({ city, onChangeCity, onOpenInitiative, onSwitchRole }) {
             value={tab}
             onChange={setTab}
             options={[
-              { value: 'mine', label: `мои инициативы · ${mine.length}` },
-              { value: 'supported', label: `поддержанные · ${supported.length}` },
+              { value: 'mine', label: `Мои инициативы · ${mine.length}` },
+              { value: 'supported', label: `Поддержанные · ${supported.length}` },
             ]}
           />
         </div>
@@ -3302,27 +3858,27 @@ function ScreenProfile({ city, onChangeCity, onOpenInitiative, onSwitchRole }) {
               display: 'grid', placeItems: 'center',
             }}><Icon name="moderator" size={16}/></div>
             <div className="grow">
-              <div style={{ fontSize: 14, fontWeight: 500 }}>dev: смена роли</div>
-              <div style={{ fontSize: 12, color: 'var(--text-3)' }}>демо-доступ к панелям</div>
+              <div style={{ fontSize: 14, fontWeight: 500 }}>Dev: смена роли</div>
+              <div style={{ fontSize: 12, color: 'var(--text-3)' }}>Демо-доступ к панелям</div>
             </div>
           </div>
           <div className="col gap-4">
             <button className="btn sm secondary" style={{ width: '100%', whiteSpace: 'nowrap' }} onClick={() => onSwitchRole?.('moderator')}>
-              войти как модератор
+              Войти как модератор
             </button>
             <button className="btn sm secondary" style={{ width: '100%', whiteSpace: 'nowrap' }} onClick={() => onSwitchRole?.('analyst')}>
-              аналитик / дашборд
+              Аналитик / дашборд
             </button>
           </div>
         </div>
 
         {/* Settings */}
-        <div className="eyebrow" style={{ marginTop: 18, marginBottom: 8 }}>настройки уведомлений</div>
+        <div className="eyebrow" style={{ marginTop: 18, marginBottom: 8 }}>Настройки уведомлений</div>
         <div style={{ background: 'var(--surface)', borderRadius: 12, border: '1px solid var(--border)', overflow: 'hidden' }}>
           {[
-            { l: 'email-уведомления', s: 'на почту а@***.ru', on: true },
-            { l: 'push-уведомления', s: 'в браузере и приложении', on: true },
-            { l: 'дайджест раз в неделю', s: 'самые важные обновления', on: false },
+            { l: 'Email-уведомления', s: 'На почту а@***.ru', on: true },
+            { l: 'Push-уведомления', s: 'В браузере и приложении', on: true },
+            { l: 'Дайджест раз в неделю', s: 'Самые важные обновления', on: false },
           ].map((t, i, arr) => (
             <div key={t.l} className="list-row" style={{ borderBottom: i === arr.length - 1 ? 'none' : null }}>
               <div className="body">
@@ -3367,10 +3923,10 @@ function ScreenDashboard({ onBack, city, onOpenInitiative }) {
   const d = MOCK.DASHBOARD;
 
   const periods = [
-    { value: 'week', label: 'нед' },
-    { value: 'month', label: 'мес' },
-    { value: 'quarter', label: 'квр' },
-    { value: 'year', label: 'год' },
+    { value: 'week', label: 'Нед' },
+    { value: 'month', label: 'Мес' },
+    { value: 'quarter', label: 'Квр' },
+    { value: 'year', label: 'Год' },
   ];
 
   const topByVotes = MOCK.INITIATIVES.slice().sort((a,b) => b.votes - a.votes).slice(0, 5);
@@ -3397,8 +3953,8 @@ function ScreenDashboard({ onBack, city, onOpenInitiative }) {
     <div className="app-body">
       <AppBar
         onBack={onBack}
-        title="дашборд аналитики"
-        subtitle={`${city} · публичные данные`}
+        title="Дашборд аналитики"
+        subtitle={`${city} · Публичные данные`}
         right={<button className="icon-btn"><Icon name="download" size={20}/></button>}
       />
 
@@ -3417,7 +3973,7 @@ function ScreenDashboard({ onBack, city, onOpenInitiative }) {
           border: '1px solid var(--primary)',
         }}>
           <div style={{ position: 'relative', zIndex: 1 }}>
-            <div className="eyebrow" style={{ color: 'rgba(255,255,255,0.7)' }}>принято к исполнению</div>
+            <div className="eyebrow" style={{ color: 'rgba(255,255,255,0.7)' }}>Принято к исполнению</div>
             <div style={{ fontSize: 24, fontWeight: 500, lineHeight: 1.1, marginTop: 4 }}>
               63<span style={{ fontSize: 16 }}>%</span>
             </div>
@@ -3426,7 +3982,7 @@ function ScreenDashboard({ onBack, city, onOpenInitiative }) {
                 background: 'rgba(255,255,255,0.18)', padding: '2px 8px', borderRadius: 'var(--r-6)',
                 fontFamily: 'JetBrains Mono, monospace', fontSize: 12, fontWeight: 500,
               }}>↑ +8%</span>
-              <span style={{ opacity: 0.85 }}>к прошлому периоду</span>
+              <span style={{ opacity: 0.85 }}>К прошлому периоду</span>
             </div>
           </div>
           <svg viewBox="0 0 100 50" preserveAspectRatio="none" style={{ position: 'absolute', right: 0, bottom: 0, width: '50%', height: 40, opacity: 0.45 }}>
@@ -3440,9 +3996,9 @@ function ScreenDashboard({ onBack, city, onOpenInitiative }) {
         {/* Other KPIs */}
         <div className="kpi-grid-3" style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: 8, marginTop: 10 }}>
           {[
-            { n: d.totals.all, l: 'всего' },
-            { n: `${d.totals.avg_days}д`, l: 'ср. ответ' },
-            { n: `${d.totals.citizens}+`, l: 'граждан' },
+            { n: d.totals.all, l: 'Всего' },
+            { n: `${d.totals.avg_days}д`, l: 'Ср. ответ' },
+            { n: `${d.totals.citizens}+`, l: 'Граждан' },
           ].map(s => (
             <div key={s.l} style={{
               background: 'var(--surface)', border: '1px solid var(--border)',
@@ -3460,7 +4016,7 @@ function ScreenDashboard({ onBack, city, onOpenInitiative }) {
           borderRadius: 14, padding: 14,
         }}>
           <div className="row between middle" style={{ marginBottom: 14 }}>
-            <div className="h3">по категориям</div>
+            <div className="h3">По категориям</div>
             <Icon name="chart" size={16} style={{ color: 'var(--text-3)' }}/>
           </div>
           <div className="col gap-4">
@@ -3488,7 +4044,7 @@ function ScreenDashboard({ onBack, city, onOpenInitiative }) {
         <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 10, marginTop: 14 }}>
           {/* Donut */}
           <div style={{ background: 'var(--surface)', border: '1px solid var(--border)', borderRadius: 14, padding: 12 }}>
-            <div className="h3" style={{ fontSize: 14, marginBottom: 8 }}>статусы</div>
+            <div className="h3" style={{ fontSize: 14, marginBottom: 8 }}>Статусы</div>
             <div style={{ position: 'relative', display: 'grid', placeItems: 'center' }}>
               <svg viewBox="0 0 100 100" style={{ width: 110, height: 110 }}>
                 {donutSegs.map((s, i) => {
@@ -3509,7 +4065,7 @@ function ScreenDashboard({ onBack, city, onOpenInitiative }) {
                   );
                 })}
                 <text x="50" y="48" textAnchor="middle" fontSize="14" fontWeight="700" fill="var(--text-1)" style={{ letterSpacing: '-0.04em' }}>342</text>
-                <text x="50" y="60" textAnchor="middle" fontSize="6" fill="var(--text-3)" style={{ letterSpacing: '-0.04em' }}>всего</text>
+                <text x="50" y="60" textAnchor="middle" fontSize="6" fill="var(--text-3)" style={{ letterSpacing: '-0.04em' }}>Всего</text>
               </svg>
             </div>
             <div className="col gap-2" style={{ marginTop: 8 }}>
@@ -3525,8 +4081,8 @@ function ScreenDashboard({ onBack, city, onOpenInitiative }) {
 
           {/* Line — динамика */}
           <div style={{ background: 'var(--surface)', border: '1px solid var(--border)', borderRadius: 14, padding: 12 }}>
-            <div className="h3" style={{ fontSize: 14, marginBottom: 4 }}>динамика</div>
-            <div className="muted" style={{ fontSize: 11, marginBottom: 8 }}>подачи по месяцам</div>
+            <div className="h3" style={{ fontSize: 14, marginBottom: 4 }}>Динамика</div>
+            <div className="muted" style={{ fontSize: 11, marginBottom: 8 }}>Подачи по месяцам</div>
             <svg viewBox="0 0 100 100" preserveAspectRatio="none" style={{ width: '100%', height: 100 }}>
               <defs>
                 <linearGradient id="area" x1="0" y1="0" x2="0" y2="1">
@@ -3554,8 +4110,8 @@ function ScreenDashboard({ onBack, city, onOpenInitiative }) {
           borderRadius: 14, padding: 14,
         }}>
           <div className="row between middle" style={{ marginBottom: 12 }}>
-            <div className="h3">по районам</div>
-            <span className="muted" style={{ fontSize: 11 }}>топ-6</span>
+            <div className="h3">По районам</div>
+            <span className="muted" style={{ fontSize: 11 }}>Топ-6</span>
           </div>
           <div className="col gap-6">
             {d.byDistrict.map((r, i) => (
@@ -3584,8 +4140,8 @@ function ScreenDashboard({ onBack, city, onOpenInitiative }) {
           borderRadius: 14, padding: 14,
         }}>
           <div className="row between middle" style={{ marginBottom: 12 }}>
-            <div className="h3">топ по голосам</div>
-            <button style={{ background: 'none', border: 'none', color: 'var(--primary)', fontSize: 14, fontWeight: 500, cursor: 'pointer' }}>смотреть все</button>
+            <div className="h3">Топ по голосам</div>
+            <button style={{ background: 'none', border: 'none', color: 'var(--primary)', fontSize: 14, fontWeight: 500, cursor: 'pointer' }}>Смотреть все</button>
           </div>
           <div className="col">
             {topByVotes.map((init, i) => (
@@ -3618,7 +4174,7 @@ function ScreenDashboard({ onBack, city, onOpenInitiative }) {
         {/* Footer note */}
         <div style={{ marginTop: 16, padding: 12, background: 'var(--surface-2)', borderRadius: 10, fontSize: 11, color: 'var(--text-2)', lineHeight: 1.4, display: 'flex', gap: 8 }}>
           <Icon name="info" size={14} style={{ flexShrink: 0, color: 'var(--primary)' }}/>
-          <span>данные обновляются ежедневно. источник: муниципальная база инициатив. <a style={{ color: 'var(--primary)' }}>скачать csv</a></span>
+          <span>Данные обновляются ежедневно. Источник: муниципальная база инициатив. <a style={{ color: 'var(--primary)' }}>Скачать CSV</a></span>
         </div>
       </div>
     </div>
@@ -3650,17 +4206,17 @@ function useWindowWidth() {
 /* ─── desktop sidebar ─── */
 function DesktopSidebar({ active, onNav, city, onChangeCity }) {
   const navItems = [
-    { k: 'feed',     l: 'лента',    icon: 'list'     },
-    { k: 'map',      l: 'карта',    icon: 'map'       },
-    { k: 'submit',   l: 'подать',   icon: 'plus'      },
-    { k: 'bookmark', l: 'избранное', icon: 'bookmark' },
-    { k: 'profile',  l: 'профиль',  icon: 'user'      },
+    { k: 'feed',     l: 'Лента',    icon: 'list'     },
+    { k: 'map',      l: 'Карта',    icon: 'map'       },
+    { k: 'submit',   l: 'Подать',   icon: 'plus'      },
+    { k: 'bookmark', l: 'Избранное', icon: 'bookmark' },
+    { k: 'profile',  l: 'Профиль',  icon: 'user'      },
   ];
   return (
     <aside className="desktop-sidebar">
       <div className="ds-brand">
         <div className="ds-logo">иници<span>ати</span>ва</div>
-        <div className="ds-sub">прототип v0.1</div>
+        <div className="ds-sub">Прототип v0.1</div>
       </div>
       <nav className="ds-nav">
         {navItems.map(item => (
@@ -3680,7 +4236,7 @@ function DesktopSidebar({ active, onNav, city, onChangeCity }) {
           style={active === 'dashboard' ? { background: 'var(--primary-soft)', color: 'var(--primary)', fontWeight: 700 } : null}
         >
           <Icon name="chart" size={20}/>
-          <span>аналитика</span>
+          <span>Аналитика</span>
         </button>
         <button
           className="ds-nav-item"
@@ -3688,7 +4244,7 @@ function DesktopSidebar({ active, onNav, city, onChangeCity }) {
           style={active === 'moderator' ? { background: 'var(--primary-soft)', color: 'var(--primary)', fontWeight: 700 } : null}
         >
           <Icon name="moderator" size={20}/>
-          <span>модератор</span>
+          <span>Модератор</span>
         </button>
       </nav>
       {city && (
